@@ -5,4 +5,4 @@ As doações são adquiridas por um formato de leilão as cegas, onde os usuári
 
 O projeto tem como justificativa principal a crescente evidência do impacto causado ao meio ambiente, originados das práticas sociais exercidas, como o ato de consumir. Desta forma, a intenção é estimular nos indivíduos de diferentes comunidades uma relação mais ampla de troca de produtos, fomentando a concepção do consumo consciente a fim de contribuir com a redução da degradção gradual do meio ambiente.
 
-Aplicação será desenvolvida utilizando a linguagem TypeScrip com auxílío do Node.js, e o sistema gerenciador do banco de dados será o Postgresql.
+Aplicação será desenvolvida utilizando a linguagem TypeScript com auxílío do Node.js, e o sistema gerenciador do banco de dados será o Postgresql.
