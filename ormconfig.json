@@ -1,16 +1,16 @@
 {
-    "type": "pg",
+    "type": "postgres",
     "host": "localhost",
     "port": 5432,
-    "username": "agendaedu",
-    "password": "",
+    "username": "root",
+    "password": "1234",
     "database": "cottonnect",
     "logging": false,
     "entities": [
        "src/entity/**/*.ts"
     ],
     "migrations": [
-       "src/migration/**/*.ts"
+       "src/database/**/*.ts"
     ],
     "cli": {
         "entitiesDir": "src/entity",
