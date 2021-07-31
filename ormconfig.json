@@ -1,0 +1,15 @@
+{
+    "type": "pg",
+    "host": "localhost",
+    "port": 5432,
+    "username": "agendaedu",
+    "password": "",
+    "database": "cottonnect",
+    "logging": false,
+    "entities": [
+       "src/entity/**/*.ts"
+    ],
+    "migrations": [
+       "src/migration/**/*.ts"
+    ]
+ }
