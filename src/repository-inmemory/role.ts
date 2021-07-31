@@ -1,7 +1,7 @@
 import { IRolesRepository } from "../irepositories/IRolesRepository";
 import { Role } from "../model/Role";
 
-class RolesRepository implements IRolesRepository {
+class RolesRepositoryInMemory implements IRolesRepository {
   private repository: Role[];
 
   constructor() {
@@ -16,4 +16,4 @@ class RolesRepository implements IRolesRepository {
   }
 }
 
-export { RolesRepository };
+export { RolesRepositoryInMemory };
