@@ -7,13 +7,13 @@
     "database": "cottonnect",
     "logging": false,
     "entities": [
-       "src/entity/**/*.ts"
+       "src/model/*.ts"
     ],
     "migrations": [
        "src/database/**/*.ts"
     ],
     "cli": {
-        "entitiesDir": "src/entity",
+        "entitiesDir": "src/model",
         "migrationsDir": "src/database/migrations"
     }
  }
