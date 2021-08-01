@@ -14,6 +14,10 @@ class RolesRepositoryInMemory implements IRolesRepository {
     this.repository.push(role);
     return role;
   }
+
+  async findByName(name: string): Promise<Role> {
+    return this.repository.find((role) => role.name === name);
+  }
 }
 
 export { RolesRepositoryInMemory };

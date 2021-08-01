@@ -15,6 +15,11 @@ class RolesRepository implements IRolesRepository {
     await this.repository.save(role);
     return role;
   }
+
+  async findByName(name: string): Promise<Role> {
+    const role = await this.repository.findOne({ where: { name } });
+    return role;
+  }
 }
 
 export { RolesRepository };
