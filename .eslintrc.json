@@ -60,7 +60,16 @@
         "error",
         { "devDependencies": ["*/.spec.js"] }
         ],
-        "prettier/prettier": "error"
+        "prettier/prettier": "error",
+        "@typescript-eslint/ban-types": [
+            "error",
+            {
+              "extendDefaults": true,
+              "types": {
+                "{}": false
+              }
+            }
+          ]
     },
     "settings": {
         "import/resolver": {
