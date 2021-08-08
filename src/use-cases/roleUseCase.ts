@@ -1,20 +1,20 @@
-import { IRolesRepository } from "../irepositories/IRolesRepository";
 import { Role } from "../model/Role";
+import { RolesRepository } from "../repository/role";
 
 class RoleUseCase {
-  private roleRepository: IRolesRepository;
+  private repository: RolesRepository;
 
-  constructor(repository: IRolesRepository) {
-    this.roleRepository = repository;
+  constructor() {
+    this.repository = new RolesRepository();
   }
 
   async createRole(name: string): Promise<Role> {
-    const role = await this.roleRepository.findByName(name);
+    const role = await this.repository.findByName(name);
     if (role) {
       throw new Error(`O nome ${role.name} já está em uso`);
     }
 
-    const newrole = await this.roleRepository.create(name);
+    const newrole = await this.repository.create(name);
     return newrole;
   }
 }

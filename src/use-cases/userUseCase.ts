@@ -1,23 +1,20 @@
-import {
-  ICreateUser,
-  IUsersRepository,
-} from "../irepositories/IUsersRepository";
 import { User } from "../model/User";
+import { UserRepository } from "../repository/user";
 
 class UserUseCase {
-  private userRepository: IUsersRepository;
+  private userRepository: UserRepository;
 
-  constructor(repository: IUsersRepository) {
-    this.userRepository = repository;
+  constructor() {
+    this.userRepository = new UserRepository();
   }
 
-  async create(userData: ICreateUser): Promise<User> {
-    const checkUser = await this.userRepository.findByEmail(userData.email);
+  async create(user: User): Promise<User> {
+    const checkUser = await this.userRepository.findByEmail(user.email);
     if (checkUser) {
       throw new Error("O email de usuário já existe");
     }
-    const user = await this.userRepository.create(userData);
-    return user;
+    const userCreatedat = await this.userRepository.create(user);
+    return userCreatedat;
   }
 }
 
