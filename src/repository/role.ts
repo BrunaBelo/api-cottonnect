@@ -1,9 +1,8 @@
 import { getRepository, Repository } from "typeorm";
 
-import { IRolesRepository } from "../irepositories/IRolesRepository";
 import { Role } from "../model/Role";
 
-class RolesRepository implements IRolesRepository {
+class RolesRepository {
   private repository: Repository<Role>;
 
   constructor() {

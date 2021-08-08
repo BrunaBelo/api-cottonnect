@@ -1,26 +1,21 @@
 import { getRepository, Repository } from "typeorm";
 
-import {
-  ICreateUser,
-  IUpdateUser,
-  IUsersRepository,
-} from "../irepositories/IUsersRepository";
 import { User } from "../model/User";
 
-class UserRepository implements IUsersRepository {
+class UserRepository {
   private repository: Repository<User>;
 
   constructor() {
     this.repository = getRepository(User);
   }
 
-  async create(userData: ICreateUser): Promise<User> {
-    const newUser = this.repository.create(userData);
+  async create(user: User): Promise<User> {
+    const newUser = this.repository.create(user);
     await this.repository.save(newUser);
     return newUser;
   }
 
-  async update(id: string, userData: IUpdateUser): Promise<User> {
+  async update(id: string, user: User): Promise<User> {
     throw new Error("Method not implemented.");
   }
 
