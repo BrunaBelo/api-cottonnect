@@ -1,14 +1,13 @@
-import { Connection, createConnection } from "typeorm";
+import { getConnectionOptions, createConnection, Connection } from "typeorm";
 
-import databaseConfig = require("dotenv");
-
-databaseConfig.config({
-  path: process.env.NODE_ENV === "test" ? ".env.test" : ".env",
-});
-
-async function getNewConnection(): Promise<Connection> {
-  const connection = await createConnection();
-  return connection;
+async function createTypeormConn(): Promise<Connection> {
+  const connectionOptions = await getConnectionOptions(process.env.NODE_ENV);
+  console.log("oiiii");
+  const newConnection = await createConnection({
+    ...connectionOptions,
+    name: "default",
+  });
+  return newConnection;
 }
 
-export { getNewConnection };
+createTypeormConn();
