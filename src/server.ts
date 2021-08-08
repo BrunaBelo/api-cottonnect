@@ -1,13 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 
 import "express-async-errors";
-import { getNewConnection } from "./database/connection";
 import { routers } from "./routes/index.routes";
-
-const PORT = 3000;
-const HOST = "localhost";
-
-getNewConnection();
 
 const app = express();
 app.use(express.json());
@@ -26,4 +20,4 @@ app.use(
   }
 );
 
-app.listen(PORT, HOST, () => console.log("Server is running!"));
+export { app };
