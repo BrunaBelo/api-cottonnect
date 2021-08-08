@@ -6,7 +6,10 @@ import { Role } from "./Role";
 @Entity("users")
 class User {
   @PrimaryColumn()
-  id: string;
+  id?: string;
+
+  @Column()
+  name: string;
 
   @Column()
   email: string;
@@ -21,7 +24,7 @@ class User {
   birth_day: Date;
 
   @Column()
-  cotton_flakes: number;
+  cotton_flakes?: number;
 
   @Column()
   phone_verified: boolean;
@@ -30,10 +33,10 @@ class User {
   additional_information: string;
 
   @Column()
-  created_at: Date;
+  created_at?: Date;
 
   @Column()
-  updated_at: Date;
+  updated_at?: Date;
 
   @Column()
   city_id: string;
@@ -42,9 +45,9 @@ class User {
   role_id: string;
 
   //   city: Cidade;
-  @ManyToOne(() => Role)
-  @JoinColumn({ name: "role_id" })
-  role: Role;
+  // @ManyToOne(() => Role)
+  // @JoinColumn({ name: "role_id" })
+  // role?: Role;
 
   constructor() {
     if (!this.id) {
