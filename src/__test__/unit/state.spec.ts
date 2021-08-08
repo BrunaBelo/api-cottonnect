@@ -1,3 +1,4 @@
+import "../../database/connection";
 import { State } from "../../model/state";
 import { StateUseCase } from "../../use-cases/stateUseCase";
 
@@ -9,7 +10,7 @@ const stateSeed: State = {
 };
 
 describe("Create State", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     stateUseCase = new StateUseCase();
   });
 
