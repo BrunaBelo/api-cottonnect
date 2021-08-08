@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 
-import { UserRepository } from "../repository/user";
 import { UserUseCase } from "../use-cases/userUseCase";
 
 class UserController {
@@ -17,8 +16,7 @@ class UserController {
       role_id,
     } = request.body;
 
-    const repository = new UserRepository();
-    const useCase = new UserUseCase(repository);
+    const useCase = new UserUseCase();
     const user = await useCase.create({
       name,
       email,
