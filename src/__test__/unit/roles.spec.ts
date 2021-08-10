@@ -1,9 +1,19 @@
+import connection from "../../database/connection";
 import { RoleUseCase } from "../../use-cases/roleUseCase";
 
 let roleUseCase: RoleUseCase;
 
 describe("Create Role", () => {
-  beforeEach(() => {
+  beforeAll(async () => {
+    await connection.create();
+  });
+
+  afterAll(async () => {
+    await connection.close();
+  });
+
+  beforeEach(async () => {
+    await connection.clear();
     roleUseCase = new RoleUseCase();
   });
 
