@@ -1,7 +1,7 @@
-import "./database/connection";
+import connection from "./database/connection";
 import { app } from "./server";
 
 const PORT = 3000;
-const HOST = "localhost";
 
-app.listen(PORT, HOST, () => console.log("Server is running!"));
+connection.create("db");
+app.listen(PORT, () => console.log("Server is running!"));
