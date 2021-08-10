@@ -1,11 +1,11 @@
 import { Role } from "../model/role";
-import { RolesRepository } from "../repository/role";
+import { RoleRepository } from "../repository/role";
 
 class RoleUseCase {
-  private repository: RolesRepository;
+  private repository: RoleRepository;
 
   constructor() {
-    this.repository = new RolesRepository();
+    this.repository = new RoleRepository();
   }
 
   async createRole(name: string): Promise<Role> {
