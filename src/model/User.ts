@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 
-import { Role } from "./Role";
+import { Role } from "./role";
 
 @Entity("users")
 class User {

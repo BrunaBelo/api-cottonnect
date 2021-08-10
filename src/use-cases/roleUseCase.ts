@@ -1,4 +1,4 @@
-import { Role } from "../model/Role";
+import { Role } from "../model/role";
 import { RolesRepository } from "../repository/role";
 
 class RoleUseCase {
