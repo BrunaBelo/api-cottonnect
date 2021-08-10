@@ -1,5 +1,5 @@
-import { Role } from "../../model/Role";
-import { User } from "../../model/User";
+import { Role } from "../../model/role";
+import { User } from "../../model/user";
 import { RoleUseCase } from "../../use-cases/roleUseCase";
 import { UserUseCase } from "../../use-cases/userUseCase";
 
