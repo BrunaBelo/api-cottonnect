@@ -2,10 +2,7 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    JoinColumn,
     ManyToOne,
-    OneToMany,
-    OneToOne,
     PrimaryColumn,
     UpdateDateColumn,
 } from "typeorm";
@@ -33,7 +30,7 @@ class City {
     state_id: string;
 
     @ManyToOne(() => State, state => state)
-    state: State;
+    state?: State;
 
     constructor() {
         if (!this.id) {
