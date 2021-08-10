@@ -1,4 +1,5 @@
 import "../../database/connection";
+import connection from "../../database/connection";
 import { State } from "../../model/state";
 import { StateUseCase } from "../../use-cases/stateUseCase";
 
@@ -10,7 +11,16 @@ const stateSeed: State = {
 };
 
 describe("Create State", () => {
+  beforeAll(async () => {
+    await connection.create();
+  });
+
+  afterAll(async () => {
+    await connection.close();
+  });
+
   beforeEach(async () => {
+    await connection.clear();
     stateUseCase = new StateUseCase();
   });
 
