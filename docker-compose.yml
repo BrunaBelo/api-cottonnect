@@ -1,0 +1,45 @@
+version: "3.7"
+
+services: 
+    db:
+        image: postgres
+        container_name: cottonnect-db
+        restart: always
+        ports: 
+            - 5432:5432
+        environment: 
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DB=cottonnect
+        volumes: 
+            - pgdata:/data/postgres
+    
+    dbTest:
+        image: postgres
+        container_name: cottonnect-db-test
+        restart: always
+        ports: 
+            - 2345:5432
+        environment: 
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DB=cottonnect-test
+        volumes: 
+            - pgdata:/data/postgres
+
+    app:
+        build: .
+        container_name: cottonnect
+        ports: 
+            - 3000:3000
+        volumes: 
+            - .:/usr/app
+        links: 
+            - db
+            - dbTest
+        depends_on: 
+            - db
+            - dbTest
+volumes: 
+    pgdata:
+        driver: local
