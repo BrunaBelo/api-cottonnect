@@ -1,8 +1,6 @@
 import { getRepository, Repository } from "typeorm";
 import { City } from "../model/city";
 
-import { State } from "../model/state";
-
 class CityRepository {
     private repository: Repository<City>;
 
