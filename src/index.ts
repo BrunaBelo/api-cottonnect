@@ -3,5 +3,9 @@ import { app } from "./server";
 
 const PORT = 3000;
 
-connection.create("db");
+if (process.env.NODE_ENV === "development") {
+    connection.create("db");
+} else {
+    connection.create(process.env.TYPEORM_HOST);
+}
 app.listen(PORT, () => console.log("Server is running!"));
