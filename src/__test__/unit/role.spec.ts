@@ -23,15 +23,15 @@ describe("Create Role", () => {
   });
 
   it("create new role", async () => {
-    const newRole = await roleUseCase.createRole(roleSeed);
+    const newRole = await roleUseCase.create(roleSeed);
     expect(newRole.name).toBe("Admin");
   });
 
   it("not create new role", async () => {
-    let newRole = await roleUseCase.createRole(roleSeed);
+    let newRole = await roleUseCase.create(roleSeed);
     let error_message = "";
     try {
-      newRole = await roleUseCase.createRole(roleSeed);
+      newRole = await roleUseCase.create(roleSeed);
     } catch (error) {
       error_message = error.message;
     }
