@@ -38,6 +38,6 @@ describe("Create City", () => {
         const state = await stateUseCase.create(stateSeed);
         citySeed.state_id = state.id
         const city = await cityUseCase.create(citySeed);
-        // expect(city).toMatchObject(citySeed);
+        expect(city).toMatchObject(citySeed);
     });
 });
