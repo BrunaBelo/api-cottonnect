@@ -2,6 +2,7 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    JoinColumn,
     ManyToOne,
     PrimaryColumn,
     UpdateDateColumn,
@@ -15,7 +16,7 @@ class City {
     id?: string;
 
     @Column()
-    ibge: string;
+    ibge: number;
 
     @Column()
     name: string;
@@ -29,7 +30,8 @@ class City {
     @Column()
     state_id: string;
 
-    @ManyToOne(() => State, state => state)
+    @ManyToOne(() => State, state => state.cities)
+    @JoinColumn({ name: "state_id" })
     state?: State;
 
     constructor() {
