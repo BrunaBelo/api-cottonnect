@@ -9,10 +9,10 @@ class RoleRepository {
     this.repository = getRepository(Role);
   }
 
-  async create(name: string): Promise<Role> {
-    const role = this.repository.create({ name });
-    await this.repository.save(role);
-    return role;
+  async create(role: Role): Promise<Role> {
+    const newRole = this.repository.create(role);
+    await this.repository.save(newRole);
+    return newRole;
   }
 
   async findByName(name: string): Promise<Role> {

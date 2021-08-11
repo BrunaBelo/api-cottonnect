@@ -8,14 +8,14 @@ class RoleUseCase {
     this.repository = new RoleRepository();
   }
 
-  async createRole(name: string): Promise<Role> {
-    const role = await this.repository.findByName(name);
-    if (role) {
+  async createRole(role: Role): Promise<Role> {
+    const existRole = await this.repository.findByName(role.name);
+    if (existRole) {
       throw new Error(`O nome ${role.name} já está em uso`);
     }
 
-    const newrole = await this.repository.create(name);
-    return newrole;
+    const newRole = await this.repository.create(role);
+    return newRole;
   }
 }
 export { RoleUseCase };

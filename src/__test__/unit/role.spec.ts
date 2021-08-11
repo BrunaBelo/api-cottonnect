@@ -1,5 +1,10 @@
 import connection from "../../database/connection";
+import { Role } from "../../model/role";
 import { RoleUseCase } from "../../use-cases/roleUseCase";
+
+const roleSeed: Role = {
+  name: "Admin",
+};
 
 let roleUseCase: RoleUseCase;
 
@@ -18,15 +23,15 @@ describe("Create Role", () => {
   });
 
   it("create new role", async () => {
-    const newRole = await roleUseCase.createRole("Ana Bruna");
-    expect(newRole.name).toBe("Ana Bruna");
+    const newRole = await roleUseCase.createRole(roleSeed);
+    expect(newRole.name).toBe("Admin");
   });
 
   it("not create new role", async () => {
-    let newRole = await roleUseCase.createRole("Ana Bruna");
+    let newRole = await roleUseCase.createRole(roleSeed);
     let error_message = "";
     try {
-      newRole = await roleUseCase.createRole("Ana Bruna");
+      newRole = await roleUseCase.createRole(roleSeed);
     } catch (error) {
       error_message = error.message;
     }
