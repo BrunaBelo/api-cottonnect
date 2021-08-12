@@ -2,7 +2,7 @@ import connection from "../../database/connection";
 import { RoleUseCase } from "../../use-cases/roleUseCase";
 import { roleAdmin } from "../factories/roleFactory";
 
-const roleSeed = roleAdmin
+let role = roleAdmin
 let roleUseCase: RoleUseCase;
 
 describe("Create Role", () => {
@@ -20,15 +20,15 @@ describe("Create Role", () => {
   });
 
   it("create new role", async () => {
-    const newRole = await roleUseCase.create(roleSeed);
+    const newRole = await roleUseCase.create(role);
     expect(newRole.name).toBe("Admin");
   });
 
   it("not create new role", async () => {
-    let newRole = await roleUseCase.create(roleSeed);
+    let newRole = await roleUseCase.create(role);
     let error_message = "";
     try {
-      newRole = await roleUseCase.create(roleSeed);
+      newRole = await roleUseCase.create(role);
     } catch (error) {
       error_message = error.message;
     }
