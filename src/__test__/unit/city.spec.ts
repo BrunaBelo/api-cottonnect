@@ -4,20 +4,14 @@ import { City } from "../../model/city";
 import { State } from "../../model/state";
 import { CityUseCase } from "../../use-cases/cityUseCase";
 import { StateUseCase } from "../../use-cases/stateUseCase";
+import { cityCuritiba } from "../factories/cityFactory";
+import { stateParana } from "../factories/stateFactory";
 
 let cityUseCase: CityUseCase;
 let stateUseCase: StateUseCase;
 
-const stateSeed: State = {
-    name: "Paraná",
-    ibge: 1234,
-};
-
-const citySeed: City = {
-    name: "Curitiba",
-    ibge: 1234,
-    state_id: null,
-};
+let state: State
+const city = cityCuritiba
 
 describe("Create City", () => {
     beforeAll(async () => {
@@ -32,12 +26,12 @@ describe("Create City", () => {
         await connection.clear();
         cityUseCase = new CityUseCase();
         stateUseCase = new StateUseCase();
+        state = await stateUseCase.create(stateParana);
     });
 
     it("create new City", async () => {
-        const state = await stateUseCase.create(stateSeed);
-        citySeed.state_id = state.id
-        const city = await cityUseCase.create(citySeed);
-        expect(city).toMatchObject(citySeed);
+        city.state_id = state.id
+        const newCity = await cityUseCase.create(city);
+        expect(newCity).toMatchObject(city);
     });
 });
