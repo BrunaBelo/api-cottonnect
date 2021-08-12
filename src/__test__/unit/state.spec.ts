@@ -1,14 +1,10 @@
 import "../../database/connection";
 import connection from "../../database/connection";
-import { State } from "../../model/state";
 import { StateUseCase } from "../../use-cases/stateUseCase";
+import { stateParana } from "../factories/stateFactory";
 
+let state = stateParana
 let stateUseCase: StateUseCase;
-
-const stateSeed: State = {
-  name: "Paraná",
-  ibge: 1234,
-};
 
 describe("Create State", () => {
   beforeAll(async () => {
@@ -25,7 +21,7 @@ describe("Create State", () => {
   });
 
   it("create new State", async () => {
-    const state = await stateUseCase.create(stateSeed);
-    expect(state).toMatchObject(stateSeed);
+    const newState = await stateUseCase.create(state);
+    expect(newState).toMatchObject(state);
   });
 });
