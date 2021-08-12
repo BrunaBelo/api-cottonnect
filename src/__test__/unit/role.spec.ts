@@ -1,11 +1,8 @@
 import connection from "../../database/connection";
-import { Role } from "../../model/role";
 import { RoleUseCase } from "../../use-cases/roleUseCase";
+import { roleAdmin } from "../factories/roleFactory";
 
-const roleSeed: Role = {
-  name: "Admin",
-};
-
+const roleSeed = roleAdmin
 let roleUseCase: RoleUseCase;
 
 describe("Create Role", () => {
