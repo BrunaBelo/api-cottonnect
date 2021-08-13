@@ -1,5 +1,4 @@
 import { getRepository, Repository } from "typeorm";
-
 import { User } from "../model/user";
 
 class UserRepository {

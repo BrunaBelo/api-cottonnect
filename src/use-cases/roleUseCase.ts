@@ -1,5 +1,5 @@
 import { Role } from "../model/role";
-import { RoleRepository } from "../repository/role";
+import { RoleRepository } from "../repository/roleRepository";
 
 class RoleUseCase {
   private repository: RoleRepository;

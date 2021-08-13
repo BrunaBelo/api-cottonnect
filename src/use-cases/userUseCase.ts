@@ -1,5 +1,5 @@
 import { User } from "../model/user";
-import { UserRepository } from "../repository/user";
+import { UserRepository } from "../repository/userRepository";
 
 class UserUseCase {
   private userRepository: UserRepository;

@@ -1,5 +1,5 @@
 import { City } from "../model/city";
-import { CityRepository } from "../repository/city";
+import { CityRepository } from "../repository/cityRepository";
 
 class CityUseCase {
     private repository: CityRepository;

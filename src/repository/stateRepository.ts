@@ -1,5 +1,4 @@
 import { getRepository, Repository } from "typeorm";
-
 import { State } from "../model/state";
 
 class StateRepository {

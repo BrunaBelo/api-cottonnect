@@ -1,5 +1,5 @@
 import { State } from "../model/state";
-import { StateRepository } from "../repository/state";
+import { StateRepository } from "../repository/stateRepository";
 
 class StateUseCase {
   private repository: StateRepository;

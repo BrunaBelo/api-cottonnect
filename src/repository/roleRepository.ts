@@ -1,7 +1,6 @@
 import { getRepository, Repository } from "typeorm";
 import { Role } from "../model/role";
 
-
 class RoleRepository {
   private repository: Repository<Role>;
 
