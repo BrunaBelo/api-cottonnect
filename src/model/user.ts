@@ -1,5 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
+import { City } from "./city";
 
 import { Role } from "./role";
 
@@ -44,10 +45,13 @@ class User {
   @Column()
   role_id: string;
 
-  //   city: Cidade;
-  // @ManyToOne(() => Role)
-  // @JoinColumn({ name: "role_id" })
-  // role?: Role;
+  @ManyToOne(() => City, city => city.users)
+  @JoinColumn({ name: "city_id" })
+  city?: Role;
+
+  @ManyToOne(() => Role, role => role.users)
+  @JoinColumn({ name: "role_id" })
+  role?: Role;
 
   constructor() {
     if (!this.id) {

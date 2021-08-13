@@ -4,11 +4,13 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
+    OneToMany,
     PrimaryColumn,
     UpdateDateColumn,
 } from "typeorm";
 import { v4 as uuid } from "uuid";
 import { State } from "./state";
+import { User } from "./user";
 
 @Entity("cities")
 class City {
@@ -33,6 +35,9 @@ class City {
     @ManyToOne(() => State, state => state.cities)
     @JoinColumn({ name: "state_id" })
     state?: State;
+
+    @OneToMany(() => User, user => user)
+    users?: User[];
 
     constructor() {
         if (!this.id) {

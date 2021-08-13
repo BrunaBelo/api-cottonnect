@@ -2,10 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { v4 as uuid } from "uuid";
+import { User } from "./user";
 
 @Entity("roles")
 class Role {
@@ -20,6 +22,9 @@ class Role {
 
   @UpdateDateColumn()
   updated_at?: Date;
+
+  @OneToMany(() => User, user => user)
+  users?: User[];
 
   constructor() {
     if (!this.id) {
