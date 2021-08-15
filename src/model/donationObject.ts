@@ -2,10 +2,14 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    ManyToOne,
     OneToMany,
+    OneToOne,
     PrimaryColumn,
 } from "typeorm";
 import { v4 as uuid } from "uuid";
+import { Auction } from "./auction";
+import { DonationCategory } from "./donationCategory";
 import { Photo } from "./photo";
 
 @Entity("donation_objects")
@@ -27,6 +31,12 @@ class DonationObject {
 
     @OneToMany(() => Photo, photo => photo)
     photos?: Photo[];
+
+    @OneToMany(() => DonationCategory, donationCategory => donationCategory)
+    donationCategories?: DonationCategory[];
+
+    @OneToOne(() => Auction, auction => auction)
+    auction?: Auction;
 
     constructor() {
         if (!this.id) {

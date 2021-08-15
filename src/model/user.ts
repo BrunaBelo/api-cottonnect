@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
+import { Auction } from "./auction";
 import { City } from "./city";
 
 import { Role } from "./role";
@@ -52,6 +53,9 @@ class User {
   @ManyToOne(() => Role, role => role.users)
   @JoinColumn({ name: "role_id" })
   role?: Role;
+
+  @OneToMany(() => Auction, auction => auction)
+  auction?: Auction[];
 
   constructor() {
     if (!this.id) {
