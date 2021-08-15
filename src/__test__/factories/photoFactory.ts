@@ -5,5 +5,5 @@ export const photo01: Photo = {
     name: "photo01",
     type: ".png",
     uri: "/upload/photo01.png",
-    donationObjectId: "b27554ec-2df6-4d0b-a3ac-aa2ec9d900fe"
+    donation_object_id: "b27554ec-2df6-4d0b-a3ac-aa2ec9d900fe"
 }

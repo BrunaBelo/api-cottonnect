@@ -2,6 +2,7 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    JoinColumn,
     ManyToOne,
     PrimaryColumn,
 } from "typeorm";
@@ -26,9 +27,10 @@ class Photo {
     created_at?: Date;
 
     @Column()
-    donationObjectId: string;
+    donation_object_id: string;
 
     @ManyToOne(() => DonationObject, donationObject => donationObject)
+    @JoinColumn({ name: "donation_object_id" })
     donationObject?: DonationObject;
 
     constructor() {
