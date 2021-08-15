@@ -4,29 +4,23 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
-    OneToMany,
-    OneToOne,
     PrimaryColumn,
     UpdateDateColumn,
 } from "typeorm";
 import { v4 as uuid } from "uuid";
-import { Bidding } from "./bidding";
-import { DonationObject } from "./donationObject";
+import { Auction } from "./auction";
 import { User } from "./user";
 
-@Entity("auctions")
-class Auction {
+@Entity("bidding")
+class Bidding {
     @PrimaryColumn()
     id?: string;
 
     @Column()
-    name: string;
+    bid_amount: number;
 
     @Column()
-    closing_data: Date;
-
-    @Column()
-    status?: string;
+    winner: boolean;
 
     @CreateDateColumn()
     created_at?: Date;
@@ -38,23 +32,22 @@ class Auction {
     user_id: string;
 
     @Column()
-    donation_object_id: string;
+    auction_id: string;
 
-    @ManyToOne(() => User, user => user.auction)
+    @ManyToOne(() => User, user => user.biddings)
     @JoinColumn({ name: "user_id" })
     user?: User;
 
-    @OneToOne(() => DonationObject, donationObject => donationObject)
-    donationObject?: DonationObject;
-
-    @OneToMany(() => Bidding, bidding => bidding)
-    biddings?: Bidding[];
+    @ManyToOne(() => Auction, auction => auction.biddings)
+    @JoinColumn({ name: "auction_id" })
+    auction?: Auction;
 
     constructor() {
         if (!this.id) {
             this.id = uuid();
+            this.winner = false;
         }
     }
 }
 
-export { Auction };
+export { Bidding };
