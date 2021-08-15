@@ -2,31 +2,34 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    OneToMany,
+    ManyToOne,
     PrimaryColumn,
 } from "typeorm";
 import { v4 as uuid } from "uuid";
-import { Photo } from "./photo";
+import { DonationObject } from "./donationObject";
 
-@Entity("donation_objects")
-class DonationObject {
+@Entity("photos")
+class Photo {
     @PrimaryColumn()
     id?: string;
 
     @Column()
-    title: string;
+    name: string;
 
     @Column()
-    description: string;
+    type: string;
 
     @Column()
-    status?: string;
+    uri: string;
 
     @CreateDateColumn()
     created_at?: Date;
 
-    @OneToMany(() => Photo, photo => photo)
-    photos?: Photo[];
+    @Column()
+    donationObjectId: string;
+
+    @ManyToOne(() => DonationObject, donationObject => donationObject)
+    donationObject?: DonationObject;
 
     constructor() {
         if (!this.id) {
@@ -35,4 +38,4 @@ class DonationObject {
     }
 }
 
-export { DonationObject };
+export { Photo };
