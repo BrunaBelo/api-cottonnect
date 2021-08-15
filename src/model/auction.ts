@@ -24,7 +24,7 @@ class Auction {
     closing_data: Date;
 
     @Column()
-    status: string;
+    status?: string;
 
     @CreateDateColumn()
     created_at?: Date;
