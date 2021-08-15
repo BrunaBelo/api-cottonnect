@@ -20,7 +20,7 @@ class Bidding {
     bid_amount: number;
 
     @Column()
-    winner: boolean;
+    winner?: boolean;
 
     @CreateDateColumn()
     created_at?: Date;
