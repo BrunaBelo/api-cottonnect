@@ -30,7 +30,7 @@ export class CreateBidding1627842378164 implements MigrationInterface {
             type: "uuid",
           },
           {
-            name: "aution_id",
+            name: "auction_id",
             type: "uuid",
           },
         ],
@@ -44,10 +44,10 @@ export class CreateBidding1627842378164 implements MigrationInterface {
             onUpdate: "CASCADE",
           },
           {
-            name: "fk_aution_id",
-            columnNames: ["aution_id"],
+            name: "fk_auction_id",
+            columnNames: ["auction_id"],
             referencedColumnNames: ["id"],
-            referencedTableName: "autions",
+            referencedTableName: "auctions",
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
           },
