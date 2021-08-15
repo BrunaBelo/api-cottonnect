@@ -18,11 +18,11 @@ class PhotoRepository {
         throw new Error("Method not implemented.");
     }
 
-    async find_by_id(id: string): Promise<Photo> {
+    async findById(id: string): Promise<Photo> {
         throw new Error("Method not implemented.");
     }
 
-    async find_by_donation(idDonation: string): Promise<Photo> {
+    async findByDonation(idDonation: string): Promise<Photo> {
         throw new Error("Method not implemented.");
     }
 }
