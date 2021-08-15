@@ -9,13 +9,10 @@ import { v4 as uuid } from "uuid";
 import { Category } from "./category";
 import { DonationObject } from "./donationObject";
 
-@Entity("cities")
+@Entity("donation_categories")
 class DonationCategory {
     @PrimaryColumn()
     id?: string;
-
-    @Column()
-    name: string;
 
     @CreateDateColumn()
     created_at?: Date;
