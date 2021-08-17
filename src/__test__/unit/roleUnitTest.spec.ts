@@ -1,11 +1,13 @@
+import { factory } from "factory-girl";
 import connection from "../../database/connection";
+import { Role } from "../../model/role";
 import { RoleUseCase } from "../../use-cases/roleUseCase";
-import { roleAdmin } from "../factories/roleFactory";
-
-let role = roleAdmin
-let roleUseCase: RoleUseCase;
+import "../factories/roleFactory";
 
 describe("Create Role", () => {
+  let role: Role;
+  let roleUseCase: RoleUseCase;
+
   beforeAll(async () => {
     await connection.create();
   });
@@ -16,6 +18,7 @@ describe("Create Role", () => {
 
   beforeEach(async () => {
     await connection.clear();
+    role = await factory.attrs('roleAdmin');
     roleUseCase = new RoleUseCase();
   });
 
