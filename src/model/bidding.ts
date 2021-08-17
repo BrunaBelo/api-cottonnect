@@ -11,7 +11,7 @@ import { v4 as uuid } from "uuid";
 import { Auction } from "./auction";
 import { User } from "./user";
 
-@Entity("bidding")
+@Entity("biddings")
 class Bidding {
     @PrimaryColumn()
     id?: string;

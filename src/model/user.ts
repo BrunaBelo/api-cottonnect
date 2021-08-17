@@ -58,7 +58,7 @@ class User {
   @OneToMany(() => Auction, auction => auction)
   auction?: Auction[];
 
-  @OneToMany(() => Bidding, bidding => bidding)
+  @OneToMany(() => Bidding, bidding => bidding.user)
   biddings?: Bidding[];
 
   constructor() {
