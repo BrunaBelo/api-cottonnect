@@ -1,7 +1,7 @@
 import connection from "../../database/connection";
 import { Role } from "../../model/role";
 import { RoleUseCase } from "../../use-cases/roleUseCase";
-import { RoleAdmin } from "../factories/roleFactory";
+import { roleAdmin } from "../factories/roleFactory";
 
 describe("Create Role", () => {
   let roleUseCase: RoleUseCase;
@@ -9,7 +9,7 @@ describe("Create Role", () => {
 
   beforeAll(async () => {
     await connection.create();
-    role = RoleAdmin.build();
+    role = roleAdmin.build();
     roleUseCase = new RoleUseCase();
   });
 

@@ -24,6 +24,7 @@
   "devDependencies": {
     "@types/express": "^4.17.12",
     "@types/factory-girl": "^5.0.8",
+    "@types/faker": "^5.5.8",
     "@types/jest": "^26.0.24",
     "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
@@ -36,6 +37,7 @@
     "eslint-plugin-import-helpers": "^1.1.0",
     "eslint-plugin-prettier": "^3.4.0",
     "factory-girl": "^5.0.4",
+    "faker": "^5.5.3",
     "jest": "^27.0.6",
     "prettier": "^2.3.2",
     "sqlite3": "^5.0.2",
