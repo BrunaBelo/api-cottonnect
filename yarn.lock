@@ -5565,6 +5565,11 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
+typeorm-factory@^0.0.14:
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/typeorm-factory/-/typeorm-factory-0.0.14.tgz#bbc56a61684238ac9e3a1c88cbab508efe422ba1"
+  integrity sha512-PdCEnprw2YDbFJ50mCtPr+IOQa5Y9Yv7l3DDmqNEJPROwK48znvQEHVRA9bWR2ByjaZDfmRMWo7+/Q+WkDPOgw==
+
 typeorm@^0.2.36:
   version "0.2.36"
   resolved "https://registry.yarnpkg.com/typeorm/-/typeorm-0.2.36.tgz#02295462438b4f1279d26d15d32823c522ae1a04"
