@@ -1,26 +1,30 @@
 import connection from "../../database/connection";
+import { Category } from "../../model/category";
 import { CategoryUseCase } from "../../use-cases/categoryUseCase";
 import { category01 } from "../factories/categoryFactory";
 
-let category = category01
-let categoryUseCase: CategoryUseCase;
+describe("Category", () => {
+  let categoryUseCase: CategoryUseCase;
+  let category: Category;
 
-describe("Create Category", () => {
-    beforeAll(async () => {
-        await connection.create();
-    });
+  beforeAll(async () => {
+    await connection.create();
+    categoryUseCase = new CategoryUseCase();
+    category = category01.build();
+  });
 
-    afterAll(async () => {
-        await connection.close();
-    });
+  afterAll(async () => {
+    await connection.close();
+  });
 
-    beforeEach(async () => {
-        await connection.clear();
-        categoryUseCase = new CategoryUseCase();
-    });
+  beforeEach(async () => {
+    await connection.clear();
+  });
 
+  describe("Create Category", () => {
     it("create new Category", async () => {
-        const newCategory = await categoryUseCase.create(category);
-        expect(newCategory).toMatchObject(category);
+      const newCategory = await categoryUseCase.create(category);
+      expect(newCategory).toMatchObject(category);
     });
+  });
 });
