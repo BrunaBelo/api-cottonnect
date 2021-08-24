@@ -1,34 +1,31 @@
 import connection from "../../database/connection";
-import { DonationObject } from "../../model/donationObject";
-import { DonationObjectUseCase } from "../../use-cases/donationObjectUseCase";
+import { Photo } from "../../model/photo";
 import { PhotoUseCase } from "../../use-cases/photoUseCase";
 import { donation01 } from "../factories/donationObjectFactory";
 import { photo01 } from "../factories/photoFactory";
 
-let photoUseCase: PhotoUseCase;
-let donationObjectUseCase: DonationObjectUseCase;
-let donationObject: DonationObject
-const photo = photo01
+describe("Photo", () => {
+  let photoUseCase: PhotoUseCase;
+  let photo: Photo;
 
-describe("Create Photo", () => {
-    beforeAll(async () => {
-        await connection.create();
-    });
+  beforeAll(async () => {
+    await connection.create();
+    photoUseCase = new PhotoUseCase();
+  });
 
-    afterAll(async () => {
-        await connection.close();
-    });
+  afterAll(async () => {
+    await connection.close();
+  });
 
-    beforeEach(async () => {
-        await connection.clear();
-        photoUseCase = new PhotoUseCase();
-        donationObjectUseCase = new DonationObjectUseCase();
-        donationObject = await donationObjectUseCase.create(donation01)
-    });
+  beforeEach(async () => {
+    await connection.clear();
+    photo = photo01.build({ donation_object_id: (await donation01.create()).id })
+  });
 
+  describe("Create Photo", () => {
     it("create new Photo", async () => {
-        photo.donation_object_id = donationObject.id
-        const newPhoto = await photoUseCase.create(photo);
-        expect(newPhoto).toMatchObject(photo);
+      const newPhoto = await photoUseCase.create(photo);
+      expect(newPhoto).toMatchObject(photo);
     });
+  });
 });
