@@ -20,9 +20,6 @@ class Auction {
     id?: string;
 
     @Column()
-    name: string;
-
-    @Column()
     closing_data: Date;
 
     @Column()
