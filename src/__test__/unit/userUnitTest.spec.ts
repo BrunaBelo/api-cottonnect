@@ -1,10 +1,5 @@
 import connection from "../../database/connection";
-import { City } from "../../model/city";
-import { Role } from "../../model/role";
-import { State } from "../../model/state";
-import { CityUseCase } from "../../use-cases/cityUseCase";
-import { RoleUseCase } from "../../use-cases/roleUseCase";
-import { StateUseCase } from "../../use-cases/stateUseCase";
+import { User } from "../../model/user";
 import { UserUseCase } from "../../use-cases/userUseCase";
 import { cityCuritiba } from "../factories/cityFactory";
 import { roleAdmin } from "../factories/roleFactory";
@@ -12,18 +7,12 @@ import { stateParana } from "../factories/stateFactory";
 import { user01 } from "../factories/userFactory";
 
 let userUseCase: UserUseCase;
-let roleUseCase: RoleUseCase;
-let cityUseCase: CityUseCase;
-let stateUseCase: StateUseCase;
-
-let state: State
-let role: Role;
-let city: City;
-const user = user01
+let user: User;
 
 describe("create user", () => {
   beforeAll(async () => {
     await connection.create();
+    userUseCase = new UserUseCase();
   });
 
   afterAll(async () => {
@@ -32,16 +21,8 @@ describe("create user", () => {
 
   beforeEach(async () => {
     await connection.clear();
-    roleUseCase = new RoleUseCase();
-    cityUseCase = new CityUseCase();
-    userUseCase = new UserUseCase();
-    stateUseCase = new StateUseCase();
-    state = await stateUseCase.create(stateParana);
-    role = await roleUseCase.create(roleAdmin);
-    cityCuritiba.state_id = state.id
-    city = await cityUseCase.create(cityCuritiba);
-    user.role_id = role.id;
-    user.city_id = city.id;
+    const city = await cityCuritiba.create({ state_id: (await stateParana.create()).id });
+    user = user01.build({ role_id: (await roleAdmin.create()).id, city_id: city.id });
   });
 
   it("create user", async () => {
