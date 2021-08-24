@@ -1,4 +1,3 @@
-import "../../database/connection";
 import connection from "../../database/connection";
 import { CategoryUseCase } from "../../use-cases/categoryUseCase";
 import { category01 } from "../factories/categoryFactory";

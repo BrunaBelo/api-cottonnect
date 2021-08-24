@@ -1,4 +1,3 @@
-import "../../database/connection";
 import connection from "../../database/connection";
 import { DonationObjectUseCase } from "../../use-cases/donationObjectUseCase";
 import { donation01 } from "../factories/donationObjectFactory";

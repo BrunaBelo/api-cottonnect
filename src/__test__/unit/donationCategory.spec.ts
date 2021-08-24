@@ -1,4 +1,3 @@
-import "../../database/connection";
 import connection from "../../database/connection";
 import { Category } from "../../model/category";
 import { DonationObject } from "../../model/donationObject";
