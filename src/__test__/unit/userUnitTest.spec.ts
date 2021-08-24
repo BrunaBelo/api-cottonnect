@@ -6,10 +6,10 @@ import { roleAdmin } from "../factories/roleFactory";
 import { stateParana } from "../factories/stateFactory";
 import { user01 } from "../factories/userFactory";
 
-let userUseCase: UserUseCase;
-let user: User;
+describe("User", () => {
+  let userUseCase: UserUseCase;
+  let user: User;
 
-describe("create user", () => {
   beforeAll(async () => {
     await connection.create();
     userUseCase = new UserUseCase();
@@ -25,19 +25,21 @@ describe("create user", () => {
     user = user01.build({ role_id: (await roleAdmin.create()).id, city_id: city.id });
   });
 
-  it("create user", async () => {
-    const newUser = await userUseCase.create(user);
-    expect(newUser).toMatchObject(user);
-  });
+  describe("Create user", () => {
+    it("create new user", async () => {
+      const newUser = await userUseCase.create(user);
+      expect(newUser).toMatchObject(user);
+    });
 
-  it("not create a user that already exists", async () => {
-    let errorMessage = "";
-    await userUseCase.create(user);
-    try {
+    it("not create a user that already exists", async () => {
+      let errorMessage = "";
       await userUseCase.create(user);
-    } catch (error) {
-      errorMessage = error.message;
-    }
-    expect(errorMessage).toBe("O email de usuário já existe");
+      try {
+        await userUseCase.create(user);
+      } catch (error) {
+        errorMessage = error.message;
+      }
+      expect(errorMessage).toBe("O email de usuário já existe");
+    });
   });
 });
