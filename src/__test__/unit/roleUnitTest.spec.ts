@@ -3,7 +3,7 @@ import { Role } from "../../model/role";
 import { RoleUseCase } from "../../use-cases/roleUseCase";
 import { roleAdmin } from "../factories/roleFactory";
 
-describe("Create Role", () => {
+describe("Role", () => {
   let roleUseCase: RoleUseCase;
   let role: Role;
 
@@ -21,20 +21,22 @@ describe("Create Role", () => {
     await connection.clear();
   });
 
-  it("create new role", async () => {
-    const newRole = await roleUseCase.create(role);
-    expect(newRole.name).toBe("Admin");
-  });
+  describe("Create Role", () => {
+    it("create new role", async () => {
+      const newRole = await roleUseCase.create(role);
+      expect(newRole.name).toBe("Admin");
+    });
 
-  it("not create new role", async () => {
-    let newRole = await roleUseCase.create(role);
-    let error_message = "";
-    try {
-      newRole = await roleUseCase.create(role);
-    } catch (error) {
-      error_message = error.message;
-    }
+    it("not create new role", async () => {
+      let newRole = await roleUseCase.create(role);
+      let error_message = "";
+      try {
+        newRole = await roleUseCase.create(role);
+      } catch (error) {
+        error_message = error.message;
+      }
 
-    expect(error_message).toBe(`O nome ${newRole.name} já está em uso`);
+      expect(error_message).toBe(`O nome ${newRole.name} já está em uso`);
+    });
   });
 });
