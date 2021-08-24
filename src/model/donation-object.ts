@@ -2,29 +2,41 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    ManyToOne,
     OneToMany,
+    OneToOne,
     PrimaryColumn,
-    UpdateDateColumn,
 } from "typeorm";
 import { v4 as uuid } from "uuid";
+import { Auction } from "./auction";
 import { DonationCategory } from "./donation-category";
+import { Photo } from "./photo";
 
-@Entity("categories")
-class Category {
+@Entity("donation_objects")
+class DonationObject {
     @PrimaryColumn()
     id?: string;
 
     @Column()
-    name: string;
+    title: string;
+
+    @Column()
+    description: string;
+
+    @Column()
+    status?: string;
 
     @CreateDateColumn()
     created_at?: Date;
 
-    @UpdateDateColumn()
-    updated_at?: Date;
+    @OneToMany(() => Photo, photo => photo)
+    photos?: Photo[];
 
     @OneToMany(() => DonationCategory, donationCategory => donationCategory)
     donationCategories?: DonationCategory[];
+
+    @OneToOne(() => Auction, auction => auction)
+    auction?: Auction;
 
     constructor() {
         if (!this.id) {
@@ -33,4 +45,4 @@ class Category {
     }
 }
 
-export { Category };
+export { DonationObject };

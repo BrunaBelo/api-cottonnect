@@ -1,8 +1,9 @@
+import { Auction } from "../../model/auction";
 import { Factory } from "./typeorm-factory/factory";
 import faker from 'faker/locale/pt_BR';
-import { DonationCategory } from "../../model/donation-category";
 
-export const donationCategory01 = new Factory(DonationCategory)
+export const auction01 = new Factory(Auction)
     .attr("id", faker.datatype.uuid())
+    .attr("closing_data", faker.date.future())
     .attr("donation_object_id", "")
-    .attr("donation_category_id", "")
+    .attr("user_id", "")

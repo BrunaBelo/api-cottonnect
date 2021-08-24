@@ -11,7 +11,7 @@ import {
 } from "typeorm";
 import { v4 as uuid } from "uuid";
 import { Bidding } from "./bidding";
-import { DonationObject } from "./donationObject";
+import { DonationObject } from "./donation-object";
 import { User } from "./user";
 
 @Entity("auctions")

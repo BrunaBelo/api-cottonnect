@@ -5,7 +5,6 @@ import {
     JoinColumn,
     ManyToOne,
     PrimaryColumn,
-    UpdateDateColumn,
 } from "typeorm";
 import { v4 as uuid } from "uuid";
 import { Auction } from "./auction";
