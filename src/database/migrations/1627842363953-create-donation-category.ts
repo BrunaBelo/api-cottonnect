@@ -12,31 +12,31 @@ export class CreateDonationCategory1627842363953 implements MigrationInterface {
             isPrimary: true,
           },
           {
-            name: "created_at",
+            name: "createdAt",
             type: "timestamp",
             default: "now()",
           },
           {
-            name: "donation_object_id",
+            name: "donationObjectId",
             type: "uuid",
           },
           {
-            name: "donation_category_id",
+            name: "donationCategoryId",
             type: "uuid",
           },
         ],
         foreignKeys: [
           {
-            name: "fk_donation_object",
-            columnNames: ["donation_object_id"],
+            name: "fkDonationObject",
+            columnNames: ["donationObjectId"],
             referencedColumnNames: ["id"],
             referencedTableName: "donation_objects",
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
           },
           {
-            name: "fk_donation_category",
-            columnNames: ["donation_category_id"],
+            name: "fkDonationCategory",
+            columnNames: ["donationCategoryId"],
             referencedColumnNames: ["id"],
             referencedTableName: "categories",
             onDelete: "CASCADE",

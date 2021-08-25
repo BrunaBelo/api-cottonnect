@@ -24,13 +24,13 @@ class Photo {
     uri: string;
 
     @CreateDateColumn()
-    created_at?: Date;
+    createdAt?: Date;
 
     @Column()
-    donation_object_id: string;
+    donationObjectId: string;
 
     @ManyToOne(() => DonationObject, donationObject => donationObject)
-    @JoinColumn({ name: "donation_object_id" })
+    @JoinColumn({ name: "donationObjectId" })
     donationObject?: DonationObject;
 
     constructor() {

@@ -8,12 +8,12 @@ class UserController {
       name,
       email,
       password,
-      phone_number,
-      birth_day,
-      phone_verified,
-      additional_information,
-      city_id,
-      role_id,
+      phoneNumber,
+      birthDay,
+      phoneVerified,
+      additionalInformation,
+      cityId,
+      roleId,
     } = request.body;
 
     const useCase = new UserUseCase();
@@ -21,12 +21,12 @@ class UserController {
       name,
       email,
       password,
-      phone_number,
-      birth_day,
-      phone_verified,
-      additional_information,
-      city_id,
-      role_id,
+      phoneNumber,
+      birthDay,
+      phoneVerified,
+      additionalInformation,
+      cityId,
+      roleId,
     });
     return response.status(201).json(user);
   }

@@ -20,25 +20,25 @@ class Auction {
     id?: string;
 
     @Column()
-    closing_data: Date;
+    closingData: Date;
 
     @Column()
     status?: string;
 
     @CreateDateColumn()
-    created_at?: Date;
+    createdAt?: Date;
 
     @UpdateDateColumn()
-    updated_at?: Date;
+    updatedAt?: Date;
 
     @Column()
-    user_id: string;
+    userId: string;
 
     @Column()
-    donation_object_id: string;
+    donationObjectId: string;
 
     @ManyToOne(() => User, user => user.auction)
-    @JoinColumn({ name: "user_id" })
+    @JoinColumn({ name: "userId" })
     user?: User;
 
     @OneToOne(() => DonationObject, donationObject => donationObject)

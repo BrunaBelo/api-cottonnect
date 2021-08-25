@@ -24,19 +24,19 @@ export class CreatePhoto1627842343538 implements MigrationInterface {
             type: "varchar",
           },
           {
-            name: "created_at",
+            name: "createdAt",
             type: "timestamp",
             default: "now()",
           },
           {
-            name: "donation_object_id",
+            name: "donationObjectId",
             type: "uuid",
           },
         ],
         foreignKeys: [
           {
-            name: "fk_donation_object",
-            columnNames: ["donation_object_id"],
+            name: "fkDonationObject",
+            columnNames: ["donationObjectId"],
             referencedColumnNames: ["id"],
             referencedTableName: "donation_objects",
             onUpdate: "CASCADE",

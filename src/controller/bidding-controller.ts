@@ -4,11 +4,11 @@ import { BiddingUseCase } from "../use-cases/bidding-use-case";
 
 class BiddingController {
     async create(request: Request, response: Response): Promise<Response> {
-        const { user_id, auction_id, bid_amount }: Bidding = request.body;
+        const { userId, auctionId, bidAmount }: Bidding = request.body;
 
         const BiddingUserCase = new BiddingUseCase();
 
-        const newBidding = await BiddingUserCase.create({ user_id, auction_id, bid_amount });
+        const newBidding = await BiddingUserCase.create({ userId, auctionId, bidAmount });
         return response.status(201).json(newBidding);
     }
 }

@@ -12,7 +12,7 @@ export class CreateBidding1627842378164 implements MigrationInterface {
             isPrimary: true,
           },
           {
-            name: "bid_amount",
+            name: "bidAmount",
             type: "integer",
           },
           {
@@ -21,31 +21,31 @@ export class CreateBidding1627842378164 implements MigrationInterface {
             default: false,
           },
           {
-            name: "created_at",
+            name: "createdAt",
             type: "timestamp",
             default: "now()",
           },
           {
-            name: "user_id",
+            name: "userId",
             type: "uuid",
           },
           {
-            name: "auction_id",
+            name: "auctionId",
             type: "uuid",
           },
         ],
         foreignKeys: [
           {
-            name: "fk_user",
-            columnNames: ["user_id"],
+            name: "fkUser",
+            columnNames: ["userId"],
             referencedColumnNames: ["id"],
             referencedTableName: "users",
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
           },
           {
-            name: "fk_auction_id",
-            columnNames: ["auction_id"],
+            name: "fkAuction",
+            columnNames: ["auctionId"],
             referencedColumnNames: ["id"],
             referencedTableName: "auctions",
             onDelete: "CASCADE",

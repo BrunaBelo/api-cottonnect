@@ -24,16 +24,16 @@ class City {
     name: string;
 
     @CreateDateColumn()
-    created_at?: Date;
+    createdAt?: Date;
 
     @UpdateDateColumn()
-    updated_at?: Date;
+    updatedAt?: Date;
 
     @Column()
-    state_id: string;
+    stateId: string;
 
     @ManyToOne(() => State, state => state.cities)
-    @JoinColumn({ name: "state_id" })
+    @JoinColumn({ name: "stateId" })
     state?: State;
 
     @OneToMany(() => User, user => user)

@@ -23,8 +23,8 @@ describe("Donation Category", () => {
     const donation = await donation01.create();
     const category = await category01.create();
     donationCategory = donationCategory01.build({
-      donation_object_id: donation.id,
-      donation_category_id: category.id
+      donationObjectId: donation.id,
+      donationCategoryId: category.id
     });
   });
 

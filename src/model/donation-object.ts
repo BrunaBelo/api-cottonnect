@@ -2,7 +2,6 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    ManyToOne,
     OneToMany,
     OneToOne,
     PrimaryColumn,
@@ -27,7 +26,7 @@ class DonationObject {
     status?: string;
 
     @CreateDateColumn()
-    created_at?: Date;
+    createdAt?: Date;
 
     @OneToMany(() => Photo, photo => photo)
     photos?: Photo[];

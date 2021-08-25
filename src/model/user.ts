@@ -21,38 +21,38 @@ class User {
   password: string;
 
   @Column()
-  phone_number: string;
+  phoneNumber: string;
 
   @Column()
-  birth_day: Date;
+  birthDay: Date;
 
   @Column()
-  cotton_flakes?: number;
+  cottonFlakes?: number;
 
   @Column()
-  phone_verified: boolean;
+  phoneVerified: boolean;
 
   @Column()
-  additional_information: string;
+  additionalInformation: string;
 
   @Column()
-  created_at?: Date;
+  createdAt?: Date;
 
   @Column()
-  updated_at?: Date;
+  updatedAt?: Date;
 
   @Column()
-  city_id: string;
+  cityId: string;
 
   @Column()
-  role_id: string;
+  roleId: string;
 
   @ManyToOne(() => City, city => city.users)
-  @JoinColumn({ name: "city_id" })
+  @JoinColumn({ name: "cityId" })
   city?: Role;
 
   @ManyToOne(() => Role, role => role.users)
-  @JoinColumn({ name: "role_id" })
+  @JoinColumn({ name: "roleId" })
   role?: Role;
 
   @OneToMany(() => Auction, auction => auction)
@@ -64,7 +64,7 @@ class User {
   constructor() {
     if (!this.id) {
       this.id = uuid();
-      this.cotton_flakes = 0;
+      this.cottonFlakes = 0;
     }
   }
 }

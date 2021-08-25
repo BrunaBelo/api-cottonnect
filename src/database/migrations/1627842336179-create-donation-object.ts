@@ -25,7 +25,7 @@ export class CreateDonationObject1627842336179 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: "created_at",
+            name: "createdAt",
             type: "timestamp",
             default: "now()",
           },

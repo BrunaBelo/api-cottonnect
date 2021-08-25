@@ -21,8 +21,8 @@ describe("User", () => {
 
   beforeEach(async () => {
     await connection.clear();
-    const city = await cityCuritiba.create({ state_id: (await stateParana.create()).id });
-    user = user01.build({ role_id: (await roleAdmin.create()).id, city_id: city.id });
+    const city = await cityCuritiba.create({ stateId: (await stateParana.create()).id });
+    user = user01.build({ roleId: (await roleAdmin.create()).id, cityId: city.id });
   });
 
   describe("Create user", () => {

@@ -16,26 +16,26 @@ class Bidding {
     id?: string;
 
     @Column()
-    bid_amount: number;
+    bidAmount: number;
 
     @Column()
     winner?: boolean;
 
     @CreateDateColumn()
-    created_at?: Date;
+    createdAt?: Date;
 
     @Column()
-    user_id: string;
+    userId: string;
 
     @Column()
-    auction_id: string;
+    auctionId: string;
 
     @ManyToOne(() => User, user => user.biddings)
-    @JoinColumn({ name: "user_id" })
+    @JoinColumn({ name: "userId" })
     user?: User;
 
     @ManyToOne(() => Auction, auction => auction.biddings)
-    @JoinColumn({ name: "auction_id" })
+    @JoinColumn({ name: "auctionId" })
     auction?: Auction;
 
     constructor() {

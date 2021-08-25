@@ -23,10 +23,10 @@ describe("Auction", () => {
 
   beforeEach(async () => {
     await connection.clear();
-    const city = await cityCuritiba.create({ state_id: (await stateParana.create()).id });
-    const user = await user01.create({ role_id: (await roleAdmin.create()).id, city_id: city.id });
+    const city = await cityCuritiba.create({ stateId: (await stateParana.create()).id });
+    const user = await user01.create({ roleId: (await roleAdmin.create()).id, cityId: city.id });
     const donation = await donation01.create();
-    auction = auction01.build({ donation_object_id: donation.id, user_id: user.id });
+    auction = auction01.build({ donationObjectId: donation.id, userId: user.id });
   });
 
   describe("Create auction", () => {

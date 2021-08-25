@@ -20,24 +20,24 @@ export class CreateCity1627841373684 implements MigrationInterface {
             type: "varchar",
           },
           {
-            name: "created_at",
+            name: "createdAt",
             type: "timestamp",
             default: "now()",
           },
           {
-            name: "updated_at",
+            name: "updatedAt",
             type: "timestamp",
             default: "now()",
           },
           {
-            name: "state_id",
+            name: "stateId",
             type: "uuid",
           },
         ],
         foreignKeys: [
           {
-            name: "fk_state",
-            columnNames: ["state_id"],
+            name: "fkState",
+            columnNames: ["stateId"],
             referencedColumnNames: ["id"],
             referencedTableName: "states",
             onDelete: "SET NULL",

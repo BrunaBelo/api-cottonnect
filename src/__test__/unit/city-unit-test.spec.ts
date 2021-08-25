@@ -24,7 +24,7 @@ describe("City", () => {
 
   describe("Create City", () => {
     it("create new City", async () => {
-      city.state_id = (await stateParana.create()).id
+      city.stateId = (await stateParana.create()).id
       const newCity = await cityUseCase.create(city);
       expect(newCity).toMatchObject(city);
     });

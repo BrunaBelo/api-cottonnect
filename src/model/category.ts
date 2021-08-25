@@ -18,10 +18,10 @@ class Category {
     name: string;
 
     @CreateDateColumn()
-    created_at?: Date;
+    createdAt?: Date;
 
     @UpdateDateColumn()
-    updated_at?: Date;
+    updatedAt?: Date;
 
     @OneToMany(() => DonationCategory, donationCategory => donationCategory)
     donationCategories?: DonationCategory[];

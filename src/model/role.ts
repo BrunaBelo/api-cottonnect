@@ -18,10 +18,10 @@ class Role {
   name: string;
 
   @CreateDateColumn()
-  created_at?: Date;
+  createdAt?: Date;
 
   @UpdateDateColumn()
-  updated_at?: Date;
+  updatedAt?: Date;
 
   @OneToMany(() => User, user => user)
   users?: User[];

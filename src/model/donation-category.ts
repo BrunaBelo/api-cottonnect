@@ -15,13 +15,13 @@ class DonationCategory {
     id?: string;
 
     @CreateDateColumn()
-    created_at?: Date;
+    createdAt?: Date;
 
     @Column()
-    donation_object_id: string;
+    donationObjectId: string;
 
     @Column()
-    donation_category_id: string;
+    donationCategoryId: string;
 
     @OneToMany(() => DonationObject, donationObject => donationObject)
     donationObjects?: DonationObject[];

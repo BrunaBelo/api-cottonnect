@@ -4,10 +4,10 @@ import { PhotoUseCase } from "../use-cases/photo-use-case";
 
 class PhotoController {
     async create(request: Request, response: Response): Promise<Response> {
-        const { name, type, uri, donation_object_id }: Photo = request.body;
+        const { name, type, uri, donationObjectId }: Photo = request.body;
         const photoUseCase = new PhotoUseCase();
 
-        const newPhoto = await photoUseCase.create({ name, type, uri, donation_object_id });
+        const newPhoto = await photoUseCase.create({ name, type, uri, donationObjectId });
         return response.status(201).json(newPhoto);
     }
 }

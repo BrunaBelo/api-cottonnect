@@ -12,7 +12,7 @@ export class CreateAuction1627842372631 implements MigrationInterface {
             isPrimary: true,
           },
           {
-            name: "closing_data",
+            name: "closingData",
             type: "timestamp",
           },
           {
@@ -21,36 +21,36 @@ export class CreateAuction1627842372631 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: "created_at",
+            name: "createdAt",
             type: "timestamp",
             default: "now()",
           },
           {
-            name: "updated_at",
+            name: "updatedAt",
             type: "timestamp",
             default: "now()",
           },
           {
-            name: "user_id",
+            name: "userId",
             type: "uuid",
           },
           {
-            name: "donation_object_id",
+            name: "donationObjectId",
             type: "uuid",
           },
         ],
         foreignKeys: [
           {
-            name: "fk_user",
-            columnNames: ["user_id"],
+            name: "fkUser",
+            columnNames: ["userId"],
             referencedColumnNames: ["id"],
             referencedTableName: "users",
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
           },
           {
-            name: "fk_donation_object",
-            columnNames: ["donation_object_id"],
+            name: "fkDonationObject",
+            columnNames: ["donationObjectId"],
             referencedColumnNames: ["id"],
             referencedTableName: "donation_objects",
             onDelete: "CASCADE",

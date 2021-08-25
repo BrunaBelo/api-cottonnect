@@ -5,11 +5,11 @@ import { CityUseCase } from "../use-cases/city-use-case";
 
 class CityController {
     async create(request: Request, response: Response): Promise<Response> {
-        const { name, ibge, state_id }: City = request.body;
+        const { name, ibge, stateId }: City = request.body;
 
         const cityUserCase = new CityUseCase();
 
-        const newCity = await cityUserCase.create({ name, ibge, state_id });
+        const newCity = await cityUserCase.create({ name, ibge, stateId });
         return response.status(201).json(newCity);
     }
 }

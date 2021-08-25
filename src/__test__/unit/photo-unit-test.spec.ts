@@ -19,7 +19,7 @@ describe("Photo", () => {
 
   beforeEach(async () => {
     await connection.clear();
-    photo = photo01.build({ donation_object_id: (await donation01.create()).id })
+    photo = photo01.build({ donationObjectId: (await donation01.create()).id })
   });
 
   describe("Create Photo", () => {
