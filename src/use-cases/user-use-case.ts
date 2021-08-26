@@ -1,3 +1,4 @@
+import { AppError } from "../errors/app-error";
 import { User } from "../model/user";
 import { UserRepository } from "../repository/user-repository";
 
@@ -11,7 +12,7 @@ class UserUseCase {
   async create(user: User): Promise<User> {
     const checkUser = await this.userRepository.findByEmail(user.email);
     if (checkUser) {
-      throw new Error("O email de usuário já existe");
+      throw new AppError("O email de usuário já existe");
     }
     const userCreatedat = await this.userRepository.create(user);
     return userCreatedat;
