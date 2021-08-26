@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { User } from "../model/user";
 
 import { UserUseCase } from "../use-cases/user-use-case";
 
@@ -28,6 +29,11 @@ class UserController {
       cityId,
       roleId,
     });
+    return response.status(201).json(user);
+  }
+
+  async login(request: Request, response: Response): Promise<Response> {
+    const user = new User();
     return response.status(201).json(user);
   }
 }
