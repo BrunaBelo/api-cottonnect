@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { roleRoutes } from "./roles.routes";
+import { roleRoutes } from "./role.routes";
 
 const routers = Router();
 
