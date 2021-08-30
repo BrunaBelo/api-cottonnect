@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 
 import "express-async-errors";
+import { AppError } from "./errors/app-error";
 import { routers } from "./routes/index.routes";
 
 const app = express();
@@ -13,8 +14,8 @@ app.use(
     response: Response,
     next: NextFunction
   ): Response => {
-    if (error instanceof Error) {
-      return response.status(400).json({ error: error.message });
+    if (error instanceof AppError) {
+      return response.status(error.statusCode).json({ message: error.message });
     }
     return response.status(500).json({ error: "Error not expected" });
   }
