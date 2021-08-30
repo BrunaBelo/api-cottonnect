@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import { AppError } from "../errors/app-error";
 import { User } from "../model/user";
 import { validateUser } from "../schema-validation/user-schema";
-
 import { UserUseCase } from "../use-cases/user-use-case";
+import bcrypt from "bcryptjs";
 
 class UserController {
   async create(request: Request, response: Response): Promise<Response> {
@@ -27,10 +27,12 @@ class UserController {
       roleId,
     } = request.body;
 
+    const encryptedPassword = await bcrypt.hash(password, 10);
+
     const user = await useCase.create({
       name,
       email,
-      password,
+      password: encryptedPassword,
       phoneNumber,
       birthDay,
       phoneVerified,
