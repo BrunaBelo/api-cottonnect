@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { cityRoutes } from "./city.routes";
 
 import { roleRoutes } from "./role.routes";
-import { stateRoutes } from "./state.routes";
 import { userRoutes } from "./user.routes";
+import { stateRoutes } from "./state.routes";
+import { cityRoutes } from "./city.routes";
 
 const routers = Router();
 
