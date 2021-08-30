@@ -1,12 +1,19 @@
 import { Request, Response } from "express";
 import { AppError } from "../errors/app-error";
 import { User } from "../model/user";
+import { validateUser } from "../schema-validation/user-schema";
 
 import { UserUseCase } from "../use-cases/user-use-case";
 
 class UserController {
   async create(request: Request, response: Response): Promise<Response> {
     const useCase = new UserUseCase();
+
+    try {
+      await validateUser(request.body);
+    } catch (error) {
+      throw new AppError(`Erro ao criar usuário: ${error.message}`);
+    }
 
     const {
       name,
@@ -19,11 +26,6 @@ class UserController {
       cityId,
       roleId,
     } = request.body;
-
-    try {
-    } catch (error) {
-      throw new AppError("Erro ao criar usuário");
-    }
 
     const user = await useCase.create({
       name,
