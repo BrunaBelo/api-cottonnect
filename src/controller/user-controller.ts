@@ -31,7 +31,7 @@ class UserController {
 
     const user = await useCase.create({
       name,
-      email,
+      email: email.toLowerCase(),
       password: encryptedPassword,
       phoneNumber,
       birthDay,
