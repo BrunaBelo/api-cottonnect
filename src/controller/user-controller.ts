@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { AppError } from "../errors/app-error";
-import { User } from "../model/user";
 import { validateUser } from "../schema-validation/user-schema";
+import { validateLogin } from "../schema-validation/login-schema";
 import { UserUseCase } from "../use-cases/user-use-case";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 class UserController {
+
   async create(request: Request, response: Response): Promise<Response> {
     const useCase = new UserUseCase();
 
@@ -44,8 +46,28 @@ class UserController {
   }
 
   async login(request: Request, response: Response): Promise<Response> {
-    const user = new User();
-    return response.status(201).json(user);
+    const useCase = new UserUseCase();
+    const { email, password } = request.body;
+
+    try {
+      await validateLogin(request.body);
+    } catch (error) {
+      throw new AppError(`Erro ao logar: ${error.message}`);
+    }
+
+    const user = await useCase.findByEmail(email);
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const token = jwt.sign(
+        { user_id: user.id, email },
+        process.env.TOKEN_KEY,
+        { expiresIn: "2h" }
+      );
+
+      return response.status(200).json(token);
+    }
+
+    return response.status(400).send("Login ou Senha inválido(s)");
   }
 }
 

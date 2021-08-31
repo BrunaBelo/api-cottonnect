@@ -17,6 +17,11 @@ class UserUseCase {
     const userCreatedat = await this.userRepository.create(user);
     return userCreatedat;
   }
+
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findByEmail(email);
+    return user;
+  }
 }
 
 export { UserUseCase };
