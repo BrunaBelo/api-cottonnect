@@ -58,13 +58,13 @@ class UserController {
     const user = await useCase.findByEmail(email);
 
     if (user && (await bcrypt.compare(password, user.password))) {
-      const token = jwt.sign(
+      user.token = jwt.sign(
         { user_id: user.id, email },
         process.env.TOKEN_KEY,
         { expiresIn: "2h" }
       );
 
-      return response.status(200).json(token);
+      return response.status(200).json(user);
     }
 
     return response.status(400).send("Login ou Senha inválido(s)");

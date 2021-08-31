@@ -61,6 +61,8 @@ class User {
   @OneToMany(() => Bidding, bidding => bidding.user)
   biddings?: Bidding[];
 
+  token?: string;
+
   constructor() {
     if (!this.id) {
       this.id = uuid();
