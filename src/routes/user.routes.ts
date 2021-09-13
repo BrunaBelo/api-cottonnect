@@ -5,6 +5,6 @@ import { auth } from "../middleware/auth";
 const userRoutes = Router();
 
 userRoutes.post("/", auth, new UserController().create);
-userRoutes.post("/login", auth, new UserController().login);
+userRoutes.post("/login", new UserController().login);
 
 export { userRoutes };
