@@ -28,6 +28,10 @@ export class CreateUser1627841598041 implements MigrationInterface {
             type: "varchar",
           },
           {
+            name: "personId",
+            type: "varchar",
+          },
+          {
             name: "birthDay",
             type: "timestamp",
           },

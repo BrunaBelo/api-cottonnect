@@ -6,6 +6,7 @@ export const validateUser = async function (attrs: [], options = { abortEarly: f
     email: yup.string().email().required(),
     password: yup.string().required(),
     phoneNumber: yup.string().notRequired(),
+    personId: yup.string().required(),
     birthDay: yup.string().notRequired(),
     phoneVerified: yup.string().notRequired(),
     additionalInformation: yup.string().notRequired(),

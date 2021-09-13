@@ -9,19 +9,12 @@ import jwt from "jsonwebtoken";
 class UserController {
 
   async create(request: Request, response: Response): Promise<Response> {
-    const useCase = new UserUseCase();
-
-    try {
-      await validateUser(request.body);
-    } catch (error) {
-      throw new AppError(`Erro ao criar usuário: ${error.message}`);
-    }
-
     const {
       name,
       email,
       password,
       phoneNumber,
+      personId,
       birthDay,
       phoneVerified,
       additionalInformation,
@@ -29,20 +22,26 @@ class UserController {
       roleId,
     } = request.body;
 
-    const encryptedPassword = await bcrypt.hash(password, 10);
-
-    const user = await useCase.create({
-      name,
-      email: email.toLowerCase(),
-      password: encryptedPassword,
-      phoneNumber,
-      birthDay,
-      phoneVerified,
-      additionalInformation,
-      cityId,
-      roleId,
-    });
-    return response.status(201).json(user);
+    try {
+      await validateUser(request.body);
+      const useCase = new UserUseCase();
+      const encryptedPassword = await bcrypt.hash(password, 10);
+      const user = await useCase.create({
+        name,
+        email: email.toLowerCase(),
+        password: encryptedPassword,
+        phoneNumber,
+        personId,
+        birthDay,
+        phoneVerified,
+        additionalInformation,
+        cityId,
+        roleId,
+      });
+      return response.status(201).json(user);
+    } catch (error) {
+      throw new AppError(`Erro ao criar usuário: ${error.message}`);
+    }
   }
 
   async login(request: Request, response: Response): Promise<Response> {

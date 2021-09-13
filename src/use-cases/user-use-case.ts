@@ -10,9 +10,17 @@ class UserUseCase {
   }
 
   async create(user: User): Promise<User> {
-    const checkUser = await this.userRepository.findByEmail(user.email);
-    if (checkUser) {
-      throw new AppError("O email de usuário já existe");
+    const existUser = await this.userRepository.findByEmail(user.email);
+    const existPersonId = await this.userRepository.findByPersonId(user.personId);
+    const existPhoneNumber = await this.userRepository.findByPhoneNumber(user.phoneNumber);
+    if (existUser) {
+      throw new AppError(`O email ${user.email} já está em uso`);
+    }
+    if (existPhoneNumber) {
+      throw new AppError(`O número de telefone ${user.phoneNumber} já está em uso`);
+    }
+    if (existPersonId) {
+      throw new AppError(`O CPF ${user.personId} já está em uso`);
     }
     const userCreatedat = await this.userRepository.create(user);
     return userCreatedat;

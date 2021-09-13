@@ -34,6 +34,16 @@ class UserRepository {
     const user = await this.repository.findOne({ where: { email } });
     return user;
   }
+
+  async findByPhoneNumber(phoneNumber: string): Promise<User> {
+    const user = await this.repository.findOne({ where: { phoneNumber } });
+    return user;
+  }
+
+  async findByPersonId(personId: string): Promise<User> {
+    const user = await this.repository.findOne({ where: { personId } });
+    return user;
+  }
 }
 
 export { UserRepository };

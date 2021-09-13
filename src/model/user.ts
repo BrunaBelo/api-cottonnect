@@ -24,6 +24,9 @@ class User {
   phoneNumber: string;
 
   @Column()
+  personId: string;
+
+  @Column()
   birthDay: Date;
 
   @Column()
