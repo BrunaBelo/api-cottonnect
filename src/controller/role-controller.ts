@@ -13,7 +13,7 @@ class RoleController {
       const newRole = await useCase.create({ name });
       return response.status(201).json(newRole);
     } catch (error) {
-      throw new AppError(`Erro ao criar usuário: ${error.message}`);
+      throw new AppError(`Erro ao criar role: ${error.message}`);
     }
   }
 }
