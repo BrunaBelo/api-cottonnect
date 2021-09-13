@@ -21,6 +21,16 @@ class StateRepository {
   async delete(id: string): Promise<State> {
     throw new Error("Method not implemented.");
   }
+
+  async findByName(name: string): Promise<State> {
+    const state = await this.repository.findOne({ where: { name } });
+    return state;
+  }
+
+  async findByIbge(ibge: number): Promise<State> {
+    const state = await this.repository.findOne({ where: { ibge } });
+    return state;
+  }
 }
 
 export { StateRepository };
