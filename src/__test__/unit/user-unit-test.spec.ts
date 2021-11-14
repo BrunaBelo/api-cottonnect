@@ -39,7 +39,7 @@ describe("User", () => {
       } catch (error) {
         errorMessage = error.message;
       }
-      expect(errorMessage).toBe("O email de usuário já existe");
+      expect(errorMessage).toBe(`O email ${user.email} já está em uso`);
     });
   });
 });
