@@ -25,9 +25,15 @@ describe("User", () => {
   });
 
   describe("POST User", () => {
-    it("returns 201 to valid response", async () => {
+    it("returns 201 when valid response", async () => {
       const res = await request(app).post('/users/').send(user)
       expect(res.status).toEqual(201)
+    });
+
+    it("returns 400 when invalid response", async () => {
+      user.email = null
+      const res = await request(app).post('/users/').send(user)
+      expect(res.status).toEqual(400)
     });
   });
 });
