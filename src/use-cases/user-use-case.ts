@@ -10,9 +10,21 @@ class UserUseCase {
   }
 
   async create(user: User): Promise<User> {
+    await this.validUser(user)
+    const userCreatedat = await this.userRepository.create(user);
+    return userCreatedat;
+  }
+
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findByEmail(email);
+    return user;
+  }
+
+  async validUser(user){
     const existUser = await this.userRepository.findByEmail(user.email);
     const existPersonId = await this.userRepository.findByPersonId(user.personId);
     const existPhoneNumber = await this.userRepository.findByPhoneNumber(user.phoneNumber);
+
     if (existUser) {
       throw new AppError(`O email ${user.email} já está em uso`);
     }
@@ -22,13 +34,6 @@ class UserUseCase {
     if (existPersonId) {
       throw new AppError(`O CPF ${user.personId} já está em uso`);
     }
-    const userCreatedat = await this.userRepository.create(user);
-    return userCreatedat;
-  }
-
-  async findByEmail(email: string): Promise<User> {
-    const user = await this.userRepository.findByEmail(email);
-    return user;
   }
 }
 

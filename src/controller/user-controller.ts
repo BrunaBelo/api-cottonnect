@@ -40,7 +40,7 @@ class UserController {
       });
       return response.status(201).json(user);
     } catch (error) {
-      throw new AppError(`Erro ao criar usuário: ${error.message}`);
+      throw new AppError(`Erro ao criar usuário: ${error.errors}`);
     }
   }
 
