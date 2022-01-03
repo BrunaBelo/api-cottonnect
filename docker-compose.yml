@@ -31,7 +31,7 @@ services:
         build: .
         container_name: cottonnect
         ports: 
-            - 3000:3000
+            - 3333:3333
         volumes: 
             - .:/usr/app
         links: 
