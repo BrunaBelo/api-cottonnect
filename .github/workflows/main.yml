@@ -32,6 +32,9 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Copy .env.test
+        run: cp .env.test.exemple .env.test
+
       - name: Run Migrations
         run: npm run typeorm migration:run
 
