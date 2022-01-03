@@ -10,8 +10,26 @@ on:
 jobs:
   Jest:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: cottonnect-test
+        ports:
+          - 2345:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v1
+      - name: Run Migrations
+        run: npm run typeorm migration:run
       - name: Run Tests
         run: |
           npm install 
