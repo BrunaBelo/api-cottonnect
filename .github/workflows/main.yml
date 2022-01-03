@@ -36,7 +36,7 @@ jobs:
         run: cp .env.test.exemple .env.test
 
       - name: Run Migrations
-        run: npm run typeorm migration:run
+        run: npm run migration-test
 
       - name: Run Tests
         run: npm test
