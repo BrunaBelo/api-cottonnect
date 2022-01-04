@@ -13,7 +13,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:12.2
+        image: postgres
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -32,11 +32,8 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Copy .env.test
+        run: cp .env.test.exemple .env.test
+
       - name: Run Tests
         run: npm test
-        env:
-          TYPEORM_HOST: localhost
-          TYPEORM_USERNAME: postgres
-          TYPEORM_PASSWORD: postgres
-          TYPEORM_DATABASE: cottonnect
-          TYPEORM_PORT: 2345
