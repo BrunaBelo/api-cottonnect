@@ -19,7 +19,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: cottonnect-test
         ports:
-          - 2345:2345
+          - 2345:5432
 
     steps:
       - uses: actions/checkout@v1
