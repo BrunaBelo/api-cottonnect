@@ -32,13 +32,11 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Connect to PostgreSQL
+      - name: Run Tests
+        run: npm test
         env:
           TYPEORM_HOST: localhost
           TYPEORM_USERNAME: postgres
           TYPEORM_PASSWORD: postgres
           TYPEORM_DATABASE: cottonnect
           TYPEORM_PORT: 2345
-
-      - name: Run Tests
-        run: npm test
