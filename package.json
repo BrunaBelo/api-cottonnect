@@ -7,7 +7,8 @@
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js",
     "migration-test": "NODE_ENV=test ts-node-dev node_modules/typeorm/cli.js migration:run",
     "test": "NODE_ENV=test jest --runInBand",
-    "restart-docker": "docker-compose stop && docker-compose start && docker logs -f cottonnect"
+    "restart-docker": "docker-compose stop && docker-compose start && docker logs -f cottonnect",
+    "populate-locations": "ts-node-dev src/database/seeds/populateLocations.ts"
   },
   "repository": "git@github.com:BrunaBelo/api-cottonnect.git",
   "author": "BrunaBelo <anabruna28@gmail.com>",
@@ -17,6 +18,7 @@
     "@types/cors": "^2.8.12",
     "@types/jsonwebtoken": "^8.5.5",
     "@types/yup": "^0.29.13",
+    "axios": "^0.24.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
@@ -31,6 +33,7 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/express": "^4.17.12",
     "@types/factory-girl": "^5.0.8",
     "@types/faker": "^5.5.8",
