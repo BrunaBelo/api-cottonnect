@@ -1,24 +1,38 @@
 import { AppError } from "../errors/app-error";
+import { City } from "../model/city";
 import { State } from "../model/state";
+import { CityRepository } from "../repository/city-repository";
 import { StateRepository } from "../repository/state-repository";
 
 class StateUseCase {
-  private repository: StateRepository;
+  private stateRepository: StateRepository;
+  private cityRepository: CityRepository;
 
-  constructor() {
-    this.repository = new StateRepository();
+  async getAll(): Promise<State[]> {
+    this.stateRepository = new StateRepository();
+    const allStates = await this.stateRepository.getAll();
+
+    return allStates
+  }
+
+  async getCityByStateId(stateId: string): Promise<City[]> {
+    this.cityRepository = new CityRepository()
+    const cities = await this.cityRepository.getByStateId(stateId)
+
+    return cities
   }
 
   async create(state: State): Promise<State> {
-    const existState = await this.repository.findByName(state.name);
-    const existIbge = await this.repository.findByIbge(state.ibge);
+    this.stateRepository = new StateRepository();
+    const existState = await this.stateRepository.findByName(state.name);
+    const existIbge = await this.stateRepository.findByIbge(state.ibge);
     if (existState) {
       throw new AppError(`O nome ${state.name} já está em uso`);
     }
     if (existIbge) {
       throw new AppError(`O identificador IBGE ${state.ibge} já está em uso`);
     }
-    const newState = await this.repository.create(state);
+    const newState = await this.stateRepository.create(state);
     return newState;
   }
 

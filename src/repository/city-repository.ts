@@ -8,6 +8,12 @@ class CityRepository {
     this.repository = getRepository(City);
   }
 
+  async getByStateId(stateId: string): Promise<City[]> {
+    const cities = await this.repository.find({ where: { stateId } })
+
+    return cities
+  }
+
   async create(city: City): Promise<City> {
     const newCity = this.repository.create(city);
     await this.repository.save(newCity);

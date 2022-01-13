@@ -22,6 +22,11 @@ class StateRepository {
     throw new Error("Method not implemented.");
   }
 
+  async getAll(): Promise<State[]> {
+    const allStates = await this.repository.find()
+    return allStates
+  }
+
   async findByName(name: string): Promise<State> {
     const state = await this.repository.findOne({ where: { name } });
     return state;
