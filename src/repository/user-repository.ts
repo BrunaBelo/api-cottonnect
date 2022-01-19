@@ -1,16 +1,23 @@
 import { getRepository, Repository } from "typeorm";
+import { Role } from "../model/role";
 import { User } from "../model/user";
 
 class UserRepository {
-  private repository: Repository<User>;
+  private userRepository: Repository<User>;
+  private roleRepository: Repository<Role>;
 
   constructor() {
-    this.repository = getRepository(User);
+    this.userRepository = getRepository(User);
   }
 
   async create(user: User): Promise<User> {
-    const newUser = this.repository.create(user);
-    await this.repository.save(newUser);
+    if(!user.roleId){
+      const defaultRoleName = 'user'
+      const defaultRoleInfo = await this.roleRepository.findOne({name: defaultRoleName})
+      user.roleId = defaultRoleInfo.id
+    }
+    const newUser = this.userRepository.create(user);
+    await this.userRepository.save(newUser);
     return newUser;
   }
 
@@ -31,17 +38,17 @@ class UserRepository {
   }
 
   async findByEmail(email: string): Promise<User> {
-    const user = await this.repository.findOne({ where: { email } });
+    const user = await this.userRepository.findOne({ where: { email } });
     return user;
   }
 
   async findByPhoneNumber(phoneNumber: string): Promise<User> {
-    const user = await this.repository.findOne({ where: { phoneNumber } });
+    const user = await this.userRepository.findOne({ where: { phoneNumber } });
     return user;
   }
 
-  async findByPersonId(personId: string): Promise<User> {
-    const user = await this.repository.findOne({ where: { personId } });
+  async findBycpf(cpf: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { cpf } });
     return user;
   }
 }
