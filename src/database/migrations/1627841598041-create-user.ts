@@ -28,12 +28,8 @@ export class CreateUser1627841598041 implements MigrationInterface {
             type: "varchar",
           },
           {
-            name: "personId",
+            name: "cpf",
             type: "varchar",
-          },
-          {
-            name: "birthDay",
-            type: "timestamp",
           },
           {
             name: "cottonFlakes",
@@ -67,7 +63,7 @@ export class CreateUser1627841598041 implements MigrationInterface {
           {
             name: "roleId",
             type: "uuid",
-          },
+          }
         ],
         foreignKeys: [
           {

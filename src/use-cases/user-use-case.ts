@@ -22,7 +22,7 @@ class UserUseCase {
 
   async validUser(user){
     const existUser = await this.userRepository.findByEmail(user.email);
-    const existPersonId = await this.userRepository.findByPersonId(user.personId);
+    const existcpf = await this.userRepository.findBycpf(user.cpf);
     const existPhoneNumber = await this.userRepository.findByPhoneNumber(user.phoneNumber);
 
     if (existUser) {
@@ -31,8 +31,8 @@ class UserUseCase {
     if (existPhoneNumber) {
       throw new AppError(`O número de telefone ${user.phoneNumber} já está em uso`);
     }
-    if (existPersonId) {
-      throw new AppError(`O CPF ${user.personId} já está em uso`);
+    if (existcpf) {
+      throw new AppError(`O CPF ${user.cpf} já está em uso`);
     }
   }
 }

@@ -24,16 +24,13 @@ class User {
   phoneNumber: string;
 
   @Column()
-  personId: string;
-
-  @Column()
-  birthDay: Date;
+  cpf: string;
 
   @Column()
   cottonFlakes?: number;
 
   @Column()
-  phoneVerified: boolean;
+  phoneVerified?: boolean;
 
   @Column()
   additionalInformation: string;
@@ -48,7 +45,7 @@ class User {
   cityId: string;
 
   @Column()
-  roleId: string;
+  roleId?: string;
 
   @ManyToOne(() => City, city => city.users)
   @JoinColumn({ name: "cityId" })
