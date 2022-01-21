@@ -7,8 +7,9 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 class UserController {
-
+  
   async create(request: Request, response: Response): Promise<Response> {
+    
     const {
       name,
       email,
@@ -16,13 +17,12 @@ class UserController {
       phoneNumber,
       cpf,
       phoneVerified,
-      additionalInformation,
+      moreInfo: additionalInformation,
       cityId,
-      roleId,
     } = request.body;
-
+    
     try {
-      await validateUser(request.body);
+      const infoValidation = await validateUser(request.body);
       const useCase = new UserUseCase();
       const encryptedPassword = await bcrypt.hash(password, 10);
       const user = await useCase.create({
@@ -34,7 +34,6 @@ class UserController {
         phoneVerified,
         additionalInformation,
         cityId,
-        roleId,
       });
       return response.status(201).json(user);
     } catch (error) {

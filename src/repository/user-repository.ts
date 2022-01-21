@@ -8,6 +8,7 @@ class UserRepository {
 
   constructor() {
     this.userRepository = getRepository(User);
+    this.roleRepository = getRepository(Role);
   }
 
   async create(user: User): Promise<User> {

@@ -10,7 +10,6 @@ export const validateUser = async function (attrs: [], options = { abortEarly: f
     phoneVerified: yup.string().notRequired(),
     additionalInformation: yup.string().notRequired(),
     cityId: yup.string().required(),
-    roleId: yup.string().required(),
   });
   return await schema.validate(attrs, options);
 }
