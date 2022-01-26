@@ -22,7 +22,7 @@ class UserController {
     } = request.body;
     
     try {
-      const infoValidation = await validateUser(request.body);
+      await validateUser(request.body);
       const useCase = new UserUseCase();
       const encryptedPassword = await bcrypt.hash(password, 10);
       const user = await useCase.create({
@@ -64,6 +64,22 @@ class UserController {
     }
 
     return response.status(400).send("Login ou Senha inválido(s)");
+  }
+
+  async validateUser(request: Request, response: Response): Promise<Response> {
+    const useCase = new UserUseCase();
+    const { type, value } = request.query;
+
+    const result = await useCase.validateUser(type as string, value)
+
+    return response.status(200).json({result: result});
+  }
+
+  checkUserExist = (user) => {
+    if(user){
+      return true
+    }
+    return false
   }
 }
 

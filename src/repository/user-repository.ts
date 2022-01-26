@@ -48,7 +48,7 @@ class UserRepository {
     return user;
   }
 
-  async findBycpf(cpf: string): Promise<User> {
+  async findByCpf(cpf: string): Promise<User> {
     const user = await this.userRepository.findOne({ where: { cpf } });
     return user;
   }
