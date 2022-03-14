@@ -20,7 +20,7 @@ class StateController {
 
     try {
       await validateState(request.body);
-      
+
       const newState = await this.useCase.create({ name, ibge });
       return response.status(201).json(newState);
     } catch (error) {
@@ -30,7 +30,7 @@ class StateController {
 
   async getCitiesByStateId(request: Request, response: Response): Promise<Response> {
     const { stateId } = request.params
-    
+
     this.useCase = new StateUseCase();
 
     const cities = await this.useCase.getCityByStateId(stateId)

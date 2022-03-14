@@ -9,4 +9,4 @@ if (process.env.NODE_ENV === "development") {
     connection.create(process.env.TYPEORM_HOST);
 }
 
-app.listen(PORT, () => console.log("Server is running!"));
+app.listen(PORT, () => console.log("Server is running on port", PORT));

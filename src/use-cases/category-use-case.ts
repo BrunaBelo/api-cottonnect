@@ -13,6 +13,12 @@ class CategoryUseCase {
         return newCity;
     }
 
+    async getAll(): Promise<Category[]> {
+        const allCategories = await this.repository.getAll();
+
+        return allCategories;
+    }
+
     async update(id: string, category: Category): Promise<Category> {
         throw new Error("Method not implemented.");
     }

@@ -7,9 +7,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 class UserController {
-  
   async create(request: Request, response: Response): Promise<Response> {
-    
     const {
       name,
       email,
@@ -20,7 +18,7 @@ class UserController {
       moreInfo: additionalInformation,
       cityId,
     } = request.body;
-    
+
     try {
       await validateUser(request.body);
       const useCase = new UserUseCase();
