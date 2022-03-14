@@ -10,7 +10,8 @@
     "restart-docker": "docker-compose stop && docker-compose start && docker logs -f cottonnect",
     "populate-locations": "ts-node-dev src/database/seeds/populateLocations.ts",
     "populate-roles": "ts-node-dev src/database/seeds/populateRole.ts",
-    "run-seeds": "concurrently \"yarn populate-locations\" \"yarn populate-roles\""
+    "populate-categories": "ts-node-dev src/database/seeds/populateCategories.ts",
+    "run-seeds": "concurrently \"yarn populate-locations\" \"yarn populate-roles\" \"yarn populate-categories\""
   },
   "repository": "git@github.com:BrunaBelo/api-cottonnect.git",
   "author": "BrunaBelo <anabruna28@gmail.com>",
