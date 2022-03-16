@@ -12,7 +12,7 @@ export class CreateAuction1627842372631 implements MigrationInterface {
             isPrimary: true,
           },
           {
-            name: "closingData",
+            name: "closingDate",
             type: "timestamp",
           },
           {

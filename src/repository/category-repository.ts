@@ -31,7 +31,9 @@ class CategoryRepository {
   }
 
   async findById(id: string): Promise<Category> {
-    throw new Error("Method not implemented.");
+    const category = await this.repository.findOne(id);
+
+    return category;
   }
 
   async findByName(name: string): Promise<Category> {

@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 
 const auth = (request: Request, response: Response, next: NextFunction) => {
   const token = request.body.token || request.query.token || request.headers["x-access-token"];
-
   if (!token) {
     return response.status(403).send("A token is required for authentication");
   }

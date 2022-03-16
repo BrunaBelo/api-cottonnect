@@ -20,7 +20,7 @@ class Auction {
     id?: string;
 
     @Column()
-    closingData: Date;
+    closingDate: Date;
 
     @Column()
     status?: string;

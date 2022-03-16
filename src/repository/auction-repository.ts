@@ -38,7 +38,7 @@ class AuctionRepository {
         throw new Error("Method not implemented.");
     }
 
-    async findByClosingData(date: Date): Promise<Auction> {
+    async findByClosingDate(date: Date): Promise<Auction> {
         throw new Error("Method not implemented.");
     }
 }

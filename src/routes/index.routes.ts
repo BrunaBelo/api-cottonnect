@@ -5,6 +5,7 @@ import { userRoutes } from "./user.routes";
 import { stateRoutes } from "./state.routes";
 import { cityRoutes } from "./city.routes";
 import { donationCategoryRoutes } from "./donation-category.routes";
+import { donationRoutes } from "./donation.routes";
 
 const routers = Router();
 
@@ -13,5 +14,6 @@ routers.use("/users", userRoutes);
 routers.use("/states", stateRoutes);
 routers.use("/cities", cityRoutes);
 routers.use("/donation-categories", donationCategoryRoutes);
+routers.use("/donations", donationRoutes);
 
 export { routers };
