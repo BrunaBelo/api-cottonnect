@@ -1,4 +1,7 @@
 import { Request, Response } from "express";
+import { getRepository } from "typeorm";
+import { Category } from "../model/category";
+import { DonationObject } from "../model/donation-object";
 import { AuctionUseCase } from "../use-cases/auction-use-case";
 import { DonationObjectUseCase } from "../use-cases/donation-object-use-case";
 
@@ -8,12 +11,14 @@ class DonationObjectController {
 
     const DonationObjectUserCase = new DonationObjectUseCase();
     const newAuctionUseCase = new AuctionUseCase();
+    const categoryRepository = getRepository(Category);
 
     const newDonationObject = await DonationObjectUserCase.create({
       title,
       description,
       status: 'open',
-      photos
+      photos,
+      categories: await categoryRepository.findByIds(categories)
     });
 
     await newAuctionUseCase.create({

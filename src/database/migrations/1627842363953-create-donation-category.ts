@@ -7,22 +7,17 @@ export class CreateDonationCategory1627842363953 implements MigrationInterface {
         name: "donation_categories",
         columns: [
           {
-            name: "id",
-            type: "uuid",
-            isPrimary: true,
-          },
-          {
-            name: "createdAt",
-            type: "timestamp",
-            default: "now()",
-          },
-          {
             name: "donationObjectId",
             type: "uuid",
           },
           {
             name: "donationCategoryId",
             type: "uuid",
+          },
+          {
+            name: "createdAt",
+            type: "timestamp",
+            default: "now()",
           },
         ],
         foreignKeys: [

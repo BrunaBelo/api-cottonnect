@@ -2,14 +2,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
-  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { v4 as uuid } from "uuid";
-import { DonationCategory } from "./donation-category";
-import { DonationObject } from "./donation-object";
 
 @Entity("categories")
 class Category {
@@ -24,9 +20,6 @@ class Category {
 
   @UpdateDateColumn()
   updatedAt?: Date;
-
-  @OneToMany(() => DonationCategory, donationCategory => donationCategory)
-  donationCategories?: DonationCategory[];
 
   constructor() {
     if (!this.id) {
