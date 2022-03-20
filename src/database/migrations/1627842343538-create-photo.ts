@@ -12,7 +12,11 @@ export class CreatePhoto1627842343538 implements MigrationInterface {
             isPrimary: true,
           },
           {
-            name: "name",
+            name: "assetId",
+            type: "varchar",
+          },
+          {
+            name: "publicId",
             type: "varchar",
           },
           {
@@ -20,7 +24,7 @@ export class CreatePhoto1627842343538 implements MigrationInterface {
             type: "varchar",
           },
           {
-            name: "uri",
+            name: "url",
             type: "varchar",
           },
           {

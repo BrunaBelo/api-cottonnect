@@ -15,13 +15,16 @@ class Photo {
     id?: string;
 
     @Column()
-    name: string;
+    assetId: string;
+
+    @Column()
+    publicId: string;
 
     @Column()
     type: string;
 
     @Column()
-    uri: string;
+    url: string;
 
     @CreateDateColumn()
     createdAt?: Date;
