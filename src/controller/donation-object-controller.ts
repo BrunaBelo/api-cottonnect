@@ -2,31 +2,53 @@ import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { Category } from "../model/category";
 import { DonationObject } from "../model/donation-object";
+import { Photo } from "../model/photo";
+import savePhotos from "../service/cloudinary/savePhoto";
 import { AuctionUseCase } from "../use-cases/auction-use-case";
 import { DonationObjectUseCase } from "../use-cases/donation-object-use-case";
 
 class DonationObjectController {
   async create(request: Request, response: Response): Promise<Response> {
     const { title, description, photos, categories, closingDate } = request.body;
-
-    const DonationObjectUserCase = new DonationObjectUseCase();
     const newAuctionUseCase = new AuctionUseCase();
+
     const categoryRepository = getRepository(Category);
+    const photoRepository = getRepository(Photo);
+    const donationRepository = getRepository(DonationObject);
 
-    const newDonationObject = await DonationObjectUserCase.create({
-      title,
-      description,
-      status: 'open',
-      photos,
-      categories: await categoryRepository.findByIds(categories)
-    });
-
-    await newAuctionUseCase.create({
+    //criacao de leilao
+    const newAuction = await newAuctionUseCase.create({
       closingDate: new Date(closingDate),
-      donationObjectId: newDonationObject.id,
       userId: request["user"]["user_id"],
       status: 'open'
     })
+
+    //criacao de doacao
+    let newDonationObject = donationRepository.create({
+      title,
+      description,
+      status: 'open',
+      categories: await categoryRepository.findByIds(categories),
+      auctionId: newAuction.id
+    })
+    newDonationObject = await donationRepository.save(newDonationObject)
+
+    //subindo fotos para cloudinary
+    const cloudPhotos = await savePhotos(request.files as Express.Multer.File[])
+
+    //criacao de fotos
+    for await (const photo of cloudPhotos) {
+      const { assetId, publicId, url } = photo
+      const newPhoto = photoRepository.create({
+        url,
+        assetId,
+        publicId,
+        type: 'image',
+        donationObjectId: newDonationObject.id
+      })
+      await photoRepository.save(newPhoto)
+    }
+
     return response.status(201).json(newDonationObject);
   }
 }
