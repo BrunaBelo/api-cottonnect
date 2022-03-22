@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateAuction1627842372631 implements MigrationInterface {
+export class CreateAuction1627842322631 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -33,11 +33,7 @@ export class CreateAuction1627842372631 implements MigrationInterface {
           {
             name: "userId",
             type: "uuid",
-          },
-          {
-            name: "donationObjectId",
-            type: "uuid",
-          },
+          }
         ],
         foreignKeys: [
           {
@@ -47,15 +43,7 @@ export class CreateAuction1627842372631 implements MigrationInterface {
             referencedTableName: "users",
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
-          },
-          {
-            name: "fkDonationObject",
-            columnNames: ["donationObjectId"],
-            referencedColumnNames: ["id"],
-            referencedTableName: "donation_objects",
-            onDelete: "CASCADE",
-            onUpdate: "CASCADE",
-          },
+          }
         ],
       })
     );

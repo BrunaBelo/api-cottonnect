@@ -25,11 +25,25 @@ export class CreateDonationObject1627842336179 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: "auctionId",
+            type: "uuid"
+          },
+          {
             name: "createdAt",
             type: "timestamp",
             default: "now()",
           },
         ],
+        foreignKeys: [
+          {
+            name: "fkAuctionId",
+            columnNames: ["auctionId"],
+            referencedColumnNames: ["id"],
+            referencedTableName: "auctions",
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
+          },
+        ]
       })
     );
   }
