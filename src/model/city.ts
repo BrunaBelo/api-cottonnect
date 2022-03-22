@@ -14,36 +14,36 @@ import { User } from "./user";
 
 @Entity("cities")
 class City {
-    @PrimaryColumn()
-    id?: string;
+  @PrimaryColumn()
+  id?: string;
 
-    @Column()
-    ibge: number;
+  @Column()
+  ibge: number;
 
-    @Column()
-    name: string;
+  @Column()
+  name: string;
 
-    @CreateDateColumn()
-    createdAt?: Date;
+  @CreateDateColumn()
+  createdAt?: Date;
 
-    @UpdateDateColumn()
-    updatedAt?: Date;
+  @UpdateDateColumn()
+  updatedAt?: Date;
 
-    @Column()
-    stateId: string;
+  @Column()
+  stateId: string;
 
-    @ManyToOne(() => State, state => state.cities)
-    @JoinColumn({ name: "stateId" })
-    state?: State;
+  @ManyToOne(() => State, state => state.cities)
+  @JoinColumn({ name: "stateId" })
+  state?: State;
 
-    @OneToMany(() => User, user => user)
-    users?: User[];
+  @OneToMany(() => User, user => user)
+  users?: User[];
 
-    constructor() {
-        if (!this.id) {
-            this.id = uuid();
-        }
+  constructor() {
+    if (!this.id) {
+      this.id = uuid();
     }
+  }
 }
 
 export { City };

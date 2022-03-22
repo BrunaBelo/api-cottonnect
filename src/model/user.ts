@@ -49,7 +49,7 @@ class User {
 
   @ManyToOne(() => City, city => city.users)
   @JoinColumn({ name: "cityId" })
-  city?: Role;
+  city?: City;
 
   @ManyToOne(() => Role, role => role.users)
   @JoinColumn({ name: "roleId" })
