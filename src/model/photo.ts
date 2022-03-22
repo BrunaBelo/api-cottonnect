@@ -11,36 +11,36 @@ import { DonationObject } from "./donation-object";
 
 @Entity("photos")
 class Photo {
-    @PrimaryColumn()
-    id?: string;
+  @PrimaryColumn()
+  id?: string;
 
-    @Column()
-    assetId: string;
+  @Column()
+  assetId: string;
 
-    @Column()
-    publicId: string;
+  @Column()
+  publicId: string;
 
-    @Column()
-    type: string;
+  @Column()
+  type: string;
 
-    @Column()
-    url: string;
+  @Column()
+  url: string;
 
-    @CreateDateColumn()
-    createdAt?: Date;
+  @CreateDateColumn()
+  createdAt?: Date;
 
-    @Column()
-    donationObjectId: string;
+  @Column()
+  donationObjectId: string;
 
-    @ManyToOne(() => DonationObject, donationObject => donationObject)
-    @JoinColumn({ name: "donationObjectId" })
-    donationObject?: DonationObject;
+  @ManyToOne(() => DonationObject, donationObject => donationObject.photos)
+  //@JoinColumn({name: "donationObjectId"})
+  donationObject?: DonationObject;
 
-    constructor() {
-        if (!this.id) {
-            this.id = uuid();
-        }
+  constructor() {
+    if (!this.id) {
+      this.id = uuid();
     }
+  }
 }
 
 export { Photo };

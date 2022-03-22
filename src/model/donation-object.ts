@@ -2,6 +2,7 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    JoinColumn,
     JoinTable,
     ManyToMany,
     OneToMany,
@@ -30,10 +31,14 @@ class DonationObject {
   @CreateDateColumn()
   createdAt?: Date;
 
-  @OneToMany(() => Photo, photo => photo)
+  @Column()
+  auctionId: string;
+
+  @OneToMany(() => Photo, photo => photo.donationObject)
   photos?: Photo[];
 
-  @OneToOne(() => Auction, auction => auction)
+  @OneToOne(() => Auction)
+  @JoinColumn({name: 'auctionId'})
   auction?: Auction;
 
   @ManyToMany(type => Category)
