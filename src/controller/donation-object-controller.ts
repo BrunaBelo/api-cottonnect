@@ -1,15 +1,14 @@
 import { Request, Response } from "express";
-import { getRepository } from "typeorm";
+import { getCustomRepository, getRepository } from "typeorm";
 import { Category } from "../model/category";
 import { DonationObject } from "../model/donation-object";
 import { Photo } from "../model/photo";
+import { AuctionRepository } from "../repository/auction-repository";
 import savePhotos from "../service/cloudinary/savePhoto";
-import { AuctionUseCase } from "../use-cases/auction-use-case";
 
 class DonationObjectController {
   async create(request: Request, response: Response): Promise<Response> {
-    const { title, description, photos, categories, closingDate } = request.body;
-    const newAuctionUseCase = new AuctionUseCase();
+    const { title, description, categories, closingDate } = request.body;
 
     const categoryRepository = getRepository(Category);
     const photoRepository = getRepository(Photo);
@@ -41,14 +40,17 @@ class DonationObjectController {
     }
 
     //criacao de leilao
-    await newAuctionUseCase.create({
+    const auctionRepository = getCustomRepository(AuctionRepository);
+    const newAuction = auctionRepository.create({
       closingDate: new Date(closingDate),
       userId: request["user"]["user_id"],
       status: 'open',
       donationObjectId: newDonationObject.id
     })
+    auctionRepository.save(newAuction)
 
     return response.status(201).json(newDonationObject);
   }
 }
+
 export { DonationObjectController };
