@@ -5,7 +5,6 @@ import { DonationObject } from "../model/donation-object";
 import { Photo } from "../model/photo";
 import savePhotos from "../service/cloudinary/savePhoto";
 import { AuctionUseCase } from "../use-cases/auction-use-case";
-import { DonationObjectUseCase } from "../use-cases/donation-object-use-case";
 
 class DonationObjectController {
   async create(request: Request, response: Response): Promise<Response> {
@@ -16,20 +15,12 @@ class DonationObjectController {
     const photoRepository = getRepository(Photo);
     const donationRepository = getRepository(DonationObject);
 
-    //criacao de leilao
-    const newAuction = await newAuctionUseCase.create({
-      closingDate: new Date(closingDate),
-      userId: request["user"]["user_id"],
-      status: 'open'
-    })
-
     //criacao de doacao
     let newDonationObject = donationRepository.create({
       title,
       description,
       status: 'open',
       categories: await categoryRepository.findByIds(categories),
-      auctionId: newAuction.id
     })
     newDonationObject = await donationRepository.save(newDonationObject)
 
@@ -48,6 +39,14 @@ class DonationObjectController {
       })
       await photoRepository.save(newPhoto)
     }
+
+    //criacao de leilao
+    await newAuctionUseCase.create({
+      closingDate: new Date(closingDate),
+      userId: request["user"]["user_id"],
+      status: 'open',
+      donationObjectId: newDonationObject.id
+    })
 
     return response.status(201).json(newDonationObject);
   }

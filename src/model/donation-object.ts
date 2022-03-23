@@ -31,15 +31,8 @@ class DonationObject {
   @CreateDateColumn()
   createdAt?: Date;
 
-  @Column()
-  auctionId: string;
-
   @OneToMany(() => Photo, photo => photo.donationObject)
   photos?: Photo[];
-
-  @OneToOne(() => Auction)
-  @JoinColumn({name: 'auctionId'})
-  auction?: Auction;
 
   @ManyToMany(type => Category)
   @JoinTable({
