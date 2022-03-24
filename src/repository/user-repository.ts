@@ -1,55 +1,50 @@
-import { getRepository, Repository } from "typeorm";
-import { Role } from "../model/role";
+import { EntityRepository, getCustomRepository, Repository } from "typeorm";
+import { AppError } from "../errors/app-error";
 import { User } from "../model/user";
+import { RoleRepository } from "./role-repository";
 
-class UserRepository {
-  private userRepository: Repository<User>;
-  private roleRepository: Repository<Role>;
+@EntityRepository(User)
+class UserRepository extends Repository<User> {
+  async createAndSave(user: User): Promise<User> {
+    const existUser = await this.findByEmail(user.email);
+    const existcpf = await this.findByCpf(user.cpf);
+    const existPhoneNumber = await this.findByPhoneNumber(user.phoneNumber);
 
-  constructor() {
-    this.userRepository = getRepository(User);
-    this.roleRepository = getRepository(Role);
-  }
+    if (existUser) {
+      throw new AppError(`O email ${user.email} já está em uso`);
+    }
 
-  async create(user: User): Promise<User> {
+    if (existPhoneNumber) {
+      throw new AppError(`O número de telefone ${user.phoneNumber} já está em uso`);
+    }
+
+    if (existcpf) {
+      throw new AppError(`O CPF ${user.cpf} já está em uso`);
+    }
+
     if(!user.roleId){
       const defaultRoleName = 'user'
-      const defaultRoleInfo = await this.roleRepository.findOne({name: defaultRoleName})
+      const defaultRoleInfo = await getCustomRepository(RoleRepository).findOne({ name: defaultRoleName })
       user.roleId = defaultRoleInfo.id
     }
-    const newUser = this.userRepository.create(user);
-    await this.userRepository.save(newUser);
+
+    const newUser = this.create(user);
+    await this.save(newUser);
     return newUser;
   }
 
-  async update(id: string, user: User): Promise<User> {
-    throw new Error("Method not implemented.");
-  }
-
-  async delete(id: string): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
-
-  async findById(id: string): Promise<User> {
-    throw new Error("Method not implemented.");
-  }
-
-  async findByName(name: string): Promise<User> {
-    throw new Error("Method not implemented.");
-  }
-
   async findByEmail(email: string): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { email } });
+    const user = await this.findOne({ where: { email } });
     return user;
   }
 
   async findByPhoneNumber(phoneNumber: string): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { phoneNumber } });
+    const user = await this.findOne({ where: { phoneNumber } });
     return user;
   }
 
   async findByCpf(cpf: string): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { cpf } });
+    const user = await this.findOne({ where: { cpf } });
     return user;
   }
 }
