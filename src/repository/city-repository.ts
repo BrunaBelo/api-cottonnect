@@ -1,4 +1,4 @@
-import { EntityRepository, getRepository, Repository } from "typeorm";
+import { EntityRepository, Repository } from "typeorm";
 import { AppError } from "../errors/app-error";
 import { City } from "../model/city";
 
