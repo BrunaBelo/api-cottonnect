@@ -1,27 +1,27 @@
 import { Request, Response } from "express";
 import { getCustomRepository, getRepository } from "typeorm";
-import { Category } from "../model/category";
-import { DonationObject } from "../model/donation-object";
 import { Photo } from "../model/photo";
 import { AuctionRepository } from "../repository/auction-repository";
+import { CategoryRepository } from "../repository/category-repository";
+import { DonationObjectRepository } from "../repository/donation-object-repository";
 import savePhotos from "../service/cloudinary/savePhoto";
 
 class DonationObjectController {
   async create(request: Request, response: Response): Promise<Response> {
     const { title, description, categories, closingDate } = request.body;
 
-    const categoryRepository = getRepository(Category);
+    const categoryRepository = getCustomRepository(CategoryRepository);
     const photoRepository = getRepository(Photo);
-    const donationRepository = getRepository(DonationObject);
+    const donationRepository = getCustomRepository(DonationObjectRepository);
+    const auctionRepository = getCustomRepository(AuctionRepository);
 
     //criacao de doacao
-    let newDonationObject = donationRepository.create({
+    let newDonationObject = await donationRepository.createAndSave({
       title,
       description,
       status: 'open',
       categories: await categoryRepository.findByIds(categories),
     })
-    newDonationObject = await donationRepository.save(newDonationObject)
 
     //subindo fotos para cloudinary
     const cloudPhotos = await savePhotos(request.files as Express.Multer.File[])
@@ -40,14 +40,12 @@ class DonationObjectController {
     }
 
     //criacao de leilao
-    const auctionRepository = getCustomRepository(AuctionRepository);
-    const newAuction = auctionRepository.create({
+    await auctionRepository.createAndSave({
       closingDate: new Date(closingDate),
       userId: request["user"]["user_id"],
       status: 'open',
       donationObjectId: newDonationObject.id
     })
-    auctionRepository.save(newAuction)
 
     return response.status(201).json(newDonationObject);
   }
