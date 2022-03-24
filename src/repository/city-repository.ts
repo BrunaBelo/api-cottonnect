@@ -1,40 +1,39 @@
-import { getRepository, Repository } from "typeorm";
+import { EntityRepository, getRepository, Repository } from "typeorm";
+import { AppError } from "../errors/app-error";
 import { City } from "../model/city";
 
-class CityRepository {
-  private repository: Repository<City>;
+@EntityRepository(City)
+class CityRepository extends Repository<City>{
+  async createAndSave(city: City): Promise<City> {
+    const existCity = await this.findByName(city.name);
+    const existIbge = await this.findByIbge(city.ibge);
 
-  constructor() {
-    this.repository = getRepository(City);
-  }
+    if (existCity) {
+      throw new AppError(`O nome ${city.name} já está em uso`);
+    }
 
-  async getByStateId(stateId: string): Promise<City[]> {
-    const cities = await this.repository.find({ where: { stateId } })
+    if (existIbge) {
+      throw new AppError(`O identificador IBGE ${city.ibge} já está em uso`);
+    }
 
-    return cities
-  }
+    const newCity = this.create(city);
+    await this.save(newCity);
 
-  async create(city: City): Promise<City> {
-    const newCity = this.repository.create(city);
-    await this.repository.save(newCity);
     return newCity;
   }
 
-  async update(id: string, city: City): Promise<City> {
-    throw new Error("Method not implemented.");
-  }
-
-  async delete(id: string): Promise<City> {
-    throw new Error("Method not implemented.");
+  async getByStateId(stateId: string): Promise<City[]> {
+    const cities = await this.find({ where: { stateId } })
+    return cities
   }
 
   async findByName(name: string): Promise<City> {
-    const city = await this.repository.findOne({ where: { name } });
+    const city = await this.findOne({ where: { name } });
     return city;
   }
 
   async findByIbge(ibge: number): Promise<City> {
-    const city = await this.repository.findOne({ where: { ibge } });
+    const city = await this.findOne({ where: { ibge } });
     return city;
   }
 }
