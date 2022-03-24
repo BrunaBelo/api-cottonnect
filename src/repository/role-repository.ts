@@ -1,21 +1,23 @@
-import { getRepository, Repository } from "typeorm";
+import { EntityRepository, Repository } from "typeorm";
+import { AppError } from "../errors/app-error";
 import { Role } from "../model/role";
 
-class RoleRepository {
-  private repository: Repository<Role>;
+@EntityRepository(Role)
+class RoleRepository extends Repository<Role>{
+  async createAndSave(role: Role): Promise<Role> {
+    const existRole = await this.findByName(role.name);
 
-  constructor() {
-    this.repository = getRepository(Role);
-  }
+    if (existRole) {
+      throw new AppError(`O nome ${role.name} já está em uso`);
+    }
 
-  async create(role: Role): Promise<Role> {
-    const newRole = this.repository.create(role);
-    await this.repository.save(newRole);
+    const newRole = this.create(role);
+    await this.save(newRole);
     return newRole;
   }
 
   async findByName(name: string): Promise<Role> {
-    const role = await this.repository.findOne({ where: { name } });
+    const role = await this.findOne({ where: { name } });
     return role;
   }
 }
