@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { getCustomRepository, getRepository } from "typeorm";
-import { Photo } from "../model/photo";
+import { getCustomRepository } from "typeorm";
 import { AuctionRepository } from "../repository/auction-repository";
 import { CategoryRepository } from "../repository/category-repository";
 import { DonationObjectRepository } from "../repository/donation-object-repository";
+import { PhotoRepository } from "../repository/photo-repositoy";
 import savePhotos from "../service/cloudinary/savePhoto";
 
 class DonationObjectController {
@@ -11,7 +11,7 @@ class DonationObjectController {
     const { title, description, categories, closingDate } = request.body;
 
     const categoryRepository = getCustomRepository(CategoryRepository);
-    const photoRepository = getRepository(Photo);
+    const photoRepository = getCustomRepository(PhotoRepository);
     const donationRepository = getCustomRepository(DonationObjectRepository);
     const auctionRepository = getCustomRepository(AuctionRepository);
 
@@ -29,14 +29,13 @@ class DonationObjectController {
     //criacao de fotos
     for await (const photo of cloudPhotos) {
       const { assetId, publicId, url } = photo
-      const newPhoto = photoRepository.create({
+      await photoRepository.createAndSave({
         url,
         assetId,
         publicId,
         type: 'image',
         donationObjectId: newDonationObject.id
       })
-      await photoRepository.save(newPhoto)
     }
 
     //criacao de leilao
