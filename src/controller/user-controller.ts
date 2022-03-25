@@ -86,6 +86,19 @@ class UserController {
 
     return response.status(200).json({result: result ? false : true});
   }
+
+  async tokenRenewal(request: Request, response: Response): Promise<Response> {
+    const userRepository = getCustomRepository(UserRepository);
+    const user = await userRepository.findOne(request["user"].id)
+
+    user.token = jwt.sign(
+      { user_id: user.id, email: user.email },
+      process.env.TOKEN_KEY,
+      { expiresIn: "2h" }
+    );
+
+    return response.status(200).json({ token: user.token });
+   }
 }
 
 export { UserController };
