@@ -1,13 +1,26 @@
 import { City } from "../../model/city";
-import { Factory } from "./typeorm-factory/factory";
-import faker from 'faker/locale/pt_BR';
+import { genericFactory } from "../utils/genericFactory";
+import { stateFactory } from "./state-factory";
 
-export const cityCuritiba = new Factory(City)
-  .attr("name", "Curitiba")
-  .attr("ibge", 4106902)
-  .attr("stateId", "")
+interface ICityData {
+  name?: string,
+  ibge?: number,
+  stateId?: string
+}
 
-export const cityGeneric = new Factory(City)
-  .attr("name", "Metropolis")
-  .attr("ibge", Math.round(Math.random()*100))
-  .attr("stateId", "")
+const defaultCity =  { name: 'Prudentópolis', ibge: 1477, stateId: null };
+
+export const cityFactory = async(cityData = defaultCity as ICityData): Promise<City> => {
+  if(!cityData.stateId){
+    const state = await stateFactory();
+    cityData.stateId = state.id;
+  }
+
+  cityData = {
+    ...defaultCity,
+    ...cityData
+  }
+
+  const city = await genericFactory(City, cityData);
+  return city as City;
+}

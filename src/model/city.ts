@@ -33,7 +33,6 @@ class City {
   stateId: string;
 
   @ManyToOne(() => State, state => state.cities)
-  @JoinColumn({ name: "stateId" })
   state?: State;
 
   @OneToMany(() => User, user => user)

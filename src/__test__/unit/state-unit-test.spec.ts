@@ -3,6 +3,7 @@ import connection from "../../database/connection";
 import { State } from "../../model/state";
 import { StateRepository } from "../../repository/state-repository";
 import CreateService from "../../service/state/create-service";
+import { cityFactory } from "../factories/city-factory";
 import { stateFactory } from "../factories/state-factory";
 
 describe("State", () => {
@@ -71,6 +72,15 @@ describe("State", () => {
 
       expect(allStates).toContainEqual(state02);
       expect(allStates).toContainEqual(state01);
+    });
+
+    it("returns all cities of the state", async () => {
+      const state = await stateRepository.findOne();
+      const city01 = await cityFactory({ stateId: state.id });
+      const city02 = await cityFactory({ name: 'Curitiba', ibge: 78945, stateId: state.id });
+
+      expect((await stateRepository.findOne(state.id, {
+              relations: ['cities'] })).cities).toContainEqual(city01);
     });
   });
 })

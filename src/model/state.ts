@@ -26,7 +26,7 @@ class State {
   @UpdateDateColumn()
   updatedAt?: Date;
 
-  @OneToMany(() => City, city => city)
+  @OneToMany(() => City, city => city.state)
   cities?: City[];
 
   constructor() {

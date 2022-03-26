@@ -1,10 +1,8 @@
-import { EntityRepository, getRepository, Repository } from "typeorm";
-import { AppError } from "../errors/app-error";
+import { EntityRepository, Repository } from "typeorm";
 import { State } from "../model/state";
 
 @EntityRepository(State)
 class StateRepository extends Repository<State> {
-
   async createAndSave(state: State): Promise<State> {
     const new_state = this.create(state);
     await this.save(new_state);

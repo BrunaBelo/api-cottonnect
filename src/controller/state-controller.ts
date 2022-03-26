@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
 import { AppError } from "../errors/app-error";
 import { State } from "../model/state";
-import { CityRepository } from "../repository/city-repository";
 import { StateRepository } from "../repository/state-repository";
 import { validateState } from "../schema-validation/state-schema";
 
@@ -31,13 +30,13 @@ class StateController {
 
 
   async getCitiesByStateId(request: Request, response: Response): Promise<Response> {
-    const cityRepository = getCustomRepository(CityRepository);
+    const stateRepository = getCustomRepository(StateRepository);
 
     const { stateId } = request.params
 
-    const cities = await cityRepository.getByStateId(stateId)
+    const state = await stateRepository.findOne(stateId, { relations: ['cities'] })
 
-    return response.status(200).json(cities)
+    return response.status(200).json(state.cities)
   }
 }
 

@@ -1,17 +1,16 @@
+import { getCustomRepository } from "typeorm";
 import connection from "../../database/connection";
 import { City } from "../../model/city";
-import { CityUseCase } from "../../use-cases/city-use-case";
-import { cityCuritiba } from "../factories/city-factory";
-import { stateParana } from "../factories/state-factory";
+import { CityRepository } from "../../repository/city-repository";
+import CreateService from "../../service/city/create-service";
+import { cityFactory } from "../factories/city-factory";
 
 describe("City", () => {
-  let cityUseCase: CityUseCase;
-  let city: City;
+  let cityRepository: CityRepository;
 
   beforeAll(async () => {
     await connection.create();
-    cityUseCase = new CityUseCase();
-    city = cityCuritiba.build();
+    cityRepository = getCustomRepository(CityRepository);
   });
 
   afterAll(async () => {
@@ -24,9 +23,39 @@ describe("City", () => {
 
   describe("Create City", () => {
     it("create new City", async () => {
-      city.stateId = (await stateParana.create()).id
-      const newCity = await cityUseCase.create(city);
-      expect(newCity).toMatchObject(city);
+      const newCity = await cityFactory();
+
+      expect(await cityRepository.findOne(newCity.id)).toMatchObject(newCity);
+    });
+
+    describe("When city name already exist", () => {
+      it("don't create new City", async () => {
+        const city = await cityFactory({ name: 'Curitiba' });
+
+        const createCity = async() => {
+          let newCity = { name: city.name, ibge: 9878 } as City;
+          newCity = await new CreateService(newCity).run();
+        }
+
+        await expect(async() => await createCity())
+        .rejects
+        .toMatchObject({message: `O nome ${city.name} já está em uso`})
+      });
+    });
+
+    describe("When city ibge already exist", () => {
+      it("don't create new City", async () => {
+        const city = await cityFactory({ ibge: 2365 });
+
+        const createCity = async() => {
+          let newCity = { name: 'New name', ibge: city.ibge } as City;
+          newCity = await new CreateService(newCity).run();
+        }
+
+        await expect(async() => await createCity())
+        .rejects
+        .toMatchObject({message: `O identificador IBGE ${city.ibge} já está em uso`})
+      });
     });
   });
 });
