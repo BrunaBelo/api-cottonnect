@@ -1,7 +1,16 @@
 import { Category } from "../../model/category";
-import { Factory } from "./typeorm-factory/factory";
+import { genericFactory } from "../utils/genericFactory";
 import faker from 'faker/locale/pt_BR';
 
-export const category01 = new Factory(Category)
-    .attr("id", faker.datatype.uuid())
-    .attr("name", faker.lorem.word())
+export const categoryFactory = async(categoryData, save = true): Promise<Category> => {
+  const defaultcategory = { name: faker.lorem.word() } as Category;
+
+  categoryData = {
+    ...defaultcategory,
+    ...categoryData
+  }
+
+  const category = await genericFactory(Category, categoryData, save);
+
+  return category as Category;
+}

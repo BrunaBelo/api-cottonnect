@@ -1,16 +1,15 @@
+import { getCustomRepository } from "typeorm";
 import connection from "../../database/connection";
-import { Category } from "../../model/category";
-import { CategoryUseCase } from "../../use-cases/category-use-case";
-import { category01 } from "../factories/category-factory";
+import { CategoryRepository } from "../../repository/category-repository";
+import CreateService from "../../service/category/create-service";
+import { categoryFactory } from "../factories/category-factory";
 
 describe("Category", () => {
-  let categoryUseCase: CategoryUseCase;
-  let category: Category;
+  let categoryRepository: CategoryRepository;
 
   beforeAll(async () => {
     await connection.create();
-    categoryUseCase = new CategoryUseCase();
-    category = category01.build();
+    categoryRepository = getCustomRepository(CategoryRepository);
   });
 
   afterAll(async () => {
@@ -21,10 +20,23 @@ describe("Category", () => {
     await connection.clear();
   });
 
-  describe("Create Category", () => {
+  describe("Create category", () => {
     it("create new Category", async () => {
-      const newCategory = await categoryUseCase.create(category);
-      expect(newCategory).toMatchObject(category);
+      let newCategory = await categoryFactory({}, false);
+      newCategory = await new CreateService(newCategory).run();
+      expect(await categoryRepository.findOne(newCategory.id)).toMatchObject(newCategory);
+    });
+  });
+
+  describe("Get categories", () => {
+    it("returns all categories", async () => {
+      let category01 = await categoryFactory({});
+      let category02 = await categoryFactory({});
+
+      const allCategories = await categoryRepository.find();
+
+      expect(allCategories).toContainEqual(category01);
+      expect(allCategories).toContainEqual(category02);
     });
   });
 });

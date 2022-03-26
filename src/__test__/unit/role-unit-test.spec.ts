@@ -1,16 +1,12 @@
-import { getCustomRepository, getRepository, Repository } from "typeorm";
+import { getCustomRepository } from "typeorm";
 import connection from "../../database/connection";
 import { Role } from "../../model/role";
 import { RoleRepository } from "../../repository/role-repository";
 import CreateService from "../../service/role/create-service";
 import { roleFactory } from "../factories/role-factory";
-//import { roleAdmin } from "../factories/role-factory";
 
 describe("Role", () => {
-  let roleAdm: Role;
-  let roleUser: Role;
   let roleRepository: RoleRepository;
-  let createService: CreateService;
 
   beforeAll(async () => {
     await connection.create();
@@ -23,8 +19,6 @@ describe("Role", () => {
 
   beforeEach(async () => {
     await connection.clear();
-    roleAdm = await roleFactory('admin');
-    roleUser = await roleFactory();
   });
 
   describe("Role", () => {
@@ -36,6 +30,8 @@ describe("Role", () => {
     });
 
     it("return all roles", async() => {
+      const roleAdm = await roleFactory('admin');
+      const roleUser = await roleFactory();
       const allRoles = await roleRepository.find();
 
       expect(allRoles).toContainEqual(roleUser);
@@ -44,27 +40,17 @@ describe("Role", () => {
 
     describe("When role name already exists", () => {
       test("return throw exception", async() => {
-        const allRoles = await roleRepository.find();
+        const role = await roleFactory('admin');
+
         const createRole = async() => {
-          let newRole = { name: allRoles[0].name } as Role;
+          let newRole = { name: role.name } as Role;
           newRole = await new CreateService(newRole).run();
         }
 
         await expect(async() => await createRole())
         .rejects
-        .toMatchObject({message: `O nome ${allRoles[0].name} já está em uso`})
+        .toMatchObject({message: `O nome ${role.name} já está em uso`})
       });
     })
   });
 });
-
-
-// let errorMessage = ''
-//         try {
-//           let newRole = { name: allRoles[0].name } as Role;
-//           newRole = await new CreateService(newRole).run();
-//         } catch (error) {
-//           errorMessage = error.message
-//         }
-
-//         expect(errorMessage).toBe(`O nome ${allRoles[0].name} já está em uso`);

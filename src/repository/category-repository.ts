@@ -5,7 +5,7 @@ import { Category } from "../model/category";
 class CategoryRepository extends Repository<Category> {
 
   async createAndSave(category: Category): Promise<Category> {
-    const newCategory = await this.create(category);
+    const newCategory = this.create(category);
     await this.save(newCategory);
     return newCategory;
   }
