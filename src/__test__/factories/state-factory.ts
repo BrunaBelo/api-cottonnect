@@ -1,10 +1,17 @@
 import { State } from "../../model/state";
 import { genericFactory } from "../utils/genericFactory";
+import faker from 'faker/locale/pt_BR';
 
-export const stateFactory = async(name = 'Paraná', ibge = 12456): Promise<State> => {
-  const data = { name, ibge } as State
-  const state = await genericFactory(State, data)
+const randomIbge = ():number => Math.floor(Math.random()*10000)
+
+export const stateFactory = async(stateData, save = true): Promise<State> => {
+  const defaultState = { name: faker.address.state(), ibge: randomIbge() } as State
+  stateData = {
+    ...defaultState,
+    ...stateData
+  }
+
+  const state = await genericFactory(State, stateData, save)
 
   return state as State
 }
-

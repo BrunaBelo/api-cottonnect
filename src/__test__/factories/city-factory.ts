@@ -1,6 +1,7 @@
 import { City } from "../../model/city";
 import { genericFactory } from "../utils/genericFactory";
 import { stateFactory } from "./state-factory";
+import faker from 'faker/locale/pt_BR';
 
 interface ICityData {
   name?: string,
@@ -8,11 +9,13 @@ interface ICityData {
   stateId?: string
 }
 
-const defaultCity =  { name: 'Prudentópolis', ibge: 1477, stateId: null };
+const randomIbge = ():number => Math.floor(Math.random()*10000)
 
-export const cityFactory = async(cityData = defaultCity as ICityData): Promise<City> => {
-  if(!cityData.stateId){
-    const state = await stateFactory();
+export const cityFactory = async(cityData: ICityData, save = true): Promise<City> => {
+  const defaultCity =  { name: faker.address.city(), ibge: randomIbge(), stateId: null };
+
+  if(!cityData.stateId) {
+    const state = await stateFactory({});
     cityData.stateId = state.id;
   }
 
@@ -21,6 +24,6 @@ export const cityFactory = async(cityData = defaultCity as ICityData): Promise<C
     ...cityData
   }
 
-  const city = await genericFactory(City, cityData);
+  const city = await genericFactory(City, cityData, save);
   return city as City;
 }

@@ -23,7 +23,7 @@ describe("City", () => {
 
   describe("Create City", () => {
     it("create new City", async () => {
-      const newCity = await cityFactory();
+      const newCity = await cityFactory({});
 
       expect(await cityRepository.findOne(newCity.id)).toMatchObject(newCity);
     });

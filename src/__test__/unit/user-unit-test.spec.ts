@@ -1,18 +1,17 @@
+import { getCustomRepository } from "typeorm";
 import connection from "../../database/connection";
 import { User } from "../../model/user";
-import { UserUseCase } from "../../use-cases/user-use-case";
-import { cityCuritiba } from "../factories/city-factory";
-import { roleAdmin } from "../factories/role-factory";
-import { stateParana } from "../factories/state-factory";
-import { user01 } from "../factories/user-factory";
+import { UserRepository } from "../../repository/user-repository";
+import CreateService from "../../service/user/create-service";
+import { userFactory } from "../factories/user-factory";
 
 describe("User", () => {
-  let userUseCase: UserUseCase;
+  let userRepository: UserRepository;
   let user: User;
 
   beforeAll(async () => {
     await connection.create();
-    userUseCase = new UserUseCase();
+    userRepository = getCustomRepository(UserRepository);
   });
 
   afterAll(async () => {
@@ -21,25 +20,55 @@ describe("User", () => {
 
   beforeEach(async () => {
     await connection.clear();
-    const city = await cityCuritiba.create({ stateId: (await stateParana.create()).id });
-    user = user01.build({ roleId: (await roleAdmin.create()).id, cityId: city.id });
+    user = await userFactory();
   });
 
   describe("Create user", () => {
     it("create new user", async () => {
-      const newUser = await userUseCase.create(user);
-      expect(newUser).toMatchObject(user);
+      let newUser = await userFactory({}, false);
+      newUser = await new CreateService(newUser).run();
+
+      expect(await userRepository.findOne(newUser.id)).toMatchObject(newUser);
     });
 
-    it("not create a user that already exists", async () => {
-      let errorMessage = "";
-      await userUseCase.create(user);
-      try {
-        await userUseCase.create(user);
-      } catch (error) {
-        errorMessage = error.message;
-      }
-      expect(errorMessage).toBe(`O email ${user.email} já está em uso`);
+    describe("When user email already exist", () => {
+      it("don't create a user", async () => {
+        const createUser = async() => {
+          let newUser = await userFactory({ email: user.email }, false)
+          await new CreateService(newUser).run();
+        }
+
+        await expect(async() => await createUser())
+        .rejects
+        .toMatchObject({message: `O email ${user.email} já está em uso`})
+      });
+    });
+
+    describe("When user phoneNumber already exist", () => {
+      it("don't create a user", async () => {
+        const createUser = async() => {
+          let newUser = await userFactory({ email: "new email", phoneNumber: user.phoneNumber }, false);
+          newUser = await new CreateService(newUser).run();
+        }
+        await expect(async() => await createUser())
+        .rejects
+        .toMatchObject({message: `O número de telefone ${user.phoneNumber} já está em uso`})
+      });
+    });
+
+    describe("When user cpf already exist", () => {
+      it("don't create a user", async () => {
+        const user = await userFactory();
+
+        const createUser = async() => {
+          let newUser = await userFactory({ cpf: user.cpf }, false);
+          newUser = await new CreateService(newUser).run();
+        }
+
+        await expect(async() => await createUser())
+        .rejects
+        .toMatchObject({message: `O CPF ${user.cpf} já está em uso`})
+      });
     });
   });
 });
