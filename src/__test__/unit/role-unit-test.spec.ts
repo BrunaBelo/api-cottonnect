@@ -1,16 +1,20 @@
+import { getCustomRepository, getRepository, Repository } from "typeorm";
 import connection from "../../database/connection";
 import { Role } from "../../model/role";
-import { RoleUseCase } from "../../use-cases/role-use-case";
-import { roleAdmin } from "../factories/role-factory";
+import { RoleRepository } from "../../repository/role-repository";
+import CreateService from "../../service/role/create-service";
+import { roleFactory } from "../factories/role-factory";
+//import { roleAdmin } from "../factories/role-factory";
 
 describe("Role", () => {
-  let roleUseCase: RoleUseCase;
-  let role: Role;
+  let roleAdm: Role;
+  let roleUser: Role;
+  let roleRepository: RoleRepository;
+  let createService: CreateService;
 
   beforeAll(async () => {
     await connection.create();
-    role = roleAdmin.build();
-    roleUseCase = new RoleUseCase();
+    roleRepository = getCustomRepository(RoleRepository);
   });
 
   afterAll(async () => {
@@ -19,24 +23,48 @@ describe("Role", () => {
 
   beforeEach(async () => {
     await connection.clear();
+    roleAdm = await roleFactory('admin');
+    roleUser = await roleFactory();
   });
 
-  describe("Create Role", () => {
-    it("create new role", async () => {
-      const newRole = await roleUseCase.create(role);
-      expect(newRole.name).toBe("Admin");
+  describe("Role", () => {
+    it("create role", async() => {
+      let newRole = { name: "boss" } as Role;
+      newRole = await new CreateService(newRole).run();
+
+      expect(await roleRepository.findOne(newRole.id)).toEqual(newRole);
     });
 
-    it("not create new role", async () => {
-      let newRole = await roleUseCase.create(role);
-      let error_message = "";
-      try {
-        newRole = await roleUseCase.create(role);
-      } catch (error) {
-        error_message = error.message;
-      }
+    it("return all roles", async() => {
+      const allRoles = await roleRepository.find();
 
-      expect(error_message).toBe(`O nome ${newRole.name} já está em uso`);
+      expect(allRoles).toContainEqual(roleUser);
+      expect(allRoles).toContainEqual(roleAdm);
     });
+
+    describe("When role name already exists", () => {
+      test("return throw exception", async() => {
+        const allRoles = await roleRepository.find();
+        const createRole = async() => {
+          let newRole = { name: allRoles[0].name } as Role;
+          newRole = await new CreateService(newRole).run();
+        }
+
+        await expect(async() => await createRole())
+        .rejects
+        .toMatchObject({message: `O nome ${allRoles[0].name} já está em uso`})
+      });
+    })
   });
 });
+
+
+// let errorMessage = ''
+//         try {
+//           let newRole = { name: allRoles[0].name } as Role;
+//           newRole = await new CreateService(newRole).run();
+//         } catch (error) {
+//           errorMessage = error.message
+//         }
+
+//         expect(errorMessage).toBe(`O nome ${allRoles[0].name} já está em uso`);

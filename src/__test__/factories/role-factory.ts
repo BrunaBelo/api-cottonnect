@@ -1,7 +1,9 @@
-import { Factory } from "./typeorm-factory/factory";
 import { Role } from "../../model/role";
-import faker from 'faker/locale/pt_BR';
+import { genericFactory } from "../utils/genericFactory";
 
-export const roleAdmin = new Factory(Role)
-    .attr("id", faker.datatype.uuid())
-    .attr("name", "Admin")
+export const roleFactory = async(name = 'user'):Promise<Role> => {
+  const data = { name } as Role
+  const role = await genericFactory(Role, data)
+
+  return role as Role
+}
