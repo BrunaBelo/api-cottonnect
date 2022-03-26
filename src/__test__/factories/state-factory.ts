@@ -1,11 +1,10 @@
 import { State } from "../../model/state";
-import { Factory } from "./typeorm-factory/factory";
-import faker from 'faker/locale/pt_BR';
+import { genericFactory } from "../utils/genericFactory";
 
-export const stateParana = new Factory(State)
-    .attr("ibge", 41)
-    .attr("name", "Paraná")
+export const stateFactory = async(name = 'Paraná', ibge = 12456): Promise<State> => {
+  const data = { name, ibge } as State
+  const state = await genericFactory(State, data)
 
-export const stateGeneric = new Factory(State)
-    .attr("ibge", Math.round(Math.random()*100))
-    .attr("name", "Gothan")
+  return state as State
+}
+
