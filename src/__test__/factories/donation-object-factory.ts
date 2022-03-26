@@ -1,8 +1,28 @@
 import { DonationObject } from "../../model/donation-object";
-import { Factory } from "./typeorm-factory/factory";
+import { genericFactory } from "../utils/genericFactory";
 import faker from 'faker/locale/pt_BR';
+import { categoryFactory } from "./category-factory";
 
-export const donation01 = new Factory(DonationObject)
-    .attr("id", faker.datatype.uuid())
-    .attr("title", faker.lorem.words())
-    .attr("description", faker.lorem.sentence())
+export const donationFactory = async(donationData, save = true): Promise<DonationObject> => {
+  const defaultdonation = {
+    title: faker.lorem.words(),
+    description: faker.lorem.sentence(),
+    status: 'closed',
+    categories: null
+  } as DonationObject;
+
+  if(!donationData.categories){
+    const category01 = await categoryFactory({});
+    const category02 = await categoryFactory({});
+    donationData.categories = [category01, category02];
+  }
+
+  donationData = {
+    ...defaultdonation,
+    ...donationData
+  }
+
+  const donation = await genericFactory(DonationObject, donationData, save);
+
+  return donation as DonationObject;
+}

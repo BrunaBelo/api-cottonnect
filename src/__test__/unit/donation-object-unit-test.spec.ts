@@ -1,16 +1,15 @@
+import { getCustomRepository } from "typeorm";
 import connection from "../../database/connection";
-import { DonationObject } from "../../model/donation-object";
-import { DonationObjectUseCase } from "../../use-cases/donation-object-use-case";
-import { donation01 } from "../factories/donation-object-factory";
+import { DonationObjectRepository } from "../../repository/donation-object-repository";
+import CreateService from "../../service/donation-object/create-service";
+import { donationFactory } from "../factories/donation-object-factory";
 
 describe("Donation Object", () => {
-  let donationObjectUseCase: DonationObjectUseCase;
-  let donation: DonationObject;
+  let donationRepository: DonationObjectRepository;
 
   beforeAll(async () => {
     await connection.create();
-    donationObjectUseCase = new DonationObjectUseCase();
-    donation = donation01.build()
+    donationRepository = getCustomRepository(DonationObjectRepository);
   });
 
   afterAll(async () => {
@@ -21,11 +20,13 @@ describe("Donation Object", () => {
     await connection.clear();
   });
 
-  describe("Create Donation Object", () => {
-    it("create new Donation", async () => {
-      const newDonation = await donationObjectUseCase.create(donation);
-      expect(newDonation).toMatchObject(donation);
+  describe("Create Donation", () => {
+    it("create new donation", async () => {
+      let newDonation = await donationFactory({}, false);
+      newDonation = await new CreateService(newDonation).run();
+
+      expect(await donationRepository.findOne(newDonation.id,
+        { relations: ['categories'] })).toEqual(newDonation);
     });
   });
 });
-
