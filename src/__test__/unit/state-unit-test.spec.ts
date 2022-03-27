@@ -79,8 +79,18 @@ describe("State", () => {
       const city01 = await cityFactory({ stateId: state.id });
       const city02 = await cityFactory({ name: 'Curitiba', ibge: 78945, stateId: state.id });
 
-      expect((await stateRepository.findOne(state.id, {
-              relations: ['cities'] })).cities).toContainEqual(city01);
+      const cities = (await stateRepository.findOne(state.id, { relations: ['cities'] })).cities
+      expect(cities).toEqual([city01, city02]);
+    });
+
+    it("don't return non-state cities", async () => {
+      const state01 = await stateFactory({});
+      const state02 = await stateFactory({});
+      const city02 = await cityFactory({ stateId: state02.id });
+      await cityFactory({ stateId: state01.id });
+
+      const cities = (await stateRepository.findOne(state01.id, { relations: ['cities'] })).cities
+      expect(cities).not.toEqual([city02]);
     });
   });
 })
