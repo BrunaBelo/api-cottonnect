@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { genericFactory } from "../utils/genericFactory";
 import { User } from "../../model/user";
 import { cityFactory } from "./city-factory";
@@ -49,6 +50,8 @@ export const userFactory = async(userData = {} as IUserData, save = true): Promi
     ...defaultUser,
     ...userData
   }
+
+  userData.password = await bcrypt.hash(userData.password, 10);
 
   const user = await genericFactory(User, userData, save);
   return user as User;

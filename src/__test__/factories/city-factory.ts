@@ -12,12 +12,7 @@ interface ICityData {
 const randomIbge = ():number => Math.floor(Math.random()*10000)
 
 export const cityFactory = async(cityData: ICityData, save = true): Promise<City> => {
-  const defaultCity =  { name: faker.address.city(), ibge: randomIbge(), stateId: null };
-
-  if(!cityData.stateId) {
-    const state = await stateFactory({});
-    cityData.stateId = state.id;
-  }
+  const defaultCity =  { name: faker.address.city(), ibge: randomIbge(), stateId: (await stateFactory({})).id };
 
   cityData = {
     ...defaultCity,

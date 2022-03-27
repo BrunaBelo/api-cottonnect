@@ -1,4 +1,3 @@
-import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { AppError } from "../errors/app-error";
@@ -6,6 +5,10 @@ import { validateUser } from "../schema-validation/user-schema";
 import { validateLogin } from "../schema-validation/login-schema";
 import { getCustomRepository } from "typeorm";
 import { UserRepository } from "../repository/user-repository";
+import ValidateUserService from "../service/user/validate-user-service";
+import CreateService from "../service/user/create-service";
+import { User } from "../model/user";
+import LoginUserService from "../service/user/login-user-service";
 
 class UserController {
   async create(request: Request, response: Response): Promise<Response> {
@@ -17,24 +20,25 @@ class UserController {
       phoneNumber,
       cpf,
       phoneVerified,
-      moreInfo: additionalInformation,
+      additionalInformation,
       cityId,
-    } = request.body;
+      roleId
+    }:User = request.body;
 
     try {
       await validateUser(request.body);
 
-      const encryptedPassword = await bcrypt.hash(password, 10);
-      const user = await userRepository.createAndSave({
+      const user = await new CreateService({
         name,
-        email: email.toLowerCase(),
-        password: encryptedPassword,
+        email,
+        password,
         phoneNumber,
         cpf,
         phoneVerified,
         additionalInformation,
         cityId,
-      });
+        roleId
+      } as User).run();
 
       return response.status(201).json(user);
     } catch (error) {
@@ -43,7 +47,6 @@ class UserController {
   }
 
   async login(request: Request, response: Response): Promise<Response> {
-    const userRepository = getCustomRepository(UserRepository);
     const { email, password } = request.body;
 
     try {
@@ -52,44 +55,21 @@ class UserController {
       throw new AppError(`Erro ao logar: ${error.message}`);
     }
 
-    const user = await userRepository.findByEmail(email);
+    const user = await new LoginUserService(email, password).run();
 
-    if (user && (await bcrypt.compare(password, user.password))) {
-      user.token = jwt.sign(
-        { user_id: user.id, email },
-        process.env.TOKEN_KEY,
-        { expiresIn: "2h" }
-      );
-
-      return response.status(200).json(user);
-    }
-
-    return response.status(400).send("Login ou Senha inválido(s)");
+    return response.status(200).json(user);
   }
 
   async validateUser(request: Request, response: Response): Promise<Response> {
-    const userRepository = getCustomRepository(UserRepository);
-    const { type, value } = request.query;
+    const {type, value} = request.body;
+    const user = await new ValidateUserService(type, value).run();
 
-    let result;
-
-    switch (type) {
-      case 'email':
-        result = await userRepository.findByEmail(value as string)
-      case 'phoneNumber':
-        result = await userRepository.findByPhoneNumber(value as string)
-      case 'cpf':
-        result = await userRepository.findByCpf(value as string)
-      default:
-        false;
-    }
-
-    return response.status(200).json({result: result ? false : true});
+    return response.status(200).json({result: user ? false : true});
   }
 
   async tokenRenewal(request: Request, response: Response): Promise<Response> {
     const userRepository = getCustomRepository(UserRepository);
-    const user = await userRepository.findOne(request["user"].id)
+    const user = await userRepository.findOne(request["user"].id);
 
     user.token = jwt.sign(
       { user_id: user.id, email: user.email },
