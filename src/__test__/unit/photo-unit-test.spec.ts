@@ -1,16 +1,15 @@
+import { getCustomRepository } from "typeorm";
+import { PhotoRepository } from "../../repository/photo-repositoy";
+import { photoFactory } from "../factories/photo-factory";
+import CreateService from "../../service/photos/create-service";
 import connection from "../../database/connection";
-import { Photo } from "../../model/photo";
-import { PhotoUseCase } from "../../use-cases/photo-use-case";
-import { donation01 } from "../factories/donation-object-factory";
-import { photo01 } from "../factories/photo-factory";
 
 describe("Photo", () => {
-  let photoUseCase: PhotoUseCase;
-  let photo: Photo;
+  let photoRepository: PhotoRepository;
 
   beforeAll(async () => {
     await connection.create();
-    photoUseCase = new PhotoUseCase();
+    photoRepository = getCustomRepository(PhotoRepository);
   });
 
   afterAll(async () => {
@@ -19,13 +18,14 @@ describe("Photo", () => {
 
   beforeEach(async () => {
     await connection.clear();
-    photo = photo01.build({ donationObjectId: (await donation01.create()).id })
   });
 
   describe("Create Photo", () => {
     it("create new Photo", async () => {
-      const newPhoto = await photoUseCase.create(photo);
-      expect(newPhoto).toMatchObject(photo);
+      let newPhoto = await photoFactory({}, false);
+      newPhoto = await new CreateService(newPhoto).run();
+
+      expect(await photoRepository.findOne(newPhoto.id)).toMatchObject(newPhoto);
     });
   });
 });

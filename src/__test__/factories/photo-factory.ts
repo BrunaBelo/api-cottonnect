@@ -1,10 +1,26 @@
 import { Photo } from "../../model/photo";
-import { Factory } from "./typeorm-factory/factory";
-import faker from 'faker/locale/pt_BR';
+import { genericFactory } from "../utils/genericFactory";
+import { donationFactory } from "./donation-object-factory";
 
-export const photo01 = new Factory(Photo)
-    .attr("id", faker.datatype.uuid())
-    .attr("name", "photo01")
-    .attr("type", ".png")
-    .attr("uri", "/upload/photo01.png")
-    .attr("donationObjectId", "")
+export const photoFactory = async(photoData, save = true):Promise<Photo> => {
+  const defaultPhoto = {
+    assetId: "123456",
+    publicId: "123456",
+    type: "png",
+    url: "url/faker",
+    donationObjectId: null
+   } as Photo
+
+   if(!photoData.donationObjectId) {
+    const donationObject = await donationFactory({});
+    photoData.donationObjectId = donationObject.id;
+  }
+
+   photoData = {
+    ...defaultPhoto,
+    ...photoData
+  }
+
+  const photo = await genericFactory(Photo, photoData, save);
+  return photo as Photo;
+}

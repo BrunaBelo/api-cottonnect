@@ -2,13 +2,15 @@ import { DonationObject } from "../../model/donation-object";
 import { genericFactory } from "../utils/genericFactory";
 import faker from 'faker/locale/pt_BR';
 import { categoryFactory } from "./category-factory";
+import { photoFactory } from "./photo-factory";
 
 export const donationFactory = async(donationData, save = true): Promise<DonationObject> => {
   const defaultdonation = {
     title: faker.lorem.words(),
     description: faker.lorem.sentence(),
     status: 'closed',
-    categories: null
+    categories: null,
+    photos: null
   } as DonationObject;
 
   if(!donationData.categories){

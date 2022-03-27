@@ -3,6 +3,7 @@ import connection from "../../database/connection";
 import { DonationObjectRepository } from "../../repository/donation-object-repository";
 import CreateService from "../../service/donation-object/create-service";
 import { donationFactory } from "../factories/donation-object-factory";
+import { photoFactory } from "../factories/photo-factory";
 
 describe("Donation Object", () => {
   let donationRepository: DonationObjectRepository;
@@ -27,6 +28,16 @@ describe("Donation Object", () => {
 
       expect(await donationRepository.findOne(newDonation.id,
         { relations: ['categories'] })).toEqual(newDonation);
+    });
+
+    it("create new donation with photos", async () => {
+      let newDonation = await donationFactory({}, true);
+      let photo01 = await photoFactory({donationObjectId: newDonation.id}, true);
+      let photo02 = await photoFactory({donationObjectId: newDonation.id}, true);
+
+      const photos = (await donationRepository.findOne(newDonation.id, { relations: ['photos'] })).photos;
+
+      expect(photos).toEqual([photo01, photo02]);
     });
   });
 });

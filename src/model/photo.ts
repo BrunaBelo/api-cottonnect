@@ -33,7 +33,6 @@ class Photo {
   donationObjectId: string;
 
   @ManyToOne(() => DonationObject, donationObject => donationObject.photos)
-  //@JoinColumn({name: "donationObjectId"})
   donationObject?: DonationObject;
 
   constructor() {
