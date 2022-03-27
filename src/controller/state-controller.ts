@@ -23,20 +23,19 @@ class StateController {
 
   async getAll(request: Request, response: Response): Promise<Response> {
     const stateRepository = getCustomRepository(StateRepository);
-    const allStates = await stateRepository.getAll()
+    const allStates = await stateRepository.getAll();
 
-    return response.status(200).json(allStates)
+    return response.status(200).json(allStates);
   }
 
 
   async getCitiesByStateId(request: Request, response: Response): Promise<Response> {
     const stateRepository = getCustomRepository(StateRepository);
+    const { stateId } = request.params;
 
-    const { stateId } = request.params
+    const state = await stateRepository.findOne(stateId, { relations: ['cities'] });
 
-    const state = await stateRepository.findOne(stateId, { relations: ['cities'] })
-
-    return response.status(200).json(state.cities)
+    return response.status(200).json(state.cities);
   }
 }
 
