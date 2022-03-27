@@ -1,9 +1,11 @@
 import { getCustomRepository } from "typeorm";
-import connection from "../../database/connection";
 import { User } from "../../model/user";
 import { UserRepository } from "../../repository/user-repository";
-import CreateService from "../../service/user/create-service";
+import { auctionFactory } from "../factories/auction-factory";
+import { biddingFactory } from "../factories/bidding-factory";
 import { userFactory } from "../factories/user-factory";
+import CreateService from "../../service/user/create-service";
+import connection from "../../database/connection";
 
 describe("User", () => {
   let userRepository: UserRepository;
@@ -68,6 +70,30 @@ describe("User", () => {
         await expect(async() => await createUser())
         .rejects
         .toMatchObject({message: `O CPF ${user.cpf} já está em uso`})
+      });
+    });
+
+    describe("When create donations to user", () => {
+      it("associate donations to the user", async () => {
+        const newUser = await userFactory({});
+        const auction01 = await auctionFactory({ userId: newUser });
+        const auction02 = await auctionFactory({ userId: newUser });
+
+        const auctions = (await userRepository.findOne(newUser.id, { relations: ['auctions']})).auctions
+
+        expect(auctions).toEqual([auction01, auction02]);
+      });
+    });
+
+    describe("When create binddings to user", () => {
+      it("associate binddings to the user", async () => {
+        const newUser = await userFactory({});
+        const newAuction = await auctionFactory({});
+        const newBindding = await biddingFactory({ userId: newUser.id, auctionId: newAuction.id });
+
+        const binddings = (await userRepository.findOne(newUser.id, { relations: ['biddings']})).biddings
+
+        expect(binddings).toContainEqual(newBindding);
       });
     });
   });

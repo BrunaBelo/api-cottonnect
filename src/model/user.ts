@@ -55,8 +55,8 @@ class User {
   @JoinColumn({ name: "roleId" })
   role?: Role;
 
-  @OneToMany(() => Auction, auction => auction)
-  auction?: Auction[];
+  @OneToMany(() => Auction, auction => auction.user)
+  auctions?: Auction[];
 
   @OneToMany(() => Bidding, bidding => bidding.user)
   biddings?: Bidding[];

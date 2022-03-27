@@ -41,8 +41,7 @@ class Auction {
     @JoinColumn({name: 'donationObjectId'})
     donationObject?: DonationObject;
 
-    @ManyToOne(() => User, user => user.auction)
-    @JoinColumn({ name: "userId" })
+    @ManyToOne(() => User, user => user.auctions)
     user?: User;
 
     @OneToMany(() => Bidding, bidding => bidding.auction)
