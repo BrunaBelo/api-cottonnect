@@ -35,7 +35,6 @@ class Bidding {
     user?: User;
 
     @ManyToOne(() => Auction, auction => auction.biddings)
-    @JoinColumn({ name: "auctionId" })
     auction?: Auction;
 
     constructor() {

@@ -1,9 +1,32 @@
+import { genericFactory } from "../utils/genericFactory";
 import { Bidding } from "../../model/bidding";
-import { Factory } from "./typeorm-factory/factory";
+import { userFactory } from "./user-factory";
+import { auctionFactory } from "./auction-factory";
 import faker from 'faker/locale/pt_BR';
 
-export const bidding01 = new Factory(Bidding)
-    .attr("id", faker.datatype.uuid())
-    .attr("bidAmount", faker.datatype.number())
-    .attr("auctionId", "")
-    .attr("userId", "")
+export const biddingFactory = async(biddingData, save = true): Promise<Bidding> => {
+  const defaultbidding =  {
+    bidAmount: faker.datatype.number(),
+    winner: false,
+    auctionId: null,
+    userId: null
+  };
+
+  if(!biddingData.auctionId) {
+    const auction = await auctionFactory({});
+    biddingData.auctionId = auction.id;
+  }
+
+  if(!biddingData.userId) {
+    const user = await userFactory({});
+    biddingData.userId = user.id;
+  }
+
+  biddingData = {
+    ...defaultbidding,
+    ...biddingData
+  }
+
+  const bidding = await genericFactory(Bidding, biddingData, save);
+  return bidding as Bidding;
+}

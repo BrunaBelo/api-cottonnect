@@ -45,7 +45,7 @@ class Auction {
     @JoinColumn({ name: "userId" })
     user?: User;
 
-    @OneToMany(() => Bidding, bidding => bidding)
+    @OneToMany(() => Bidding, bidding => bidding.auction)
     biddings?: Bidding[];
 
     constructor() {

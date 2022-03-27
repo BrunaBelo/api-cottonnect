@@ -3,6 +3,7 @@ import connection from "../../database/connection";
 import { AuctionRepository } from "../../repository/auction-repository";
 import CreateService from "../../service/auction/create-service";
 import { auctionFactory } from "../factories/auction-factory";
+import { biddingFactory } from "../factories/bidding-factory";
 
 describe("Auction", () => {
   let auctionRepository: AuctionRepository;
@@ -29,15 +30,15 @@ describe("Auction", () => {
     });
   });
 
-  // describe("Get biddings of the auction", () => {
-  //   it("returns all biddings", async () => {
-  //     let newAuction = await auctionFactory({}, true);
+  describe("Get biddings of the auction", () => {
+    it("returns all biddings", async () => {
+      let newAuction = await auctionFactory({}, true);
 
-  //     let bidding01 = await biddingFactory({});
-  //     let bidding02 = await biddingFactory({});
+      let bidding01 = await biddingFactory({auctionId: newAuction.id});
+      let bidding02 = await biddingFactory({auctionId: newAuction.id });
 
-  //     expect(await auctionRepository.findOne(newAuction.id,
-  //       { relations: ['biddings']})).toContainEqual([bidding01, bidding02]);
-  //   });
-  // });
+      const biddings = (await auctionRepository.findOne(newAuction.id, { relations: ['biddings']})).biddings;
+      expect(biddings).toEqual([bidding01, bidding02]);
+    });
+  });
 });
