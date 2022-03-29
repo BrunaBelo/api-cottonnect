@@ -24,7 +24,7 @@ describe("Donation Object", () => {
   describe("Create Donation", () => {
     it("create new donation", async () => {
       let newDonation = await donationFactory({}, false);
-      newDonation = await new CreateService(newDonation).run();
+      newDonation = await donationRepository.createAndSave(newDonation);
 
       expect(await donationRepository.findOne(newDonation.id,
         { relations: ['categories'] })).toEqual(newDonation);

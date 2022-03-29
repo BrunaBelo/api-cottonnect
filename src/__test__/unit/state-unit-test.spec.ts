@@ -29,7 +29,7 @@ describe("State", () => {
 
   describe("Create State", () => {
     it("create new State", async () => {
-      let newState = { name: "Ceará", ibge: 123456 } as State;
+      let newState = { name: "Novo Estado", ibge: 123456 } as State;
       newState = await new CreateService(newState).run();
 
       expect(await stateRepository.findOne(newState.id)).toEqual(newState);
