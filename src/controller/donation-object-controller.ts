@@ -5,9 +5,12 @@ import CreateDonationService from "../service/donation-object/create-donation-se
 class DonationObjectController {
   async create(request: Request, response: Response): Promise<Response> {
     let newDonationObject = null;
+    const { files } = request;
 
     try {
-      newDonationObject = await new CreateDonationService(request.body, request["user"]["user_id"]).run();
+      newDonationObject = await new CreateDonationService(request.body,
+                                                          request["user"]["user_id"],
+                                                          files as Express.Multer.File[]).run();
     } catch (error) {
       throw new AppError(`Erro ao criar doação ${error}`, 400);
     }

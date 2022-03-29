@@ -10,9 +10,10 @@ class CreateDonationService {
   private repository: DonationObjectRepository;
   private categoryRepository: CategoryRepository;
 
-  constructor(private requestParams, private currentUserId: string) {
+  constructor(private requestParams, private currentUserId: string, private files: Express.Multer.File[]) {
     this.requestParams = requestParams;
     this.currentUserId = currentUserId;
+    this.files = files;
     this.repository = getCustomRepository(DonationObjectRepository);
     this.categoryRepository = getCustomRepository(CategoryRepository);
   }
@@ -46,10 +47,11 @@ class CreateDonationService {
   }
 
   private async savePhotos(donationObject: DonationObject): Promise<void> {
+    const { files } = this;
     let cloudPhotos = [];
 
-    if(this.requestParams.files){
-      cloudPhotos = await savePhotos(this.requestParams.files);
+    if(files){
+      cloudPhotos = await savePhotos(files);
     }
 
     for await (const photo of cloudPhotos) {
