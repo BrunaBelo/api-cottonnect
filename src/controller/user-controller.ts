@@ -61,8 +61,10 @@ class UserController {
   }
 
   async validateUser(request: Request, response: Response): Promise<Response> {
-    const {type, value} = request.body;
-    const user = await new ValidateUserService(type, value).run();
+    const { type, value } = request.query;
+
+    const user = await new ValidateUserService(type as string, value as string).run();
+
 
     return response.status(200).json({result: user ? false : true});
   }
