@@ -1,7 +1,7 @@
 import { getCustomRepository } from "typeorm";
 import connection from "../../database/connection";
 import { AuctionRepository } from "../../repository/auction-repository";
-import CreateService from "../../service/auction/create-service";
+import CreateAuctionService from "../../service/auction/create-auction-service";
 import { auctionFactory } from "../factories/auction-factory";
 import { biddingFactory } from "../factories/bidding-factory";
 
@@ -24,7 +24,7 @@ describe("Auction", () => {
   describe("Create auction", () => {
     it("create new auction", async () => {
       let newAuction = await auctionFactory({}, false);
-      newAuction = await new CreateService(newAuction).run();
+      newAuction = await new CreateAuctionService(newAuction).run();
 
       expect(await auctionRepository.findOne(newAuction.id)).toMatchObject(newAuction);
     });

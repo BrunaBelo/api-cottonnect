@@ -2,7 +2,7 @@ import { getCustomRepository } from "typeorm";
 import connection from "../../database/connection";
 import { State } from "../../model/state";
 import { StateRepository } from "../../repository/state-repository";
-import CreateService from "../../service/state/create-service";
+import CreateStateService from "../../service/state/create-state-service";
 import { cityFactory } from "../factories/city-factory";
 import { stateFactory } from "../factories/state-factory";
 
@@ -30,7 +30,7 @@ describe("State", () => {
   describe("Create State", () => {
     it("create new State", async () => {
       let newState = { name: "Novo Estado", ibge: 123456 } as State;
-      newState = await new CreateService(newState).run();
+      newState = await new CreateStateService(newState).run();
 
       expect(await stateRepository.findOne(newState.id)).toEqual(newState);
     });
@@ -42,7 +42,7 @@ describe("State", () => {
 
       const createState = async() => {
         let newState = { name: stateFromDatabase.name, ibge: 654123 } as State;
-        newState = await new CreateService(newState).run();
+        newState = await new CreateStateService(newState).run();
       }
 
       await expect(async() => await createState())
@@ -57,7 +57,7 @@ describe("State", () => {
 
       const createState = async() => {
         let newState = { name: 'novo nome', ibge: stateFromDatabase.ibge } as State;
-        newState = await new CreateService(newState).run();
+        newState = await new CreateStateService(newState).run();
       }
 
       await expect(async() => await createState())

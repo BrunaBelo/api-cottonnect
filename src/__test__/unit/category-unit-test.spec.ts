@@ -1,7 +1,7 @@
 import { getCustomRepository } from "typeorm";
 import connection from "../../database/connection";
 import { CategoryRepository } from "../../repository/category-repository";
-import CreateService from "../../service/category/create-service";
+import CreateCategoryService from "../../service/category/create-category-service";
 import { categoryFactory } from "../factories/category-factory";
 
 describe("Category", () => {
@@ -23,7 +23,7 @@ describe("Category", () => {
   describe("Create category", () => {
     it("create new Category", async () => {
       let newCategory = await categoryFactory({}, false);
-      newCategory = await new CreateService(newCategory).run();
+      newCategory = await new CreateCategoryService(newCategory).run();
       expect(await categoryRepository.findOne(newCategory.id)).toMatchObject(newCategory);
     });
   });

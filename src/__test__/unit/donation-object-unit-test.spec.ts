@@ -1,7 +1,6 @@
 import { getCustomRepository } from "typeorm";
 import connection from "../../database/connection";
 import { DonationObjectRepository } from "../../repository/donation-object-repository";
-import CreateService from "../../service/donation-object/create-service";
 import { donationFactory } from "../factories/donation-object-factory";
 import { photoFactory } from "../factories/photo-factory";
 

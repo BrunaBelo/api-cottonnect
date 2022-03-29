@@ -2,7 +2,7 @@ import { getCustomRepository } from "typeorm"
 import { Category } from "../../model/category"
 import { CategoryRepository } from "../../repository/category-repository"
 
-class CreateService {
+class CreateCategoryService {
   private repository: CategoryRepository;
 
   constructor(private category: Category) {
@@ -19,4 +19,4 @@ class CreateService {
   }
 }
 
-export default CreateService;
+export default CreateCategoryService;

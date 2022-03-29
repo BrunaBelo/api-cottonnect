@@ -2,7 +2,7 @@ import { getCustomRepository } from "typeorm";
 import connection from "../../database/connection";
 import { City } from "../../model/city";
 import { CityRepository } from "../../repository/city-repository";
-import CreateService from "../../service/city/create-service";
+import CreateCityService from "../../service/city/create-city-service";
 import { cityFactory } from "../factories/city-factory";
 
 describe("City", () => {
@@ -34,7 +34,7 @@ describe("City", () => {
 
         const createCity = async() => {
           let newCity = { name: city.name, ibge: 9878 } as City;
-          newCity = await new CreateService(newCity).run();
+          newCity = await new CreateCityService(newCity).run();
         }
 
         await expect(async() => await createCity())
@@ -49,7 +49,7 @@ describe("City", () => {
 
         const createCity = async() => {
           let newCity = { name: 'New name', ibge: city.ibge } as City;
-          newCity = await new CreateService(newCity).run();
+          newCity = await new CreateCityService(newCity).run();
         }
 
         await expect(async() => await createCity())

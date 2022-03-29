@@ -1,7 +1,7 @@
 import { getCustomRepository } from "typeorm";
 import connection from "../../database/connection";
 import { BiddingRepository } from "../../repository/bidding-repository";
-import CreateService from "../../service/bidding/create-service";
+import CreateBinddingService from "../../service/bidding/create-bidding-service";
 import { biddingFactory } from "../factories/bidding-factory";
 
 describe("Bidding", () => {
@@ -23,7 +23,7 @@ describe("Bidding", () => {
   describe("Create bidding", () => {
     it("create bidding", async () => {
       let newBidding = await biddingFactory({}, false);
-      newBidding = await new CreateService(newBidding).run();
+      newBidding = await new CreateBinddingService(newBidding).run();
 
       expect(await biddingRepository.findOne(newBidding.id)).toMatchObject(newBidding);
     });

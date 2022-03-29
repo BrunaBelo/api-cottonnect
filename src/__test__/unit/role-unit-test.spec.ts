@@ -2,7 +2,7 @@ import { getCustomRepository } from "typeorm";
 import connection from "../../database/connection";
 import { Role } from "../../model/role";
 import { RoleRepository } from "../../repository/role-repository";
-import CreateService from "../../service/role/create-service";
+import CreateRoleService from "../../service/role/create-role-service";
 import { roleFactory } from "../factories/role-factory";
 
 describe("Role", () => {
@@ -24,7 +24,7 @@ describe("Role", () => {
   describe("Role", () => {
     it("create role", async() => {
       let newRole = { name: "boss" } as Role;
-      newRole = await new CreateService(newRole).run();
+      newRole = await new CreateRoleService(newRole).run();
 
       expect(await roleRepository.findOne(newRole.id)).toEqual(newRole);
     });
@@ -44,7 +44,7 @@ describe("Role", () => {
 
         const createRole = async() => {
           let newRole = { name: role.name } as Role;
-          newRole = await new CreateService(newRole).run();
+          newRole = await new CreateRoleService(newRole).run();
         }
 
         await expect(async() => await createRole())

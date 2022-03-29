@@ -6,7 +6,7 @@ import { validateLogin } from "../schema-validation/login-schema";
 import { getCustomRepository } from "typeorm";
 import { UserRepository } from "../repository/user-repository";
 import ValidateUserService from "../service/user/validate-user-service";
-import CreateService from "../service/user/create-service";
+import CreateUserService from "../service/user/create-user-service";
 import { User } from "../model/user";
 import LoginUserService from "../service/user/login-user-service";
 
@@ -28,7 +28,7 @@ class UserController {
     try {
       await validateUser(request.body);
 
-      const user = await new CreateService({
+      const user = await new CreateUserService({
         name,
         email,
         password,

@@ -4,7 +4,7 @@ import { UserRepository } from "../../repository/user-repository";
 import { auctionFactory } from "../factories/auction-factory";
 import { biddingFactory } from "../factories/bidding-factory";
 import { userFactory } from "../factories/user-factory";
-import CreateService from "../../service/user/create-service";
+import CreateUserService from "../../service/user/create-user-service";
 import connection from "../../database/connection";
 
 describe("User", () => {
@@ -28,7 +28,7 @@ describe("User", () => {
   describe("Create user", () => {
     it("create new user", async () => {
       let newUser = await userFactory({}, false);
-      newUser = await new CreateService(newUser).run();
+      newUser = await new CreateUserService(newUser).run();
 
       expect(await userRepository.findOne(newUser.id)).toMatchObject(newUser);
     });
@@ -37,7 +37,7 @@ describe("User", () => {
       it("don't create a user", async () => {
         const createUser = async() => {
           let newUser = await userFactory({ email: user.email }, false)
-          await new CreateService(newUser).run();
+          await new CreateUserService(newUser).run();
         }
 
         await expect(async() => await createUser())
@@ -50,7 +50,7 @@ describe("User", () => {
       it("don't create a user", async () => {
         const createUser = async() => {
           let newUser = await userFactory({ email: "new email", phoneNumber: user.phoneNumber }, false);
-          newUser = await new CreateService(newUser).run();
+          newUser = await new CreateUserService(newUser).run();
         }
         await expect(async() => await createUser())
         .rejects
@@ -64,7 +64,7 @@ describe("User", () => {
 
         const createUser = async() => {
           let newUser = await userFactory({ cpf: user.cpf }, false);
-          newUser = await new CreateService(newUser).run();
+          newUser = await new CreateUserService(newUser).run();
         }
 
         await expect(async() => await createUser())

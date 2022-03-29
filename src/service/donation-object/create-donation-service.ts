@@ -1,12 +1,12 @@
 import { getCustomRepository } from "typeorm"
 import { DonationObject } from "../../model/donation-object"
 import { DonationObjectRepository } from "../../repository/donation-object-repository"
-import CreatePhotoService from "../../service/photos/create-service"
-import CreateAuctionService from "../../service/auction/create-service"
+import CreatePhotoService from "../photos/create-photo-service"
+import CreateAuctionService from "../auction/create-auction-service"
 import savePhotos from "../cloudinary/savePhoto";
 import { CategoryRepository } from "../../repository/category-repository"
 
-class CreateService {
+class CreateDonationService {
   private repository: DonationObjectRepository;
   private categoryRepository: CategoryRepository;
 
@@ -77,4 +77,4 @@ class CreateService {
   }
 }
 
-export default CreateService;
+export default CreateDonationService;

@@ -4,7 +4,7 @@ import { AppError } from "../../errors/app-error";
 import { User } from "../../model/user";
 import { UserRepository } from "../../repository/user-repository";
 
-class CreateService {
+class CreateUserService {
   private repository: UserRepository;
 
   constructor(private user: User){
@@ -42,4 +42,4 @@ class CreateService {
   }
 }
 
-export default CreateService;
+export default CreateUserService;

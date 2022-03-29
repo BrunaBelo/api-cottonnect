@@ -3,7 +3,7 @@ import { AppError } from "../../errors/app-error"
 import { State } from "../../model/state"
 import { StateRepository } from "../../repository/state-repository"
 
-class CreateService {
+class CreateStateService {
   private repository: StateRepository;
 
   constructor(private state: State){
@@ -31,4 +31,4 @@ class CreateService {
   }
 }
 
-export default CreateService;
+export default CreateStateService;

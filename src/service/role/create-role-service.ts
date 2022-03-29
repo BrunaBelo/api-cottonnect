@@ -3,7 +3,7 @@ import { AppError } from "../../errors/app-error"
 import { Role } from "../../model/role"
 import { RoleRepository } from "../../repository/role-repository"
 
-class CreateService {
+class CreateRoleService {
   private repository: RoleRepository;
 
   constructor(private role: Role){
@@ -25,4 +25,4 @@ class CreateService {
   }
 }
 
-export default CreateService;
+export default CreateRoleService;

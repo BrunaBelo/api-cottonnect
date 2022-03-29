@@ -2,7 +2,7 @@ import { getCustomRepository } from "typeorm"
 import { Auction } from "../../model/auction"
 import { AuctionRepository } from "../../repository/auction-repository"
 
-class CreateService {
+class CreateAuctionService {
   private repository: AuctionRepository;
 
   constructor(private auction: Auction) {
@@ -19,4 +19,4 @@ class CreateService {
   }
 }
 
-export default CreateService;
+export default CreateAuctionService;

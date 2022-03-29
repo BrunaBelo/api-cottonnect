@@ -2,7 +2,7 @@ import { getCustomRepository } from "typeorm"
 import { Photo } from "../../model/photo"
 import { PhotoRepository } from "../../repository/photo-repositoy";
 
-class CreateService {
+class CreatePhotoService {
   private repository: PhotoRepository;
 
   constructor(private photo: Photo) {
@@ -19,4 +19,4 @@ class CreateService {
   }
 }
 
-export default CreateService;
+export default CreatePhotoService;

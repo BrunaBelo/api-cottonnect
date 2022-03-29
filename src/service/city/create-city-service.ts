@@ -1,9 +1,9 @@
-import { getCustomRepository, Repository } from "typeorm"
+import { getCustomRepository } from "typeorm"
 import { AppError } from "../../errors/app-error"
 import { City } from "../../model/city"
 import { CityRepository } from "../../repository/city-repository"
 
-class CreateService {
+class CreateCityService {
   private repository: CityRepository;
 
   constructor(private city: City){
@@ -31,4 +31,4 @@ class CreateService {
   }
 }
 
-export default CreateService;
+export default CreateCityService;
