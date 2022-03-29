@@ -2,18 +2,21 @@ import bcrypt from "bcryptjs";
 import { getCustomRepository } from "typeorm";
 import { AppError } from "../../errors/app-error";
 import { User } from "../../model/user";
+import { RoleRepository } from "../../repository/role-repository";
 import { UserRepository } from "../../repository/user-repository";
 
 class CreateUserService {
   private repository: UserRepository;
+  private roleRepository: RoleRepository;
 
   constructor(private user: User){
     this.user = user;
     this.repository = getCustomRepository(UserRepository);
+    this.roleRepository = getCustomRepository(RoleRepository);
   }
 
   async run(): Promise<User> {
-    const { repository, user } = this;
+    const { repository, user, roleRepository } = this;
 
     const existEmail = await repository.findOne({ where: { email: user.email } });
     const existcpf = await repository.findOne({ where: { cpf: user.cpf } });
@@ -32,7 +35,7 @@ class CreateUserService {
     }
 
     if(!user.roleId){
-      user.roleId = (await repository.findOne({ name: 'user' })).id
+      user.roleId = (await roleRepository.findOne({ name: 'user' })).id
     }
 
     user.password = await bcrypt.hash(user.password, 10);
