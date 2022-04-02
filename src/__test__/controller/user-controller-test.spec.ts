@@ -86,21 +86,21 @@ describe("User", () => {
   describe("GET validateUser", () => {
     describe("when is a valid user", () => {
       it("return a user with valid email", async() => {
-        const res = await request(app).get('/users/validate-user').send({type: "email", value: "jon_snow@example.com"});
+        const res = await request(app).get('/users/validate-user').query({type: "email", value: "jon_snow@example.com"});
 
         expect(res.status).toBe(200);
         expect(res.body.result).toBe(true);
       });
 
       it("return a user with valid cpf", async() => {
-        const res = await request(app).get('/users/validate-user').send({type: "cpf", value: "789.654.123-74"});
+        const res = await request(app).get('/users/validate-user').query({type: "cpf", value: "789.654.123-74"});
 
         expect(res.status).toBe(200);
         expect(res.body.result).toBe(true);
       });
 
       it("return a user with valid phone", async() => {
-        const res = await request(app).get('/users/validate-user').send({type: "phoneNumber", value: "(21)96546-2232"});
+        const res = await request(app).get('/users/validate-user').query({type: "phoneNumber", value: "(21)96546-2232"});
 
         expect(res.status).toBe(200);
         expect(res.body.result).toBe(true);
@@ -110,7 +110,7 @@ describe("User", () => {
     describe("when is a invalid user", () => {
       it("return error to invalid email", async() => {
         const user = await userFactory({});
-        const res = await request(app).get('/users/validate-user').send({type: "email", value: user.email});
+        const res = await request(app).get('/users/validate-user').query({type: "email", value: user.email});
 
         expect(res.status).toBe(200);
         expect(res.body.result).toBe(false);
@@ -118,7 +118,7 @@ describe("User", () => {
 
       it("return error to invalid cpf", async() => {
         const user = await userFactory({});
-        const res = await request(app).get('/users/validate-user').send({type: "cpf", value: user.cpf});
+        const res = await request(app).get('/users/validate-user').query({type: "cpf", value: user.cpf});
 
         expect(res.status).toBe(200);
         expect(res.body.result).toBe(false);
@@ -126,7 +126,7 @@ describe("User", () => {
 
       it("return error to invalid phone", async() => {
         const user = await userFactory({});
-        const res = await request(app).get('/users/validate-user').send({type: "phoneNumber", value: user.phoneNumber});
+        const res = await request(app).get('/users/validate-user').query({type: "phoneNumber", value: user.phoneNumber});
 
         expect(res.status).toBe(200);
         expect(res.body.result).toBe(false);

@@ -2,7 +2,6 @@ import { getCustomRepository } from "typeorm"
 import { DonationObject } from "../../model/donation-object"
 import { DonationObjectRepository } from "../../repository/donation-object-repository"
 import CreatePhotoService from "../photos/create-photo-service"
-import CreateAuctionService from "../auction/create-auction-service"
 import savePhotos from "../cloudinary/savePhoto";
 import { CategoryRepository } from "../../repository/category-repository"
 
@@ -10,9 +9,8 @@ class CreateDonationService {
   private repository: DonationObjectRepository;
   private categoryRepository: CategoryRepository;
 
-  constructor(private requestParams, private currentUserId: string, private files: Express.Multer.File[]) {
+  constructor(private requestParams, private files: Express.Multer.File[]) {
     this.requestParams = requestParams;
-    this.currentUserId = currentUserId;
     this.files = files;
     this.repository = getCustomRepository(DonationObjectRepository);
     this.categoryRepository = getCustomRepository(CategoryRepository);
@@ -23,7 +21,6 @@ class CreateDonationService {
 
     if(newDonationObject){
       await this.savePhotos(newDonationObject);
-      await this.createAuction(newDonationObject);
     }
 
     return newDonationObject;
@@ -65,17 +62,6 @@ class CreateDonationService {
         donationObjectId: donationObject.id
       }).run();
     }
-  }
-
-  private async createAuction(donationObject: DonationObject): Promise<void> {
-    const { requestParams, currentUserId } = this;
-
-    await new CreateAuctionService({
-      closingDate: new Date(requestParams.closingDate),
-      userId: currentUserId,
-      status: 'open',
-      donationObjectId: donationObject.id
-    }).run();
   }
 }
 

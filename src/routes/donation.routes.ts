@@ -7,6 +7,5 @@ const storage = multer.memoryStorage()
 const upload = multer({ storage: storage });
 
 const donationRoutes = Router();
-donationRoutes.post("/", auth, upload.array('photos'), new DonationObjectController().create);
 
 export { donationRoutes };

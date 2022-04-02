@@ -5,6 +5,7 @@ import { User } from '../../model/user';
 import { app } from "../../server";
 import LoginUserService from '../../service/user/login-user-service';
 import { auctionFactory } from '../factories/auction-factory';
+import { donationFactory } from '../factories/donation-object-factory';
 import { userFactory } from '../factories/user-factory';
 
 describe("Auction", () => {
@@ -22,6 +23,30 @@ describe("Auction", () => {
     await connection.clear();
     user = await userFactory({ password: "12345678" });
     user = await new LoginUserService(user.email, "12345678").run();
+  });
+
+  describe("POST #create", () => {
+    it("create new auction", async() => {
+      let donation = await donationFactory({}, false);
+
+      const res = await request(app).post('/auctions')
+                                    .set({ "x-access-token": user.token })
+                                    .send({ ...donation, closingDate: new Date() });
+
+      expect(res.status).toEqual(201);
+      expect(res.body.toString()).toEqual([donation].toString());
+    });
+
+    it("don't create new auction when attrs is missing", async() => {
+      let donation = await donationFactory({}, false);
+
+      const res = await request(app).post('/auctions')
+                                    .set({ "x-access-token": user.token })
+                                    .send(donation);
+
+      expect(res.status).toEqual(400);
+      expect(res.body.message).toContain("Erro ao criar leilão");
+    });
   });
 
   describe("GET #findAuction", () => {
