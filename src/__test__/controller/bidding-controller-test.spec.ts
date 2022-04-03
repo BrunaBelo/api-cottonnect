@@ -5,6 +5,7 @@ import { User } from '../../model/user';
 import { app } from "../../server";
 import { userFactory } from '../factories/user-factory';
 import { biddingFactory } from '../factories/bidding-factory';
+import { auctionFactory } from '../factories/auction-factory';
 
 describe("Bidding", () => {
   let user: User;
@@ -45,6 +46,46 @@ describe("Bidding", () => {
 
       expect(res.status).toEqual(400);
       expect(res.body.message).toContain("Não foi possivel criar o lance");
+    });
+  });
+
+  describe("GET #getBiddingFromUser", () => {
+    it("return biddings", async() => {
+      let bidding = await biddingFactory({userId: user.id});
+
+      const res = await request(app).get('/biddings/find-bidding')
+                                    .set({ "x-access-token": user.token })
+                                    .query({ auctionId: bidding.auctionId });
+
+      expect(res.status).toEqual(201);
+      expect(res.body.toString()).toEqual([bidding].toString());
+    });
+
+    describe("When auction not have bidding from user", () => {
+      it("does not returns bidding", async() => {
+        let bidding = await biddingFactory({});
+
+        const res = await request(app).get('/biddings/find-bidding')
+                                      .set({ "x-access-token": user.token })
+                                      .query({ auctionId: bidding.auctionId });
+
+        expect(res.status).toEqual(201);
+        expect(res.body).toEqual([]);
+      });
+    });
+
+    describe("When user not have bidding from auction", () => {
+      it("does not returns bidding", async() => {
+        let auction = await auctionFactory({});
+        await biddingFactory({userId: user.id});
+
+        const res = await request(app).get('/biddings/find-bidding')
+                                      .set({ "x-access-token": user.token })
+                                      .query({ auctionId: auction.id });
+
+        expect(res.status).toEqual(201);
+        expect(res.body).toEqual([]);
+      });
     });
   });
 });

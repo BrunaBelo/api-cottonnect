@@ -21,6 +21,22 @@ class BiddingController {
     }
     return response.status(201).json(newBidding);
   }
+
+  async getBiddingFromUser(request: Request, response: Response): Promise<Response> {
+    const biddingRepository = getCustomRepository(BiddingRepository);
+    const { auctionId } = request.query;
+    let bidding = {};
+
+    try {
+      bidding = await biddingRepository.find({ where: {
+        userId: request.user.id,
+        auctionId: auctionId,
+      }})
+    } catch (error) {
+      throw new AppError(`Erro: ${error}`);
+    }
+    return response.status(201).json(bidding);
+  }
 }
 
 export { BiddingController };

@@ -16,42 +16,42 @@ import { User } from "./user";
 
 @Entity("auctions")
 class Auction {
-    @PrimaryColumn()
-    id?: string;
+  @PrimaryColumn()
+  id?: string;
 
-    @Column()
-    closingDate: Date;
+  @Column()
+  closingDate: Date;
 
-    @Column()
-    status?: string;
+  @Column()
+  status?: string;
 
-    @CreateDateColumn()
-    createdAt?: Date;
+  @CreateDateColumn()
+  createdAt?: Date;
 
-    @UpdateDateColumn()
-    updatedAt?: Date;
+  @UpdateDateColumn()
+  updatedAt?: Date;
 
-    @Column()
-    userId: string;
+  @Column()
+  userId: string;
 
-    @Column()
-    donationObjectId: string;
+  @Column()
+  donationObjectId: string;
 
-    @OneToOne(() => DonationObject)
-    @JoinColumn({name: 'donationObjectId'})
-    donationObject?: DonationObject;
+  @OneToOne(() => DonationObject)
+  @JoinColumn({name: 'donationObjectId'})
+  donationObject?: DonationObject;
 
-    @ManyToOne(() => User, user => user.auctions)
-    user?: User;
+  @ManyToOne(() => User, user => user.auctions)
+  user?: User;
 
-    @OneToMany(() => Bidding, bidding => bidding.auction)
-    biddings?: Bidding[];
+  @OneToMany(() => Bidding, bidding => bidding.auction)
+  biddings?: Bidding[];
 
-    constructor() {
-        if (!this.id) {
-            this.id = uuid();
-        }
+  constructor() {
+    if (!this.id) {
+      this.id = uuid();
     }
+  }
 }
 
 export { Auction };

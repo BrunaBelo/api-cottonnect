@@ -5,5 +5,6 @@ import { auth } from "../middleware/auth";
 const biddingRoutes = Router();
 
 biddingRoutes.post("/", auth, new BiddingController().create);
+biddingRoutes.get("/find-bidding", auth, new BiddingController().getBiddingFromUser);
 
 export { biddingRoutes };
