@@ -7,6 +7,7 @@ import { cityRoutes } from "./city.routes";
 import { categoryRoutes } from "./category.routes";
 import { donationRoutes } from "./donation.routes";
 import { auctionRoutes } from "./auction.routes";
+import { biddingRoutes } from "./bidding.routes";
 
 const routers = Router();
 
@@ -17,5 +18,6 @@ routers.use("/cities", cityRoutes);
 routers.use("/categories", categoryRoutes);
 routers.use("/donations", donationRoutes);
 routers.use("/auctions", auctionRoutes);
+routers.use("/biddings", biddingRoutes);
 
 export { routers };

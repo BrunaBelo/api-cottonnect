@@ -16,12 +16,11 @@ class AuctionController {
 
       newAuction = await new CreateAuctionService({
         closingDate: new Date(closingDate),
-        userId: request["user"]["user_id"],
+        userId: request.user.id,
         status: 'open',
         donationObjectId: donationObject.id
       }).run();
 
-      console.log('asasasasa', newAuction)
     } catch (error) {
       throw new AppError(`Erro ao criar leilão ${error}`, 400);
     }

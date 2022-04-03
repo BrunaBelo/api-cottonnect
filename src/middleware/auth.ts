@@ -9,7 +9,11 @@ const auth = (request: Request, response: Response, next: NextFunction) => {
 
   try {
     const decoded = jwt.verify(token, process.env.TOKEN_KEY);
-    request["user"] = decoded;
+
+    request.user = {
+      id: decoded['user_id'] as string,
+    };
+
     next();
   } catch (error) {
     response.status(400).send("Invalid token.");

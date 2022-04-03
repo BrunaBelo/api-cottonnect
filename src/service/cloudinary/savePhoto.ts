@@ -1,4 +1,3 @@
-import { Buffer } from "buffer";
 import axios from "axios";
 
 import { IPhoto } from "../../interfaces/IPhoto"

@@ -1,4 +1,5 @@
 import { EntityRepository, getRepository, Repository } from "typeorm";
+import { Bidding } from "../model/bidding";
 import { DonationObject } from "../model/donation-object";
 
 @EntityRepository(DonationObject)

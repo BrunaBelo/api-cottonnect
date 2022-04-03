@@ -71,7 +71,7 @@ class UserController {
 
   async tokenRenewal(request: Request, response: Response): Promise<Response> {
     const userRepository = getCustomRepository(UserRepository);
-    const user = await userRepository.findOne(request["user"].id);
+    const user = await userRepository.findOne(request.user.id);
 
     user.token = jwt.sign(
       { user_id: user.id, email: user.email },

@@ -1,5 +1,4 @@
 import request from 'supertest';
-import { Equal } from 'typeorm';
 import connection from "../../database/connection";
 import { User } from '../../model/user';
 import { app } from "../../server";
@@ -60,7 +59,7 @@ describe("Auction", () => {
     });
 
     it("return empty when not finding an auction", async() => {
-      const res = await request(app).get("/auctions/012").set({ "x-access-token": user.token });
+      const res = await request(app).get("/auctions/2f2829ec-b387-11ec-b909-0242ac120002").set({ "x-access-token": user.token });
 
       expect(res.status).toEqual(422);
       expect(res.body.message).toBe("Não foi possível encontrar a auction solicitada");
