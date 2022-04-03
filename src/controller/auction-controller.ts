@@ -31,11 +31,12 @@ class AuctionController {
 
   async findAuction(request: Request, response: Response): Promise<Response> {
     const auctionRepository = getCustomRepository(AuctionRepository);
-    const { id } = request.body;
+    const { id } = request.params;
 
     const auction = await auctionRepository.findOne(id, {
       relations: ['donationObject', 'donationObject.photos', 'donationObject.categories']
     });
+
 
     if(!auction){
       throw new AppError("Não foi possível encontrar a auction solicitada", 422);
