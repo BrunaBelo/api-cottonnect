@@ -81,6 +81,20 @@ class UserController {
 
     return response.status(200).json({ token: user.token });
    }
+
+  async getCottonFlakes(request: Request, response: Response): Promise<Response> {
+    const userRepository = getCustomRepository(UserRepository);
+    let cottonFlakes = 0;
+
+    try {
+      const user = await userRepository.findOne(request.user.id);
+      cottonFlakes = user.cottonFlakes;
+    } catch (error) {
+      console.log("Erro ao buscar moedas", error);
+    }
+
+    return response.status(200).json({ cottonFlakes: cottonFlakes });
+   }
 }
 
 export { UserController };

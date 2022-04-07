@@ -9,6 +9,7 @@ const upload = multer({ storage: storage });
 const auctionRoutes = Router();
 
 auctionRoutes.post("/", auth, upload.array('photos'), new AuctionController().create);
+auctionRoutes.get("/", auth, new AuctionController().getAuctions);
 auctionRoutes.get("/:id", auth, new AuctionController().findAuction);
 
 export { auctionRoutes };

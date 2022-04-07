@@ -145,4 +145,16 @@ describe("User", () => {
       expect(res.status).toBe(200);
     });
   });
+
+  describe("GET getCottonFlakes", () => {
+    it("return cotton flakes from user", async () => {
+      let user = await userFactory({ password: "12345678" });
+      user = await new LoginUserService(user.email, "12345678").run();
+
+      const res = await request(app).get('/users/get-cotton-flakes').set({ "x-access-token": user.token });
+
+      expect(res.status).toBe(200);
+      expect(user.cottonFlakes).toBe(res.body.cottonFlakes);
+    });
+  });
 });

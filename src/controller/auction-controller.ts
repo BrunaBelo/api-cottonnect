@@ -4,6 +4,9 @@ import { Request, Response } from "express";
 import { AppError } from "../errors/app-error";
 import CreateAuctionService from "../service/auction/create-auction-service";
 import CreateDonationService from "../service/donation-object/create-donation-service";
+import { CityRepository } from "../repository/city-repository";
+import { DonationObject } from "../model/donation-object";
+import { Category } from "../model/category";
 
 class AuctionController {
   async create(request: Request, response: Response): Promise<Response> {
@@ -40,6 +43,29 @@ class AuctionController {
     if(!auction){
       throw new AppError("Não foi possível encontrar a auction solicitada", 422);
     }
+
+    return response.status(200).json(auction);
+  }
+
+  async getAuctions(request: Request, response: Response): Promise<Response> {
+    const auctionRepository = getCustomRepository(AuctionRepository);
+    const cityRepository = getCustomRepository(CityRepository);
+    const { cityId, categoryIds} = request.query;
+
+
+
+    const auction = await auctionRepository.find({
+      relations: ['donationObject',
+                  'donationObject.photos',
+                  'donationObject.categories',
+                  'user'],
+      where: {
+        user: {
+          cityId: cityId
+        },
+        // 'donationObject.categories': '',
+      },
+    });
 
     return response.status(200).json(auction);
   }
