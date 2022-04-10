@@ -57,7 +57,7 @@ describe("Bidding", () => {
                                     .set({ "x-access-token": user.token })
                                     .query({ auctionId: bidding.auctionId });
 
-      expect(res.status).toEqual(201);
+      expect(res.status).toEqual(200);
       expect(res.body.toString()).toEqual([bidding].toString());
     });
 
@@ -69,7 +69,7 @@ describe("Bidding", () => {
                                       .set({ "x-access-token": user.token })
                                       .query({ auctionId: bidding.auctionId });
 
-        expect(res.status).toEqual(201);
+        expect(res.status).toEqual(200);
         expect(res.body).toEqual([]);
       });
     });
@@ -83,9 +83,22 @@ describe("Bidding", () => {
                                       .set({ "x-access-token": user.token })
                                       .query({ auctionId: auction.id });
 
-        expect(res.status).toEqual(201);
+        expect(res.status).toEqual(200);
         expect(res.body).toEqual([]);
       });
+    });
+  });
+
+  describe("GET #getWinner", () => {
+    it("return winner from auction", async() => {
+      let bidding = await biddingFactory({ userId: user.id, winner: true });
+
+      const res = await request(app).get('/biddings/get-winner')
+                                    .set({ "x-access-token": user.token })
+                                    .query({ auctionId: bidding.auctionId });
+
+      expect(res.status).toEqual(200);
+      expect(res.body.toString()).toEqual(bidding.toString());
     });
   });
 });

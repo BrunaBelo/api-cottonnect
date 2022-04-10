@@ -35,7 +35,24 @@ class BiddingController {
     } catch (error) {
       throw new AppError(`Erro: ${error}`);
     }
-    return response.status(201).json(bidding);
+    return response.status(200).json(bidding);
+  }
+
+  async getWinner(request: Request, response: Response): Promise<Response> {
+    const biddingRepository = getCustomRepository(BiddingRepository);
+    const { auctionId } = request.query;
+    let bidding = {};
+
+    try {
+      bidding = await biddingRepository.find({
+        relations: ['user'],
+        where: { auctionId: auctionId, winner: true }
+      });
+    } catch (error) {
+      throw new AppError(`Erro ao buscar ganhador do leilão: ${error}`);
+    }
+
+    return response.status(200).json(bidding);
   }
 }
 

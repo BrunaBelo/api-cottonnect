@@ -6,5 +6,6 @@ const biddingRoutes = Router();
 
 biddingRoutes.post("/", auth, new BiddingController().create);
 biddingRoutes.get("/find-bidding", auth, new BiddingController().getBiddingFromUser);
+biddingRoutes.get("/get-winner", auth, new BiddingController().getWinner);
 
 export { biddingRoutes };
