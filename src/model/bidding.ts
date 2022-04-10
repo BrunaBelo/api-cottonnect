@@ -2,7 +2,6 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    JoinColumn,
     ManyToOne,
     PrimaryColumn,
 } from "typeorm";
@@ -38,8 +37,8 @@ class Bidding {
 
   constructor() {
     if (!this.id) {
-        this.id = uuid();
-        this.winner = false;
+      this.id = uuid();
+      this.winner = false;
     }
   }
 }

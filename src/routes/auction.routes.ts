@@ -10,6 +10,8 @@ const auctionRoutes = Router();
 
 auctionRoutes.post("/", auth, upload.array('photos'), new AuctionController().create);
 auctionRoutes.get("/", auth, new AuctionController().getAuctions);
+auctionRoutes.get("/donated", auth, new AuctionController().getAuctionsDonated);
+auctionRoutes.get("/won", auth, new AuctionController().getAuctionsWon);
 auctionRoutes.get("/:id", auth, new AuctionController().findAuction);
 
 export { auctionRoutes };

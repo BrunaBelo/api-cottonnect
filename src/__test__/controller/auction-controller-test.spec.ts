@@ -1,9 +1,10 @@
 import request from 'supertest';
 import connection from "../../database/connection";
+import LoginUserService from '../../service/user/login-user-service';
 import { User } from '../../model/user';
 import { app } from "../../server";
-import LoginUserService from '../../service/user/login-user-service';
 import { auctionFactory } from '../factories/auction-factory';
+import { biddingFactory } from '../factories/bidding-factory';
 import { donationFactory } from '../factories/donation-object-factory';
 import { userFactory } from '../factories/user-factory';
 
@@ -63,6 +64,151 @@ describe("Auction", () => {
 
       expect(res.status).toEqual(422);
       expect(res.body.message).toBe("Não foi possível encontrar a auction solicitada");
+    });
+  });
+
+  describe("GET #getAuctions", () => {
+    it("return auctions from city", async() => {
+      const auction01 = await auctionFactory({ userId: user.id });
+      const auction02 = await auctionFactory({ userId: user.id });
+
+      const res = await request(app).get(`/auctions`)
+                                    .set({ "x-access-token": user.token })
+                                    .query({ cityId: user.cityId });
+
+      expect(res.status).toEqual(200);
+      expect(res.body.toString()).toEqual([auction01, auction02].toString());
+    });
+
+    it("do not return auctions with status not equals open", async() => {
+      const auction = await auctionFactory({ userId: user.id, status: 'closed' });
+
+      const res = await request(app).get(`/auctions`)
+                                    .set({ "x-access-token": user.token })
+                                    .query({ cityId: user.cityId });
+
+      expect(res.status).toEqual(200);
+      expect(res.body).toMatchObject([]);
+      expect(res.body.toString()).not.toEqual([auction].toString());
+    });
+
+    it("do not return auctions from other city", async() => {
+      const otherUser = await userFactory({});
+
+      const auction = await auctionFactory({ userId: user.id });
+      const auctionOtherUser = await auctionFactory({ userId: otherUser.id });
+
+      const res = await request(app).get("/auctions/")
+                                    .set({ "x-access-token": user.token })
+                                    .query({ cityId: user.cityId });
+
+      expect(res.status).toEqual(200);
+      expect(res.body.toString()).toEqual([auction].toString());
+      expect(res.body.toString()).not.toEqual([auction, auctionOtherUser].toString());
+    });
+  });
+
+  describe("GET #getAuctionsDonated", () => {
+    it("return auctions donated by user", async() => {
+      const auction01 = await auctionFactory({ userId: user.id });
+      const auction02 = await auctionFactory({ userId: user.id });
+
+      const res = await request(app).get(`/auctions/donated`)
+                                    .set({ "x-access-token": user.token });
+
+      expect(res.status).toEqual(200);
+      expect(res.body.toString()).toEqual([auction01, auction02].toString());
+    });
+
+    it("do not return auctions donated by other user", async() => {
+      const otherUser = await userFactory({});
+
+      const auction = await auctionFactory({ userId: user.id });
+      const auctionOtherUser = await auctionFactory({ userId: otherUser.id });
+
+      const res = await request(app).get("/auctions/donated")
+                                    .set({ "x-access-token": user.token });
+
+      expect(res.status).toEqual(200);
+      expect(res.body.toString()).toEqual([auction].toString());
+      expect(res.body.toString()).not.toEqual([auction, auctionOtherUser].toString());
+    });
+
+    it("do not return auctions own by user", async() => {
+      const otherUser = await userFactory({});
+
+      const auction = await auctionFactory({ userId: otherUser.id });
+      await biddingFactory({ userId: user.id, auctionId: auction.id, winner: true });
+
+      const res = await request(app).get("/auctions/donated")
+                                    .set({ "x-access-token": user.token });
+
+      expect(res.status).toEqual(200);
+      expect(res.body).toMatchObject([]);
+      expect(res.body).not.toMatchObject([auction]);
+    });
+  });
+
+  describe("GET #getAuctionsWon", () => {
+    it("return auctions won by user", async() => {
+      const otherUser = await userFactory({});
+
+      const auction01 = await auctionFactory({ userId: otherUser.id });
+      const auction02 = await auctionFactory({ userId: otherUser.id });
+
+      await biddingFactory({ userId: user.id, auctionId: auction01.id, winner: true });
+      await biddingFactory({ userId: user.id, auctionId: auction02.id, winner: true });
+
+      const res = await request(app).get(`/auctions/won`)
+                                    .set({ "x-access-token": user.token });
+
+      expect(res.status).toEqual(200);
+      expect(res.body.toString()).toEqual([auction01, auction02].toString());
+    });
+
+    it("do not return auctions won by other user", async() => {
+      const otherUser = await userFactory({});
+
+      const auction01 = await auctionFactory({ userId: otherUser.id });
+      const auction02 = await auctionFactory({ userId: otherUser.id });
+
+      await biddingFactory({ userId: user.id, auctionId: auction01.id, winner: true });
+      await biddingFactory({ userId: otherUser.id, auctionId: auction02.id, winner: true });
+
+
+      const res = await request(app).get("/auctions/won")
+                                    .set({ "x-access-token": user.token });
+
+      expect(res.status).toEqual(200);
+      expect(res.body.toString()).toEqual([auction01].toString());
+      expect(res.body.toString()).not.toEqual([auction01, auction02].toString());
+    });
+
+    it("do not return auctions donated by user", async() => {
+      const auction = await auctionFactory({ userId: user.id });
+
+      const res = await request(app).get(`/auctions/won`)
+                                    .set({ "x-access-token": user.token });
+
+      expect(res.status).toEqual(200);
+      expect(res.body).toMatchObject([]);
+      expect(res.body).not.toMatchObject([auction]);
+    });
+
+    it("do not return auctions do not won by user", async() => {
+      const otherUser = await userFactory({});
+
+      const auction = await auctionFactory({ userId: otherUser.id });
+
+      await biddingFactory({ userId: user.id, auctionId: auction.id, winner: false });
+
+
+      const res = await request(app).get("/auctions/won")
+                                    .set({ "x-access-token": user.token });
+
+      expect(res.status).toEqual(200);
+      expect(res.body).toMatchObject([]);
+      expect(res.body).not.toMatchObject([auction]);
     });
   });
 });

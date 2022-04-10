@@ -4,10 +4,6 @@ import { Request, Response } from "express";
 import { AppError } from "../errors/app-error";
 import CreateAuctionService from "../service/auction/create-auction-service";
 import CreateDonationService from "../service/donation-object/create-donation-service";
-import { CityRepository } from "../repository/city-repository";
-import { DonationObject } from "../model/donation-object";
-import { Category } from "../model/category";
-
 class AuctionController {
   async create(request: Request, response: Response): Promise<Response> {
     let newAuction = null;
@@ -49,25 +45,48 @@ class AuctionController {
 
   async getAuctions(request: Request, response: Response): Promise<Response> {
     const auctionRepository = getCustomRepository(AuctionRepository);
-    const cityRepository = getCustomRepository(CityRepository);
-    const { cityId, categoryIds} = request.query;
+    const { cityId, categoryIds } = request.query;
+    let auctions = [];
+
+    try {
+      auctions = await auctionRepository.getAuctionsFromCity(cityId as string);
+    } catch (error) {
+      throw new AppError(`Erro ao buscar doações ${error}`);
+    }
+
+    return response.status(200).json(auctions);
+  }
+
+  async getAuctionsDonated(request: Request, response: Response): Promise<Response> {
+    const auctionRepository = getCustomRepository(AuctionRepository);
+    const { categoryIds, status } = request.query;
+    const { id: userId} = request.user;
+    let auctions = [];
+
+    try {
+      auctions = await auctionRepository.getAuctionsDonated(userId);
+    } catch (error) {
+      throw new AppError(`Erro ao buscar doações ${error}`);
+    }
 
 
+    return response.status(200).json(auctions);
+  }
 
-    const auction = await auctionRepository.find({
-      relations: ['donationObject',
-                  'donationObject.photos',
-                  'donationObject.categories',
-                  'user'],
-      where: {
-        user: {
-          cityId: cityId
-        },
-        // 'donationObject.categories': '',
-      },
-    });
+  async getAuctionsWon(request: Request, response: Response): Promise<Response> {
+    const auctionRepository = getCustomRepository(AuctionRepository);
+    const { categoryIds, status} = request.query;
+    const { id: userId} = request.user;
+    let auctions = [];
 
-    return response.status(200).json(auction);
+    try {
+      auctions = await auctionRepository.getAuctionnWon(userId);
+    } catch (error) {
+      console.log(`Erro ao buscar doações ${error}`)
+      throw new AppError(`Erro ao buscar doações ${error}`);
+    }
+
+    return response.status(200).json(auctions);
   }
 }
 

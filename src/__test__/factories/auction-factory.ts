@@ -7,7 +7,7 @@ import { userFactory } from "./user-factory";
 export const auctionFactory = async(auctionData, save = true): Promise<Auction> => {
   const defaultAuction =  {
     closingDate: faker.date.future(),
-    status: "closed",
+    status: "open",
     donationObjectId: null,
     userId: null
   };
