@@ -28,7 +28,7 @@ class AuctionRepository extends Repository<Auction> {
 
   async getAuctionsDonated(userId: string): Promise<Auction[]> {
     const auctions = await this.find({
-      relations: ['donationObject', 'donationObject.categories'],
+      relations: ['donationObject', 'donationObject.categories', 'user'],
       where: {
         userId: userId
       },
@@ -41,7 +41,7 @@ class AuctionRepository extends Repository<Auction> {
     const biddingRepository = getCustomRepository(BiddingRepository);
 
     const biddings = await biddingRepository.find({
-      relations: ['auction', 'auction.donationObject'],
+      relations: ['auction', 'auction.donationObject', 'auction.user'],
       where: {
         userId: userId,
         winner: true
