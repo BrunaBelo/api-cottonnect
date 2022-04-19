@@ -15,7 +15,8 @@ class AuctionRepository extends Repository<Auction> {
       relations: ['donationObject',
                   'donationObject.photos',
                   'donationObject.categories',
-                  'user'],
+                  'user',
+                  'biddings'],
       where: {
         status: 'open',
         user: {
