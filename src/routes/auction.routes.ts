@@ -14,5 +14,6 @@ auctionRoutes.get("/donated", auth, new AuctionController().getAuctionsDonated);
 auctionRoutes.get("/won", auth, new AuctionController().getAuctionsWon);
 auctionRoutes.get("/:id", auth, new AuctionController().findAuction);
 auctionRoutes.get("/reject/:id", auth, new AuctionController().rejectAuction);
+auctionRoutes.get("/accept/:id", auth, new AuctionController().acceptAuction);
 
 export { auctionRoutes };

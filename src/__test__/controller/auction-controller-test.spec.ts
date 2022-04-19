@@ -9,14 +9,19 @@ import { donationFactory } from '../factories/donation-object-factory';
 import { userFactory } from '../factories/user-factory';
 import { getRepository, Repository } from 'typeorm';
 import { Bidding } from '../../model/bidding';
+import { Auction } from '../../model/auction';
 
 describe("Auction", () => {
   let user: User;
   let biddingRepository: Repository<Bidding>;
+  let auctionRepository: Repository<Auction>;
+  let userRepository: Repository<User>;
 
   beforeAll(async() => {
     await connection.create();
     biddingRepository = getRepository(Bidding);
+    auctionRepository = getRepository(Auction);
+    userRepository = getRepository(User);
   })
 
   afterAll(async () => {
@@ -229,6 +234,28 @@ describe("Auction", () => {
       expect(res.status).toEqual(200);
       expect(reloadBidWinner.winner).toEqual(false);
       expect(reloadBidWinner.reject).toEqual(true);
+    });
+  });
+
+  describe("GET #acceptAuction", () => {
+    describe("When transaction is success", () => {
+      it("transfer coins from one account to another", async() => {
+        const userOwner = await userFactory();
+        const auction = await auctionFactory({ userId: userOwner.id });
+        const bidWinner = await biddingFactory({ userId: user.id, auctionId: auction.id, winner: true, bidAmount: 10 });
+
+        const res = await request(app).get(`/auctions/accept/${auction.id}`)
+                                      .set({ "x-access-token": user.token });
+
+        const reloadAuction = await auctionRepository.findOne(auction.id)
+        const reloadUserOwner = await userRepository.findOne(userOwner.id)
+        const reloadUserWinner = await userRepository.findOne(user.id)
+
+        expect(res.status).toEqual(200);
+        expect(reloadUserWinner.cottonFlakes).toEqual(user.cottonFlakes - bidWinner.bidAmount);
+        expect(reloadUserOwner.cottonFlakes).toEqual(userOwner.cottonFlakes + bidWinner.bidAmount);
+        expect(reloadAuction.status).toEqual("success");
+      });
     });
   });
 });

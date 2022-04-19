@@ -32,6 +32,7 @@ export const userFactory = async(userData = {} as IUserData, save = true): Promi
     phoneNumber: faker.phone.phoneNumber(),
     cpf: fakeCpf(),
     additionalInformation: faker.lorem.paragraph(),
+    cottonFlakes: 20,
     cityId: null,
     roleId: null
   };
