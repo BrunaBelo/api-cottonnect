@@ -36,7 +36,6 @@ class CreateDonationService {
     const newDonationObject = await repository.createAndSave({
       title,
       description,
-      status: 'open',
       categories,
     });
 

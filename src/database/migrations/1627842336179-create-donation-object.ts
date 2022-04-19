@@ -20,11 +20,6 @@ export class CreateDonationObject1627842336179 implements MigrationInterface {
             type: "varchar",
           },
           {
-            name: "status",
-            type: "varchar",
-            isNullable: true,
-          },
-          {
             name: "createdAt",
             type: "timestamp",
             default: "now()",

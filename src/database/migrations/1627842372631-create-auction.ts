@@ -18,7 +18,7 @@ export class CreateAuction1627842372631 implements MigrationInterface {
           {
             name: "status",
             type: "varchar",
-            isNullable: true,
+            default: "'open'",
           },
           {
             name: "createdAt",

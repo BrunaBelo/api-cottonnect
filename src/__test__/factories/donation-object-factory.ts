@@ -8,7 +8,6 @@ export const donationFactory = async(donationData, save = true): Promise<Donatio
   const defaultdonation = {
     title: faker.lorem.words(),
     description: faker.lorem.sentence(),
-    status: 'closed',
     categories: null,
     photos: null
   } as DonationObject;

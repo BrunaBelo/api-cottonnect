@@ -23,6 +23,7 @@ class Auction {
   closingDate: Date;
 
   @Column()
+  // open; waiting; success; rejected
   status?: string;
 
   @CreateDateColumn()

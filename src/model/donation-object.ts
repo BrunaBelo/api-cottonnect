@@ -25,9 +25,6 @@ class DonationObject {
   @Column()
   description: string;
 
-  @Column()
-  status?: string;
-
   @CreateDateColumn()
   createdAt?: Date;
 

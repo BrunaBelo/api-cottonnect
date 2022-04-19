@@ -44,10 +44,7 @@ class BiddingController {
     let bidding = {};
 
     try {
-      bidding = await biddingRepository.find({
-        relations: ['user'],
-        where: { auctionId: auctionId, winner: true }
-      });
+      bidding = await biddingRepository.getWinner(auctionId as string);
     } catch (error) {
       throw new AppError(`Erro ao buscar ganhador do leilão: ${error}`);
     }

@@ -7,12 +7,16 @@ import { auctionFactory } from '../factories/auction-factory';
 import { biddingFactory } from '../factories/bidding-factory';
 import { donationFactory } from '../factories/donation-object-factory';
 import { userFactory } from '../factories/user-factory';
+import { getRepository, Repository } from 'typeorm';
+import { Bidding } from '../../model/bidding';
 
 describe("Auction", () => {
   let user: User;
+  let biddingRepository: Repository<Bidding>;
 
   beforeAll(async() => {
     await connection.create();
+    biddingRepository = getRepository(Bidding);
   })
 
   afterAll(async () => {
@@ -211,4 +215,21 @@ describe("Auction", () => {
       expect(res.body).not.toMatchObject([auction]);
     });
   });
+
+  describe("GET #rejectAuction", () => {
+    it("reject auctions by user", async() => {
+      const auction = await auctionFactory({ userId: user.id });
+      const bidWinner = await biddingFactory({ userId: user.id, auctionId: auction.id, winner: true });
+
+      const res = await request(app).get(`/auctions/reject/${auction.id}`)
+                                    .set({ "x-access-token": user.token });
+
+      const reloadBidWinner = await biddingRepository.findOne(bidWinner.id)
+
+      expect(res.status).toEqual(200);
+      expect(reloadBidWinner.winner).toEqual(false);
+      expect(reloadBidWinner.reject).toEqual(true);
+    });
+  });
 });
+

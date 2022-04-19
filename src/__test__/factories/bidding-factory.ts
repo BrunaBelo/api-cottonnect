@@ -9,6 +9,7 @@ export const biddingFactory = async(biddingData, save = true): Promise<Bidding> 
     bidAmount: faker.datatype.number(),
     winner: false,
     auctionId: null,
+    reject: false,
     userId: null
   };
 

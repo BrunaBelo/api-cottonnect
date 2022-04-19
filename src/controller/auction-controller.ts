@@ -4,6 +4,8 @@ import { Request, Response } from "express";
 import { AppError } from "../errors/app-error";
 import CreateAuctionService from "../service/auction/create-auction-service";
 import CreateDonationService from "../service/donation-object/create-donation-service";
+import { BiddingRepository } from "../repository/bidding-repository";
+import GenerateWinnerService from "../service/bidding/generate-winner-service";
 class AuctionController {
   async create(request: Request, response: Response): Promise<Response> {
     let newAuction = null;
@@ -82,11 +84,31 @@ class AuctionController {
     try {
       auctions = await auctionRepository.getAuctionnWon(userId);
     } catch (error) {
-      console.log(`Erro ao buscar doações ${error}`)
       throw new AppError(`Erro ao buscar doações ${error}`);
     }
 
     return response.status(200).json(auctions);
+  }
+
+  async rejectAuction(request: Request, response: Response): Promise<Response> {
+    const auctionRepository = getCustomRepository(AuctionRepository);
+    const biddingRepository = getCustomRepository(BiddingRepository);
+    const { id } = request.params;
+
+    try {
+      const auction = await auctionRepository.findOne(id);
+      let biddingWinner = await biddingRepository.getWinner(id as string);
+
+      biddingWinner.reject = true;
+      biddingWinner.winner = false;
+      await biddingRepository.save(biddingWinner);
+
+      await new GenerateWinnerService(auction).run();
+    } catch (error) {
+      throw new AppError(`Erro ao rejeitar doação ${error}`);
+    }
+
+    return response.status(200).json({});
   }
 }
 

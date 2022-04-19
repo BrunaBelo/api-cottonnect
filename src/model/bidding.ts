@@ -20,6 +20,9 @@ class Bidding {
   @Column()
   winner?: boolean;
 
+  @Column()
+  reject?: boolean;
+
   @CreateDateColumn()
   createdAt?: Date;
 
