@@ -49,8 +49,7 @@ describe("GenerateWinnerService", () => {
         const user = await userFactory({});
         const auction = await auctionFactory({ userId: user.id });
 
-        const result = await new GenerateWinnerService(auction).run();
-        expect(result).toEqual(null);
+        await new GenerateWinnerService(auction).run();
         expect((await (auctionRepository.findOne(auction.id))).status).toEqual("rejected");
       });
     });

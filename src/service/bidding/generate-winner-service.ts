@@ -14,7 +14,7 @@ class GenerateWinnerService {
     this.auctionRepository = getCustomRepository(AuctionRepository);
   }
 
-  async run(): Promise<Bidding> {
+  async run(): Promise<Auction> {
     const { auction, auctionRepository, repository } = this;
 
     const bidding = await this.getBidding();
@@ -22,7 +22,7 @@ class GenerateWinnerService {
     if(bidding == null || bidding.length <= 0){
       auction.status = "rejected";
       await auctionRepository.save(auction);
-      return null;
+      return auction;
     }
 
     const bidWinner = bidding.reduce((bid1, bid2) => bid1 = bid1.bidAmount > bid2.bidAmount ? bid1 : bid2);
@@ -32,7 +32,7 @@ class GenerateWinnerService {
     auction.status = "waiting";
     await auctionRepository.save(auction);
 
-    return bidWinner;
+    return auction;
   }
 
   private async getBidding(): Promise<Bidding[]> {

@@ -7,6 +7,7 @@ import CreateDonationService from "../service/donation-object/create-donation-se
 import { BiddingRepository } from "../repository/bidding-repository";
 import GenerateWinnerService from "../service/bidding/generate-winner-service";
 import { UserRepository } from "../repository/user-repository";
+import { Auction } from "../model/auction";
 class AuctionController {
   async create(request: Request, response: Response): Promise<Response> {
     let newAuction = null;
@@ -95,21 +96,22 @@ class AuctionController {
     const auctionRepository = getCustomRepository(AuctionRepository);
     const biddingRepository = getCustomRepository(BiddingRepository);
     const { id } = request.params;
+    let auction = {} as Auction;
 
     try {
-      const auction = await auctionRepository.findOne(id);
+      auction = await auctionRepository.findOne(id, { relations: ['donationObject']});
       let biddingWinner = await biddingRepository.getWinner(id as string);
 
       biddingWinner.reject = true;
       biddingWinner.winner = false;
       await biddingRepository.save(biddingWinner);
 
-      await new GenerateWinnerService(auction).run();
+      auction = await new GenerateWinnerService(auction).run();
     } catch (error) {
       throw new AppError(`Erro ao rejeitar doação ${error}`);
     }
 
-    return response.status(200).json({});
+    return response.status(200).json(auction);
   }
 
   async acceptAuction(request: Request, response: Response): Promise<Response> {
@@ -118,10 +120,11 @@ class AuctionController {
     const biddingRepository = getCustomRepository(BiddingRepository);
     const { id: auctionId } = request.params;
     const { id: userId } = request.user;
+    let auction = {} as Auction;
 
     try {
       const userWinner = await userRepository.findOne(userId);
-      const auction = await auctionRepository.findOne(auctionId);
+      auction = await auctionRepository.findOne(auctionId, { relations: ['donationObject']});
       const userOwner = await userRepository.findOne(auction.userId);
       let biddingWinner = await biddingRepository.getWinner(auctionId as string);
 
@@ -137,7 +140,7 @@ class AuctionController {
       throw new AppError(`Erro ao aceitar doações ${error}`);
     }
 
-    return response.status(200).json({});
+    return response.status(200).json(auction);
   }
 }
 
