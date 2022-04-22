@@ -1,5 +1,6 @@
 import request from 'supertest'
 import connection from '../../database/connection';
+import faker from 'faker/locale/pt_BR';
 import { app } from '../../../src/server'
 import { getCustomRepository } from 'typeorm';
 import { UserRepository } from '../../repository/user-repository';
@@ -22,6 +23,30 @@ describe("User", () => {
 
   beforeEach(async () => {
     await connection.clear();
+  });
+
+  describe("GET getUser", () => {
+    it("returns user when valid", async () => {
+      let user = await userFactory({ password: "12345678" });
+      user = await new LoginUserService(user.email, "12345678").run();
+
+      const res = await request(app).get(`/users/${user.id}`)
+                                    .set({ "x-access-token": user.token });
+
+      expect(res.status).toEqual(200);
+      expect(res.body.toString()).toEqual(user.toString());
+    });
+
+    it("returns error when not valid", async () => {
+      let user = await userFactory({ password: "12345678" });
+      user = await new LoginUserService(user.email, "12345678").run();
+
+      const res = await request(app).get(`/users/${faker.random.uuid}`)
+                                    .set({ "x-access-token": user.token });
+
+      expect(res.status).toEqual(400);
+      expect(res.body.message).toContain("Usuário não encontrado: ");
+    });
   });
 
   describe("POST User", () => {

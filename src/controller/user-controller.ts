@@ -12,7 +12,6 @@ import LoginUserService from "../service/user/login-user-service";
 
 class UserController {
   async create(request: Request, response: Response): Promise<Response> {
-    const userRepository = getCustomRepository(UserRepository);
     const {
       name,
       email,
@@ -95,6 +94,20 @@ class UserController {
 
     return response.status(200).json({ cottonFlakes: cottonFlakes });
    }
+
+   async findUser(request: Request, response: Response): Promise<Response> {
+    const repository = getCustomRepository(UserRepository);
+    const { id: userId } = request.params;
+    let user = {} as User;
+
+    try {
+      user = await repository.findOne(userId as string);
+    } catch (error) {
+      throw new AppError(`Usuário não encontrado: ${error.errors}`);
+    }
+
+    return response.status(200).json(user);
+  }
 }
 
 export { UserController };
