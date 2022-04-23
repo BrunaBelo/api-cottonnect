@@ -1,6 +1,7 @@
 import request from 'supertest'
 import connection from '../../database/connection';
 import faker from 'faker/locale/pt_BR';
+import bcrypt from "bcryptjs";
 import { app } from '../../../src/server'
 import { getCustomRepository, getRepository, Repository } from 'typeorm';
 import { UserRepository } from '../../repository/user-repository';
@@ -9,6 +10,7 @@ import { roleFactory } from '../factories/role-factory';
 import { userFactory } from '../factories/user-factory';
 import LoginUserService from '../../service/user/login-user-service';
 import { PasswordVerificationCode } from '../../model/password-verification-code';
+import { PasswordVerificationCodeFactory } from '../factories/password-verification-code-factory';
 
 describe("User", () => {
   let userRepository: UserRepository;
@@ -256,6 +258,38 @@ describe("User", () => {
 
       expect(res.status).toBe(200);
       expect(code.userId).toBe(user.id);
+    });
+  });
+
+  describe("GET changePassword", () => {
+    it("return success and update user password", async () => {
+      let user = await userFactory();
+      let newCode = await PasswordVerificationCodeFactory({ userId: user.id });
+
+      const res = await request(app).post(`/users/change-password`)
+                                    .send({ code: newCode.code, userId: user.id, password: "asd123qwe456" });
+
+      const code = await codeRepository.findOne();
+
+      expect(res.status).toBe(200);
+      expect(code.used).toBe(true);
+
+      const userUpdated = await userRepository.findOne(user.id);
+      expect(await bcrypt.compare("asd123qwe456", userUpdated.password)).toBe(true);
+    });
+
+    it("return failed when code is incorrect", async () => {
+      let user = await userFactory();
+      await PasswordVerificationCodeFactory({ userId: user.id });
+
+      const res = await request(app).post(`/users/change-password`)
+                                    .send({ code: "123", userId: user.id, password: "asd123qwe456" });
+
+      expect(res.status).toBe(400);
+      expect(res.body.message).toEqual("Codigo invalido");
+
+      const userUpdated = await userRepository.findOne(user.id);
+      expect(await bcrypt.compare("asd123qwe456", userUpdated.password)).toBe(false);
     });
   });
 });

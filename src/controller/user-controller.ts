@@ -144,6 +144,24 @@ class UserController {
 
     return response.status(200).json();
   }
+
+  async changePassword(request: Request, response: Response): Promise<Response> {
+    const repository = getCustomRepository(UserRepository);
+    const codeRepository = getRepository(PasswordVerificationCode)
+    const { password, userId, code } = request.body;
+    const userCode = await codeRepository.findOne({ where: { userId: userId, used: false }});
+
+    if(code == userCode.code){
+      const user = await repository.findOne(userId);
+      await repository.update(user.id, { password: await bcrypt.hash(password, 10) });
+
+      await codeRepository.update(userCode.id, { used: true });
+    }else {
+      throw new AppError(`Codigo invalido`);
+    }
+
+    return response.status(200).json();
+  }
 }
 
 export { UserController };
