@@ -2,19 +2,22 @@ import request from 'supertest'
 import connection from '../../database/connection';
 import faker from 'faker/locale/pt_BR';
 import { app } from '../../../src/server'
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, getRepository, Repository } from 'typeorm';
 import { UserRepository } from '../../repository/user-repository';
 import { cityFactory } from '../factories/city-factory';
 import { roleFactory } from '../factories/role-factory';
 import { userFactory } from '../factories/user-factory';
 import LoginUserService from '../../service/user/login-user-service';
+import { PasswordVerificationCode } from '../../model/password-verification-code';
 
 describe("User", () => {
   let userRepository: UserRepository;
+  let codeRepository: Repository<PasswordVerificationCode>;
 
   beforeAll(async () => {
     await connection.create();
     userRepository = getCustomRepository(UserRepository);
+    codeRepository = getRepository(PasswordVerificationCode);
   });
 
   afterAll(async () => {
@@ -240,6 +243,19 @@ describe("User", () => {
 
       expect(res.status).toBe(400);
       expect(res.body.message).toEqual(`Erro ao atualizar usuário: O número de telefone ${user2.phoneNumber} já está em uso`);
+    });
+  });
+
+  describe("GET forgotPassword", () => {
+    it("return success and create new verification code", async () => {
+      let user = await userFactory();
+
+      const res = await request(app).get(`/users/forgot-password/${user.id}`);
+
+      const code = await codeRepository.findOne();
+
+      expect(res.status).toBe(200);
+      expect(code.userId).toBe(user.id);
     });
   });
 });

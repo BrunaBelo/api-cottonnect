@@ -2,14 +2,16 @@ import { Request, Response } from "express";
 import { AppError } from "../errors/app-error";
 import { validateUser } from "../schema-validation/user-schema";
 import { validateLogin } from "../schema-validation/login-schema";
-import { getCustomRepository } from "typeorm";
+import { getCustomRepository, getRepository } from "typeorm";
 import { UserRepository } from "../repository/user-repository";
 import { User } from "../model/user";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import ValidateUserService from "../service/user/validate-user-service";
 import CreateUserService from "../service/user/create-user-service";
 import LoginUserService from "../service/user/login-user-service";
 import UpdateUserService from "../service/user/update-user-service";
+import { PasswordVerificationCode } from "../model/password-verification-code";
 
 class UserController {
   async create(request: Request, response: Response): Promise<Response> {
@@ -124,6 +126,23 @@ class UserController {
     }
 
     return response.status(200).json(user);
+  }
+
+  async forgotPassword(request: Request, response: Response): Promise<Response> {
+    const repository = getRepository(PasswordVerificationCode)
+    const { id: userId } = request.params;
+
+    try {
+      const code = Math.floor(Math.random()*16777215).toString(16);
+      const object = repository.create({ code, userId });
+      await repository.save(object);
+
+       // mandar email
+    } catch (error) {
+      console.log(`Erro ao gerar codigo de recuperação de conta ${error.message}`);
+    }
+
+    return response.status(200).json();
   }
 }
 

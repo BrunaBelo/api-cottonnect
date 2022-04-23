@@ -11,5 +11,6 @@ userRoutes.get("/token-renewal", auth, new UserController().tokenRenewal);
 userRoutes.get("/get-cotton-flakes", auth, new UserController().getCottonFlakes);
 userRoutes.get("/:id", auth, new UserController().findUser);
 userRoutes.put("/:id", auth, new UserController().update);
+userRoutes.get("/forgot-password/:id", new UserController().forgotPassword);
 
 export { userRoutes };

@@ -1,8 +1,7 @@
+import faker from 'faker/locale/pt_BR';
 import { DonationObject } from "../../model/donation-object";
 import { genericFactory } from "../utils/genericFactory";
-import faker from 'faker/locale/pt_BR';
 import { categoryFactory } from "./category-factory";
-import { photoFactory } from "./photo-factory";
 
 export const donationFactory = async(donationData, save = true): Promise<DonationObject> => {
   const defaultdonation = {
