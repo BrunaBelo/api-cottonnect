@@ -1,14 +1,15 @@
-import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { AppError } from "../errors/app-error";
 import { validateUser } from "../schema-validation/user-schema";
 import { validateLogin } from "../schema-validation/login-schema";
 import { getCustomRepository } from "typeorm";
 import { UserRepository } from "../repository/user-repository";
+import { User } from "../model/user";
+import jwt from "jsonwebtoken";
 import ValidateUserService from "../service/user/validate-user-service";
 import CreateUserService from "../service/user/create-user-service";
-import { User } from "../model/user";
 import LoginUserService from "../service/user/login-user-service";
+import UpdateUserService from "../service/user/update-user-service";
 
 class UserController {
   async create(request: Request, response: Response): Promise<Response> {
@@ -41,7 +42,7 @@ class UserController {
 
       return response.status(201).json(user);
     } catch (error) {
-      throw new AppError(`Erro ao criar usuário: ${error.errors}`);
+      throw new AppError(`Erro ao criar usuário: ${error.message}`);
     }
   }
 
@@ -103,7 +104,23 @@ class UserController {
     try {
       user = await repository.findOne(userId as string);
     } catch (error) {
-      throw new AppError(`Usuário não encontrado: ${error.errors}`);
+      throw new AppError(`Usuário não encontrado: ${error.message}`);
+    }
+
+    return response.status(200).json(user);
+  }
+
+   async update(request: Request, response: Response): Promise<Response> {
+    const repository = getCustomRepository(UserRepository);
+    const { id: userId } = request.params;
+    let user = {} as User;
+
+    const { userNewData } = request.body;
+
+    try {
+      user = await new UpdateUserService(userId, userNewData).run();
+    } catch (error) {
+      throw new AppError(`Erro ao atualizar usuário: ${error.message}`);
     }
 
     return response.status(200).json(user);

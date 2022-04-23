@@ -10,5 +10,6 @@ userRoutes.get("/validate-user", new UserController().validateUser);
 userRoutes.get("/token-renewal", auth, new UserController().tokenRenewal);
 userRoutes.get("/get-cotton-flakes", auth, new UserController().getCottonFlakes);
 userRoutes.get("/:id", auth, new UserController().findUser);
+userRoutes.put("/:id", auth, new UserController().update);
 
 export { userRoutes };

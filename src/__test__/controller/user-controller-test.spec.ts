@@ -182,4 +182,65 @@ describe("User", () => {
       expect(user.cottonFlakes).toBe(res.body.cottonFlakes);
     });
   });
+
+  describe("PUT update", () => {
+    it("return user updated", async () => {
+      let user = await userFactory({ password: "12345678" });
+      user = await new LoginUserService(user.email, "12345678").run();
+
+      const city = await cityFactory({});
+      const newData = await userFactory({
+        ...user,
+        email: "novo@gmail.com",
+        phoneNumber: "21999999999",
+        additionalInformation: "Novas infos",
+        cityId: city.id
+      }, false);
+
+      const res = await request(app).put(`/users/${user.id}`)
+                                    .set({ "x-access-token": user.token })
+                                    .send({ userNewData: newData });
+
+      expect(res.status).toBe(200);
+      expect(res.body.toString()).toEqual(newData.toString());
+    });
+
+    it("return error when email already exist", async () => {
+      let user = await userFactory({ password: "12345678" });
+      user = await new LoginUserService(user.email, "12345678").run();
+      let user2 = await userFactory({ email: "novo@gmail.com" });
+
+      const newData = await userFactory({
+        ...user,
+        email: user2.email
+      }, false);
+
+      const res = await request(app).put(`/users/${user.id}`)
+                                    .set({ "x-access-token": user.token })
+                                    .send({ userNewData: newData });
+
+      expect(res.status).toBe(400);
+      expect(res.body.message).toEqual(`Erro ao atualizar usuário: O email ${user2.email} já está em uso`);
+
+    });
+
+    it("return error when phone number already exist", async () => {
+      let user = await userFactory({ password: "12345678" });
+      user = await new LoginUserService(user.email, "12345678").run();
+      let user2 = await userFactory({ phoneNumber: "21999999999" });
+
+      const newData = await userFactory({
+        ...user,
+        phoneNumber: user2.phoneNumber
+      }, false);
+
+      const res = await request(app).put(`/users/${user.id}`)
+                                    .set({ "x-access-token": user.token })
+                                    .send({ userNewData: newData });
+
+      expect(res.status).toBe(400);
+      expect(res.body.message).toEqual(`Erro ao atualizar usuário: O número de telefone ${user2.phoneNumber} já está em uso`);
+    });
+  });
 });
+
