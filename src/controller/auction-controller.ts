@@ -103,7 +103,6 @@ class AuctionController {
       let biddingWinner = await biddingRepository.getWinner(id as string);
 
       biddingWinner.reject = true;
-      biddingWinner.winner = false;
       await biddingRepository.save(biddingWinner);
 
       auction = await new GenerateWinnerService(auction).run();

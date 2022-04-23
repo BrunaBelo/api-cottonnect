@@ -232,7 +232,6 @@ describe("Auction", () => {
       const reloadBidWinner = await biddingRepository.findOne(bidWinner.id)
 
       expect(res.status).toEqual(200);
-      expect(reloadBidWinner.winner).toEqual(false);
       expect(reloadBidWinner.reject).toEqual(true);
     });
   });

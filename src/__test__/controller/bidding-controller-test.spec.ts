@@ -100,5 +100,15 @@ describe("Bidding", () => {
       expect(res.status).toEqual(200);
       expect(res.body.toString()).toEqual(bidding.toString());
     });
+
+    it("dont return winner than reject donation", async() => {
+      let bidding = await biddingFactory({ userId: user.id, winner: true, reject: true });
+
+      const res = await request(app).get('/biddings/get-winner')
+                                    .set({ "x-access-token": user.token })
+                                    .query({ auctionId: bidding.auctionId });
+      expect(res.status).toEqual(200);
+      expect(res.body.toString()).not.toEqual(bidding.toString());
+    });
   });
 });

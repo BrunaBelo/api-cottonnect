@@ -12,7 +12,7 @@ class BiddingRepository extends Repository<Bidding> {
   async getWinner(auctionId: string): Promise<Bidding> {
     const bidWinner = await this.findOne({
       relations: ['user'],
-      where: { auctionId: auctionId, winner: true }
+      where: { auctionId: auctionId, reject: false, winner: true }
     });
 
     return bidWinner;
