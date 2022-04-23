@@ -3,6 +3,7 @@ import { v4 as uuid } from "uuid";
 import { Auction } from "./auction";
 import { Bidding } from "./bidding";
 import { City } from "./city";
+import { PasswordVerificationCode } from "./password-verification-code";
 
 import { Role } from "./role";
 
@@ -60,6 +61,9 @@ class User {
 
   @OneToMany(() => Bidding, bidding => bidding.user)
   biddings?: Bidding[];
+
+  @OneToMany(() => Bidding, bidding => bidding.user)
+  passwordVerificationCode?: PasswordVerificationCode[];
 
   token?: string;
 
