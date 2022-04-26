@@ -104,7 +104,7 @@ class UserController {
     let user = {} as User;
 
     try {
-      user = await repository.findOne(userId as string);
+      user = await repository.findOne(userId as string, { relations: ['city']});
     } catch (error) {
       throw new AppError(`Usuário não encontrado: ${error.message}`);
     }
