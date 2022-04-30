@@ -5,13 +5,13 @@ import { validateLogin } from "../schema-validation/login-schema";
 import { getCustomRepository, getRepository } from "typeorm";
 import { UserRepository } from "../repository/user-repository";
 import { User } from "../model/user";
+import { PasswordVerificationCode } from "../model/password-verification-code";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import ValidateUserService from "../service/user/validate-user-service";
 import CreateUserService from "../service/user/create-user-service";
 import LoginUserService from "../service/user/login-user-service";
 import UpdateUserService from "../service/user/update-user-service";
-import { PasswordVerificationCode } from "../model/password-verification-code";
+import ValidateUserService from "../service/user/validate-user-service";
 
 class UserController {
   async create(request: Request, response: Response): Promise<Response> {
@@ -63,10 +63,9 @@ class UserController {
   }
 
   async validateUser(request: Request, response: Response): Promise<Response> {
-    const { type, value } = request.query;
+    const { type, value, userId } = request.query;
 
-    const user = await new ValidateUserService(type as string, value as string).run();
-
+    const user = await new ValidateUserService(type as string, value as string, userId as string).run();
 
     return response.status(200).json({result: user ? false : true});
   }
@@ -113,7 +112,6 @@ class UserController {
   }
 
    async update(request: Request, response: Response): Promise<Response> {
-    const repository = getCustomRepository(UserRepository);
     const { id: userId } = request.params;
     let user = {} as User;
 
