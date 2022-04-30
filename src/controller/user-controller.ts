@@ -115,7 +115,7 @@ class UserController {
     const { id: userId } = request.params;
     let user = {} as User;
 
-    const { userNewData } = request.body;
+    const userNewData = request.body;
 
     try {
       user = await new UpdateUserService(userId, userNewData).run();

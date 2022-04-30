@@ -29,8 +29,7 @@ class UpdateUserService {
       throw new AppError(`O número de telefone ${user.phoneNumber} já está em uso`);
     }
 
-    user.password = await bcrypt.hash(user.password, 10);
-    const newuser = repository.updateAndSave(userId, user);
+    const newuser = await repository.updateAndSave(userId, user);
 
     return newuser;
   }
