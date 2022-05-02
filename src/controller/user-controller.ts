@@ -127,20 +127,26 @@ class UserController {
   }
 
   async forgotPassword(request: Request, response: Response): Promise<Response> {
-    const repository = getRepository(PasswordVerificationCode)
-    const { id: userId } = request.params;
+    const repository = getRepository(PasswordVerificationCode);
+    const userRepository = getCustomRepository(UserRepository);
+    const { email: userEmail } = request.params;
 
     try {
+      const user = await userRepository.findOne({ where: { email: userEmail }});
+      if(user == undefined){
+        return response.status(422).json({ error: "Nenhum usuário encontrado com o e-mail informado. Confira seu e-mail."});
+      }
+
       const code = Math.floor(Math.random()*16777215).toString(16);
-      const object = repository.create({ code, userId });
+      const object = repository.create({ code, userId: user.id });
       await repository.save(object);
 
        // mandar email
     } catch (error) {
-      console.log(`Erro ao gerar codigo de recuperação de conta ${error.message}`);
+      throw new AppError(`Erro ao gerar codigo de recuperação de conta ${error.message}`);
     }
 
-    return response.status(200).json();
+    return response.status(200).json(true);
   }
 
   async changePassword(request: Request, response: Response): Promise<Response> {
