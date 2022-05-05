@@ -158,11 +158,11 @@ class UserController {
   async changePassword(request: Request, response: Response): Promise<Response> {
     const repository = getCustomRepository(UserRepository);
     const codeRepository = getRepository(PasswordVerificationCode)
-    const { password, id: userId, code } = request.body;
+    const { password, userId, code } = request.body;
 
     try {
       const user = await repository.findOne(userId);
-      const userCode = await codeRepository.findOne({ where: { userId: user.id, used: false }});
+      const userCode = await codeRepository.findOne({ where: { userId: user.id, used: false }, order: { createdAt: 'DESC' }})
 
       if(code == userCode.code){
         await repository.update(user.id, { password: await bcrypt.hash(password, 10) });
@@ -175,7 +175,7 @@ class UserController {
       throw new AppError(`Erro ao mudar senha do usuário ${error}`);
     }
 
-    return response.status(200).json();
+    return response.status(200).json(true);
   }
 }
 
