@@ -36,7 +36,7 @@ class AuctionController {
     const { id } = request.params;
 
     const auction = await auctionRepository.findOne(id, {
-      relations: ['donationObject', 'donationObject.photos', 'donationObject.categories']
+      relations: ['donationObject', 'donationObject.photos', 'donationObject.categories', 'biddings']
     });
 
 

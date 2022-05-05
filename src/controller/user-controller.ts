@@ -12,6 +12,7 @@ import CreateUserService from "../service/user/create-user-service";
 import LoginUserService from "../service/user/login-user-service";
 import UpdateUserService from "../service/user/update-user-service";
 import ValidateUserService from "../service/user/validate-user-service";
+import Mailer from "../service/mailer/send-mailer";
 
 class UserController {
   async create(request: Request, response: Response): Promise<Response> {
@@ -141,7 +142,12 @@ class UserController {
       const object = repository.create({ code, userId: user.id });
       await repository.save(object);
 
-       // mandar email
+      new Mailer("anabruna28@gmail.com", "Seu código de verificação", "Recuperar sua conta", "recouver-account", {
+        emailAddress: user.email,
+        userName: user.name,
+        resetLink: `${process.env.APPLICATION_PATH}/alterar-senha?userId=${user.id}&code=${code}`
+      }).sendEmail();
+
     } catch (error) {
       throw new AppError(`Erro ao gerar codigo de recuperação de conta ${error.message}`);
     }
@@ -152,16 +158,21 @@ class UserController {
   async changePassword(request: Request, response: Response): Promise<Response> {
     const repository = getCustomRepository(UserRepository);
     const codeRepository = getRepository(PasswordVerificationCode)
-    const { password, userId, code } = request.body;
-    const userCode = await codeRepository.findOne({ where: { userId: userId, used: false }});
+    const { password, id: userId, code } = request.body;
 
-    if(code == userCode.code){
+    try {
       const user = await repository.findOne(userId);
-      await repository.update(user.id, { password: await bcrypt.hash(password, 10) });
+      const userCode = await codeRepository.findOne({ where: { userId: user.id, used: false }});
 
-      await codeRepository.update(userCode.id, { used: true });
-    }else {
-      throw new AppError(`Codigo invalido`);
+      if(code == userCode.code){
+        await repository.update(user.id, { password: await bcrypt.hash(password, 10) });
+
+        await codeRepository.update(userCode.id, { used: true });
+      }else {
+        throw new AppError(`Codigo invalido`);
+      }
+    } catch (error) {
+      throw new AppError(`Erro ao mudar senha do usuário ${error}`);
     }
 
     return response.status(200).json();
