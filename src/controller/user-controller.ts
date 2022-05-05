@@ -142,7 +142,7 @@ class UserController {
       const object = repository.create({ code, userId: user.id });
       await repository.save(object);
 
-      new Mailer("anabruna28@gmail.com", "Seu código de verificação", "Recuperar sua conta", "recouver-account", {
+      new Mailer(user.email, "Seu código de verificação", "Recuperar sua conta", "recouver-account", {
         emailAddress: user.email,
         userName: user.name,
         resetLink: `${process.env.APPLICATION_PATH}/alterar-senha?userId=${user.id}&code=${code}`
