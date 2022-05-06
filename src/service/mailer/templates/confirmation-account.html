@@ -1,0 +1,112 @@
+<html>
+  <head>
+    <title>Reset Password</title>
+  </head>
+  <style>
+    .content {
+      display: grid;
+      justify-content: center;
+      background-color: #dfe5f9;
+      width: 100%;
+      color: #000;
+      font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    .center{
+      background-color: white;
+      margin: auto;
+      width: 50%;
+      padding: 10px;
+      min-width: 500px;
+    }
+
+    a {
+      background-color: #6A81D1;
+      color: white;
+      text-decoration: none;
+      padding: 10px;
+      font-weight: bold;
+      border-radius: 5px;
+      margin: 50px 0px;
+    }
+
+    p, h1, h2 {
+      text-align: center;
+      width: 100%;
+      color: black;
+    }
+
+    h1{
+      color: #6A81D1;
+      font-size: 22px;
+    }
+
+    h2{
+      font-size: 20px;
+    }
+
+    .reset-link{
+      font-size: 14px;
+    }
+
+    .space {
+      height: 15px;
+      width: 100%;
+      color: transparent;
+    }
+
+    .finish{
+      background-color: #6A81D1;
+      padding: 10px 0;
+    }
+
+    .finish p {
+      color: white;
+      font-weight: bold;
+    }
+
+    .start{
+      background-color: #6A81D1;
+      padding: 10px 0;
+    }
+
+    .start h1 {
+      color: white;
+      font-weight: bold;
+    }
+
+    img{
+      width: 45px;
+    }
+
+  </style>
+  <body>
+    <div class="content">
+      <div class="center">
+        <div class="start">
+          <h1>Cottonnect <img src="cid:logo"></h1>
+        </div>
+        <h2>Oi, <%= userName %>! bora verificar seu email?</h2>
+        <div class="space"></div>
+        <div>
+          <p>Para confirmar seu email é super simples, basta clicar no botão abaixo.</p>
+        </div>
+        <div class="space"></div>
+        <p><a href="<%= confirmLink %>">Confirmar Email</a></p>
+        <div class="space"></div>
+        <div>
+          <p>Se tiver problemas clicando no botão, copie e cole o link abaixo em outra janela do seu navegador: </p>
+          <p class="reset-link"><%= confirmLink %></p>
+        </div>
+        <div class="space"></div>
+        <div class="space"></div>
+
+        <div class="finish">
+          <p>Abraços, Equipe Cottonnect. 🤍</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

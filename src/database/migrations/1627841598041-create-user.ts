@@ -37,6 +37,11 @@ export class CreateUser1627841598041 implements MigrationInterface {
             default: 0,
           },
           {
+            name: "confirmedEmail",
+            type: "boolean",
+            default: false,
+          },
+          {
             name: "phoneVerified",
             type: "boolean",
             default: false,

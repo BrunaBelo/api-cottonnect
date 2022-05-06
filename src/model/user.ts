@@ -31,6 +31,9 @@ class User {
   cottonFlakes?: number;
 
   @Column()
+  confirmedEmail?: boolean;
+
+  @Column()
   phoneVerified?: boolean;
 
   @Column()

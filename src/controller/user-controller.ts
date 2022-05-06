@@ -43,6 +43,12 @@ class UserController {
         roleId
       } as User).run();
 
+      new Mailer(user.email, "Confirmação da conta", "Verifique seu email", "confirmation-account", {
+        emailAddress: user.email,
+        userName: user.name,
+        confirmLink: `${process.env.APPLICATION_PATH}/confirmar-conta?userId=${user.id}`
+      }).sendEmail();
+
       return response.status(201).json(user);
     } catch (error) {
       throw new AppError(`Erro ao criar usuário: ${error.message}`);
@@ -173,6 +179,20 @@ class UserController {
       }
     } catch (error) {
       throw new AppError(`Erro ao mudar senha do usuário ${error}`);
+    }
+
+    return response.status(200).json(true);
+  }
+
+  async confirmAccount(request: Request, response: Response): Promise<Response> {
+    const repository = getCustomRepository(UserRepository);
+    const { id: userId } = request.query;
+
+    try {
+      const user = await repository.findOne({ where: { id: userId }});
+      await repository.update(user.id, { confirmedEmail: true });
+    } catch (error) {
+      throw new AppError(`Erro ao confirmar conta do usuário ${error}`);
     }
 
     return response.status(200).json(true);
