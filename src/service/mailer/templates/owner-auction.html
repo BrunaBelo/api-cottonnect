@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Confirmar Email</title>
+    <title>Ganhador do leilão</title>
   </head>
   <style>
     .content {
@@ -36,6 +36,11 @@
       text-align: center;
       width: 100%;
       color: black;
+    }
+
+    p {
+      text-align: left;
+      padding: 0 10px;
     }
 
     h1{
@@ -88,17 +93,18 @@
         <div class="start">
           <h1>Cottonnect <img src="cid:logo"></h1>
         </div>
-        <h2>Oi, <%= userName %>! bora verificar seu email?</h2>
+        <h2>Oi, <%= userName %>! Seu leilão foi fechado e já tem um ganhador! 😁</h2>
         <div class="space"></div>
         <div>
-          <p>Para confirmar seu email é super simples, basta clicar no botão abaixo.</p>
+          <p>Segue abaixo os dados do ganhador para você entrar em contato com ele e combinar a entrega.</p>
+          <p>Mas não se esqueça, existe um prazo de 10 dias para receber o item. Caso passe desse prazo o ganhador atual
+            perderá e outro usuário será sorteado.</p>
         </div>
-        <div class="space"></div>
-        <p><a href="<%= confirmLink %>">Confirmar Email</a></p>
-        <div class="space"></div>
         <div>
-          <p>Se tiver problemas clicando no botão, copie e cole o link abaixo em outra janela do seu navegador: </p>
-          <p class="reset-link"><%= confirmLink %></p>
+          <p><b>Nome do doador:</b> <%= userName %> </p>
+          <p><b>Email:</b> <%= userEmail %> </p>
+          <p><b>Celular:</b> <%= userPhoneNumber %> </p>
+          <p><b>Observações Adicionais:</b> <%= userInfos %> </p>
         </div>
         <div class="space"></div>
         <div class="space"></div>
