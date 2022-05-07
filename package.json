@@ -39,6 +39,7 @@
     "nodemon": "^2.0.7",
     "pg": "^8.7.1",
     "reflect-metadata": "^0.1.13",
+    "twilio": "^3.77.0",
     "typeorm": "^0.2.34",
     "uuid": "^8.3.2",
     "yup": "^0.32.9"
@@ -52,6 +53,7 @@
     "@types/html-to-text": "^8.1.0",
     "@types/jest": "^27.4.0",
     "@types/supertest": "^2.0.11",
+    "@types/twilio": "^3.19.3",
     "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
     "@typescript-eslint/parser": "^4.28.2",

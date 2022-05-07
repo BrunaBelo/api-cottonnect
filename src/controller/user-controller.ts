@@ -13,6 +13,8 @@ import LoginUserService from "../service/user/login-user-service";
 import UpdateUserService from "../service/user/update-user-service";
 import ValidateUserService from "../service/user/validate-user-service";
 import Mailer from "../service/mailer/send-mailer";
+import SendCondeVerification from "../service/twilio/send-code-verification";
+import VerificationPhone from "../service/twilio/verification-phone";
 
 class UserController {
   async create(request: Request, response: Response): Promise<Response> {
@@ -48,6 +50,8 @@ class UserController {
         userName: user.name,
         confirmLink: `${process.env.APPLICATION_PATH}/confirmar-conta?userId=${user.id}`
       }).sendEmail();
+
+      await new SendCondeVerification(user.phoneNumber).run();
 
       return response.status(201).json(user);
     } catch (error) {
@@ -191,6 +195,28 @@ class UserController {
     try {
       const user = await repository.findOne({ where: { id: userId }});
       await repository.update(user.id, { confirmedEmail: true });
+    } catch (error) {
+      throw new AppError(`Erro ao confirmar conta do usuário ${error}`);
+    }
+
+    return response.status(200).json(true);
+  }
+
+  async confirmPhoneAccount(request: Request, response: Response): Promise<Response> {
+    const repository = getCustomRepository(UserRepository);
+    const { code, userId } = request.query;
+
+    try {
+      const user = await repository.findOne({ where: { id: userId }});
+      const phoneNumber = user.phoneNumber;
+
+      const confirmed = await new VerificationPhone(phoneNumber, code as string).run();
+
+      if(confirmed == true){
+        await repository.update(user.id, { phoneVerified: true });
+      }else {
+        return response.status(200).json(false);
+      }
     } catch (error) {
       throw new AppError(`Erro ao confirmar conta do usuário ${error}`);
     }
