@@ -223,6 +223,21 @@ class UserController {
 
     return response.status(200).json(true);
   }
+
+  async resendCodeConfirmPhone(request: Request, response: Response): Promise<Response> {
+    const repository = getCustomRepository(UserRepository);
+    const { userId } = request.query;
+
+    try {
+      const user = await repository.findOne({ where: { id: userId }});
+
+      await new SendCondeVerification(user.phoneNumber).run();
+    } catch (error) {
+      throw new AppError(`Erro ao reenviar de verificação de celular ${error}`);
+    }
+
+    return response.status(200).json(true);
+  }
 }
 
 export { UserController };
