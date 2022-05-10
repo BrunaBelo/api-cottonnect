@@ -23,6 +23,10 @@ class Bidding {
   @Column()
   reject?: boolean;
 
+  @Column()
+  // valid; insufficientCottons;
+  status: string;
+
   @CreateDateColumn()
   createdAt?: Date;
 

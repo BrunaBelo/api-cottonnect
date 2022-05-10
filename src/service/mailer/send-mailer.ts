@@ -4,7 +4,6 @@ import { AppError } from "../../errors/app-error";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 import fs from "fs";
 import ejs from "ejs";
-import { htmlToText } from "html-to-text";
 import juice from "juice";
 
 config({
@@ -24,20 +23,22 @@ class Mailer {
     this.subject = subject;
     this.template = template;
     this.context = context;
-    this.transporter = this.buildTransporter();
   }
 
   public sendEmail(): void {
-    const mailOptions = this.buildMailOptions();
+    if(process.env.NODE_ENV != 'test'){
+      this.transporter = this.buildTransporter();
+      const mailOptions = this.buildMailOptions();
 
-    this.transporter.sendMail(mailOptions, function(error, info){
-      if (error) {
-        console.log(error);
-        throw new AppError('Erro ao enviar email', 500)
-      } else {
-        console.log('Email enviado: ' + info.response);
-      }
-    });
+      this.transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+          throw new AppError('Erro ao enviar email', 500)
+        } else {
+          console.log('Email enviado: ' + info.response);
+        }
+      });
+    }
   }
 
   private buildMailOptions() {

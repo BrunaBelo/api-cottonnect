@@ -13,7 +13,8 @@ interface IUserData {
   cpf?: string,
   additionalInformation?: string,
   cityId?: string,
-  roleId?: string
+  roleId?: string,
+  cottonFlakes?: number
 }
 
 const fakeCpf = ():string => {

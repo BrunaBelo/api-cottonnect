@@ -21,6 +21,11 @@ export class CreateBidding1627842378164 implements MigrationInterface {
             default: false,
           },
           {
+            name: "status",
+            type: "varchar",
+            default: "'valid'",
+          },
+          {
             name: "reject",
             type: "boolean",
             default: false,
