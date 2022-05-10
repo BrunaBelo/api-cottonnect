@@ -5,9 +5,9 @@ import { AppError } from "../errors/app-error";
 import CreateAuctionService from "../service/auction/create-auction-service";
 import CreateDonationService from "../service/donation-object/create-donation-service";
 import { BiddingRepository } from "../repository/bidding-repository";
-import GenerateWinnerService from "../service/bidding/generate-winner-service";
 import { UserRepository } from "../repository/user-repository";
 import { Auction } from "../model/auction";
+import GenerateWinnerService from "../service/auction/generate-winner-service";
 class AuctionController {
   async create(request: Request, response: Response): Promise<Response> {
     let newAuction = null;
@@ -53,7 +53,7 @@ class AuctionController {
     let auctions = [];
 
     try {
-      auctions = await auctionRepository.getAuctionsFromCity(cityId as string);
+      auctions = await auctionRepository.getAuctionsFromCity(cityId as string, categoryIds as []);
     } catch (error) {
       throw new AppError(`Erro ao buscar doações ${error}`);
     }
@@ -72,7 +72,6 @@ class AuctionController {
     } catch (error) {
       throw new AppError(`Erro ao buscar doações ${error}`);
     }
-
 
     return response.status(200).json(auctions);
   }
@@ -99,7 +98,7 @@ class AuctionController {
     let auction = {} as Auction;
 
     try {
-      auction = await auctionRepository.findOne(id, { relations: ['donationObject']});
+      auction = await auctionRepository.findOne(id, { relations: ['donationObject', 'user']});
       let biddingWinner = await biddingRepository.getWinner(id as string);
 
       biddingWinner.reject = true;

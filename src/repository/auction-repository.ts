@@ -1,4 +1,4 @@
-import { EntityRepository, getCustomRepository, Repository } from "typeorm";
+import { EntityRepository, getCustomRepository, Repository, SelectQueryBuilder } from "typeorm";
 import { Auction } from "../model/auction";
 import { BiddingRepository } from "./bidding-repository";
 
@@ -10,22 +10,27 @@ class AuctionRepository extends Repository<Auction> {
     return newAuction;
   }
 
-  async getAuctionsFromCity(cityId: string): Promise<Auction[]> {
-    const auctions = await this.find({
-      relations: ['donationObject',
-                  'donationObject.photos',
-                  'donationObject.categories',
-                  'user',
-                  'biddings'],
-      where: {
-        status: 'open',
-        user: {
-          cityId: cityId
-        },
-      },
-    });
+  async getAuctionsFromCity(cityId: string, categoryIds: []): Promise<Auction[]> {
+    const baseAuctions = await this.baseQueryFindAll(cityId);
+
+    if (categoryIds.length > 0){
+      baseAuctions.where('categories.id IN (:...ids)', { ids: categoryIds })
+    }
+
+    return baseAuctions.getMany();
+  }
+
+  async baseQueryFindAll(cityId: string): Promise<SelectQueryBuilder<Auction>> {
+    const auctions = await this.createQueryBuilder("auction")
+                                .leftJoinAndSelect("auction.user", "user")
+                                .leftJoinAndSelect("auction.biddings", "biddings")
+                                .leftJoinAndSelect("auction.donationObject", "donation")
+                                .leftJoinAndSelect("donation.photos", "photos")
+                                .leftJoinAndSelect("donation.categories", "categories")
+                                .where('auction.status = :status AND user.cityId = :cityId', { status: 'open', cityId: cityId })
     return auctions;
   }
+
 
   async getAuctionsDonated(userId: string): Promise<Auction[]> {
     const auctions = await this.find({

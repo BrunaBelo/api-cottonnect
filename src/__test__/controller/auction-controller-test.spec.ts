@@ -83,7 +83,7 @@ describe("Auction", () => {
 
       const res = await request(app).get(`/auctions`)
                                     .set({ "x-access-token": user.token })
-                                    .query({ cityId: user.cityId });
+                                    .query({ cityId: user.cityId, categoryIds: null });
 
       expect(res.status).toEqual(200);
       expect(res.body.toString()).toEqual([auction01, auction02].toString());
@@ -94,7 +94,7 @@ describe("Auction", () => {
 
       const res = await request(app).get(`/auctions`)
                                     .set({ "x-access-token": user.token })
-                                    .query({ cityId: user.cityId });
+                                    .query({ cityId: user.cityId, categoryIds: null });
 
       expect(res.status).toEqual(200);
       expect(res.body).toMatchObject([]);
@@ -109,7 +109,7 @@ describe("Auction", () => {
 
       const res = await request(app).get("/auctions/")
                                     .set({ "x-access-token": user.token })
-                                    .query({ cityId: user.cityId });
+                                    .query({ cityId: user.cityId, categoryIds: null });
 
       expect(res.status).toEqual(200);
       expect(res.body.toString()).toEqual([auction].toString());
