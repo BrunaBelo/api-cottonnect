@@ -25,7 +25,7 @@ class Bidding {
 
   @Column()
   // valid; insufficientCottons;
-  status: string;
+  status?: string;
 
   @CreateDateColumn()
   createdAt?: Date;

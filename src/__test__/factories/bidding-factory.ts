@@ -10,7 +10,8 @@ export const biddingFactory = async(biddingData, save = true): Promise<Bidding> 
     winner: false,
     auctionId: null,
     reject: false,
-    userId: null
+    userId: null,
+    status: "valid"
   };
 
   if(!biddingData.auctionId) {

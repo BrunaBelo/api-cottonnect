@@ -18,6 +18,7 @@ class UserRepository extends Repository<User> {
                                   .returning('*')
                                   .updateEntity(true)
                                   .execute();
+
     return userUpdated.raw[0];
   }
 }

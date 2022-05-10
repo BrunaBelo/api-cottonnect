@@ -204,7 +204,7 @@ describe("User", () => {
 
       const res = await request(app).put(`/users/${user.id}`)
                                     .set({ "x-access-token": user.token })
-                                    .send({ userNewData: newData });
+                                    .send(newData);
 
       expect(res.status).toBe(200);
       expect(res.body.toString()).toEqual(newData.toString());
@@ -222,7 +222,7 @@ describe("User", () => {
 
       const res = await request(app).put(`/users/${user.id}`)
                                     .set({ "x-access-token": user.token })
-                                    .send({ userNewData: newData });
+                                    .send(newData);
 
       expect(res.status).toBe(400);
       expect(res.body.message).toEqual(`Erro ao atualizar usuário: O email ${user2.email} já está em uso`);
@@ -241,7 +241,7 @@ describe("User", () => {
 
       const res = await request(app).put(`/users/${user.id}`)
                                     .set({ "x-access-token": user.token })
-                                    .send({ userNewData: newData });
+                                    .send(newData);
 
       expect(res.status).toBe(400);
       expect(res.body.message).toEqual(`Erro ao atualizar usuário: O número de telefone ${user2.phoneNumber} já está em uso`);
@@ -252,7 +252,7 @@ describe("User", () => {
     it("return success and create new verification code", async () => {
       let user = await userFactory();
 
-      const res = await request(app).get(`/users/forgot-password/${user.id}`);
+      const res = await request(app).get(`/users/forgot-account/${user.email}`);
 
       const code = await codeRepository.findOne();
 
@@ -286,7 +286,7 @@ describe("User", () => {
                                     .send({ code: "123", userId: user.id, password: "asd123qwe456" });
 
       expect(res.status).toBe(400);
-      expect(res.body.message).toEqual("Codigo invalido");
+      expect(res.body.message).toContain("Erro ao mudar senha do usuário");
 
       const userUpdated = await userRepository.findOne(user.id);
       expect(await bcrypt.compare("asd123qwe456", userUpdated.password)).toBe(false);

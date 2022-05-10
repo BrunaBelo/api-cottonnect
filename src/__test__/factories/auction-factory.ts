@@ -15,7 +15,6 @@ export const auctionFactory = async(auctionData, save = true): Promise<Auction> 
   if(!auctionData.donationObjectId) {
     const donationObject = await donationFactory({});
     auctionData.donationObjectId = donationObject.id;
-    auctionData.donationObject = donationObject;
   }
 
   if(!auctionData.userId) {

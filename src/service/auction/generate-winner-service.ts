@@ -31,11 +31,11 @@ class GenerateWinnerService {
 
     await this.generateWinner(biddingsOrder);
 
+    this.auction = await this.repository.findOne(this.auction.id, { relations: ['donationObject', 'user']});
     this.sendNoticeEmailToWinner();
     this.sendNoticeEmailToOwner();
 
-    const auctionUpdated = await this.repository.findOne(this.auction.id, { relations: ['donationObject', 'user']});
-    return auctionUpdated;
+    return this.auction;
   }
 
   async generateWinner(biddings: Bidding[]) {

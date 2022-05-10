@@ -18,7 +18,7 @@ class ValidateUserService {
     let email = ""
     let phoneNumber = "";
 
-    if(currentUserId != ""){
+    if(currentUserId != "" && currentUserId != undefined){
       const currentUser: User = await repository.findOne({ where: { id: currentUserId as string }});4
       email = currentUser.email;
       phoneNumber = currentUser.phoneNumber;
