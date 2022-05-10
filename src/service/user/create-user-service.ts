@@ -8,6 +8,7 @@ import { UserRepository } from "../../repository/user-repository";
 class CreateUserService {
   private repository: UserRepository;
   private roleRepository: RoleRepository;
+  private defaultCottonFlakes = 5;
 
   constructor(private user: User){
     this.user = user;
@@ -38,6 +39,7 @@ class CreateUserService {
       user.roleId = (await roleRepository.findOne({ name: 'user' })).id
     }
 
+    user.cottonFlakes = this.defaultCottonFlakes;
     user.password = await bcrypt.hash(user.password, 10);
     const newuser = repository.createAndSave(user);
 
