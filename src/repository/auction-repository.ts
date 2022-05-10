@@ -17,7 +17,7 @@ class AuctionRepository extends Repository<Auction> {
       baseAuctions.where('categories.id IN (:...ids)', { ids: categoryIds })
     }
 
-    return baseAuctions.getMany();
+    return await baseAuctions.getMany();
   }
 
   async baseQueryFindAll(cityId: string): Promise<SelectQueryBuilder<Auction>> {

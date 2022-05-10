@@ -11,14 +11,14 @@ import GenerateWinnerService from "../service/auction/generate-winner-service";
 class AuctionController {
   async create(request: Request, response: Response): Promise<Response> {
     let newAuction = null;
-    const { closingDate } = request.body;
+    let { closingDate } = request.body;
     const { files } = request;
 
     try {
       const donationObject = await new CreateDonationService(request.body, files as Express.Multer.File[]).run();
 
       newAuction = await new CreateAuctionService({
-        closingDate: new Date(closingDate),
+        closingDate: closingDate,
         userId: request.user.id,
         status: 'open',
         donationObjectId: donationObject.id
