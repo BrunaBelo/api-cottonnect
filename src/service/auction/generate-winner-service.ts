@@ -82,10 +82,10 @@ class GenerateWinnerService {
     new Mailer(owner.email, `Olá ${owner.name}`, "Você tem um leilão com ganhador", "owner-auction", {
       userName: owner.name,
       auctionName: auction.donationObject.title,
-      winnerName: winner.name,
-      winnerEmail: winner.email,
-      winnerPhoneNumber: winner.phoneNumber,
-      winnerInfos: winner.additionalInformation,
+      userWinnerName: winner.name,
+      userWinnerEmail: winner.email,
+      userWinnerPhoneNumber: winner.phoneNumber,
+      userWinnerInfos: winner.additionalInformation,
     }).sendEmail();
   }
 }
