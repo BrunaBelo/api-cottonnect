@@ -8,7 +8,7 @@ class GenerateWinner {
   }
 
   public async run() {
-    schedule.scheduleJob('*/1 * * * *', async function () {
+    schedule.scheduleJob('59 59 23 * * *', async function () {
       const repository = getCustomRepository(AuctionRepository);
       const dateToday = new Date().toISOString().split('T')[0];
 
