@@ -49,11 +49,12 @@ class AuctionController {
 
   async getAuctions(request: Request, response: Response): Promise<Response> {
     const auctionRepository = getCustomRepository(AuctionRepository);
-    const { cityId, categoryIds } = request.query;
+    const { cityId, categoryId, title } = request.query;
+    const { id: userId } = request.user;
     let auctions = [];
 
     try {
-      auctions = await auctionRepository.getAuctionsFromCity(cityId as string, categoryIds as []);
+      auctions = await auctionRepository.getAuctionsFromCity(cityId as string, categoryId as string, title as string, userId);
     } catch (error) {
       throw new AppError(`Erro ao buscar doações ${error}`);
     }

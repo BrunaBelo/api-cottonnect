@@ -78,12 +78,13 @@ describe("Auction", () => {
 
   describe("GET #getAuctions", () => {
     it("return auctions from city", async() => {
-      const auction01 = await auctionFactory({ userId: user.id });
-      const auction02 = await auctionFactory({ userId: user.id });
+      const newUser = await userFactory({cityId: user.cityId});
+      const auction01 = await auctionFactory({ userId: newUser.id });
+      const auction02 = await auctionFactory({ userId: newUser.id });
 
       const res = await request(app).get(`/auctions`)
                                     .set({ "x-access-token": user.token })
-                                    .query({ cityId: user.cityId, categoryIds: null });
+                                    .query({ cityId: user.cityId, categoryId: "", title: ""});
 
       expect(res.status).toEqual(200);
       expect(res.body.toString()).toEqual([auction01, auction02].toString());
@@ -94,7 +95,7 @@ describe("Auction", () => {
 
       const res = await request(app).get(`/auctions`)
                                     .set({ "x-access-token": user.token })
-                                    .query({ cityId: user.cityId, categoryIds: null });
+                                    .query({ cityId: user.cityId, categoryId: "", title: ""});
 
       expect(res.status).toEqual(200);
       expect(res.body).toMatchObject([]);
@@ -102,18 +103,19 @@ describe("Auction", () => {
     });
 
     it("do not return auctions from other city", async() => {
-      const otherUser = await userFactory({});
+      const userOtherCity = await userFactory({});
+      const userSameCity = await userFactory({cityId: user.cityId});
 
-      const auction = await auctionFactory({ userId: user.id });
-      const auctionOtherUser = await auctionFactory({ userId: otherUser.id });
+      const auctionSameCity = await auctionFactory({ userId: userSameCity.id });
+      const auctionOtherCity = await auctionFactory({ userId: userOtherCity.id });
 
       const res = await request(app).get("/auctions/")
                                     .set({ "x-access-token": user.token })
-                                    .query({ cityId: user.cityId, categoryIds: null });
+                                    .query({ cityId: user.cityId, categoryId: "", title: ""});
 
       expect(res.status).toEqual(200);
-      expect(res.body.toString()).toEqual([auction].toString());
-      expect(res.body.toString()).not.toEqual([auction, auctionOtherUser].toString());
+      expect(res.body.toString()).toEqual([auctionSameCity].toString());
+      expect(res.body.toString()).not.toEqual([auctionSameCity, auctionOtherCity].toString());
     });
   });
 

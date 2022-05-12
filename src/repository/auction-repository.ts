@@ -10,24 +10,29 @@ class AuctionRepository extends Repository<Auction> {
     return newAuction;
   }
 
-  async getAuctionsFromCity(cityId: string, categoryIds: []): Promise<Auction[]> {
-    const baseAuctions = await this.baseQueryFindAll(cityId);
+  async getAuctionsFromCity(cityId: string, categoryId: string, title: string, userId: string): Promise<Auction[]> {
+    let baseAuctions = await this.baseQueryFindAll(cityId, userId);
 
-    if (categoryIds.length > 0){
-      baseAuctions.where('categories.id IN (:...ids)', { ids: categoryIds })
+    if (categoryId != "" && categoryId != undefined){
+      baseAuctions = baseAuctions.andWhere('categories.id = :id', { id: categoryId });
+    }
+
+    if (title != "" && title != undefined){
+      baseAuctions = baseAuctions.andWhere(`LOWER(donation.title) LIKE LOWER(:title)`, { title: `%${title}%` });
     }
 
     return await baseAuctions.getMany();
   }
 
-  async baseQueryFindAll(cityId: string): Promise<SelectQueryBuilder<Auction>> {
+  async baseQueryFindAll(cityId: string,userId: string): Promise<SelectQueryBuilder<Auction>> {
     const auctions = await this.createQueryBuilder("auction")
                                 .leftJoinAndSelect("auction.user", "user")
                                 .leftJoinAndSelect("auction.biddings", "biddings")
                                 .leftJoinAndSelect("auction.donationObject", "donation")
                                 .leftJoinAndSelect("donation.photos", "photos")
                                 .leftJoinAndSelect("donation.categories", "categories")
-                                .where('auction.status = :status AND user.cityId = :cityId', { status: 'open', cityId: cityId })
+                                .where('auction.status = :status AND user.cityId = :cityId AND user.id != :userId',
+                                  { status: 'open', cityId: cityId, userId: userId })
     return auctions;
   }
 
