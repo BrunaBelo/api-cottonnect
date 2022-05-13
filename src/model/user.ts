@@ -69,6 +69,7 @@ class User {
   passwordVerificationCode?: PasswordVerificationCode[];
 
   token?: string;
+  isAllowed?: boolean;
 
   constructor() {
     if (!this.id) {

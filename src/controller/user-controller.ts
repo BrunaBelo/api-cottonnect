@@ -115,6 +115,7 @@ class UserController {
 
     try {
       user = await repository.findOne(userId as string, { relations: ['city']});
+      user.isAllowed = (user.phoneVerified && user.confirmedEmail) ? true : false;
     } catch (error) {
       throw new AppError(`Usuário não encontrado: ${error.message}`);
     }

@@ -123,7 +123,7 @@ class AuctionController {
 
     try {
       const userWinner = await userRepository.findOne(userId);
-      auction = await auctionRepository.findOne(auctionId, { relations: ['donationObject']});
+      auction = await auctionRepository.findOne(auctionId, { relations: ['donationObject', 'user']});
       const userOwner = await userRepository.findOne(auction.userId);
       let biddingWinner = await biddingRepository.getWinner(auctionId as string);
 
