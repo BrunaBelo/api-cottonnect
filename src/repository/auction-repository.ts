@@ -10,7 +10,12 @@ class AuctionRepository extends Repository<Auction> {
     return newAuction;
   }
 
-  async getAuctionsFromCity(cityId: string, categoryId: string, title: string, userId: string): Promise<Auction[]> {
+  async getAuctionsFromCity(cityId: string,
+                            categoryId: string,
+                            title: string,
+                            userId: string,
+                            page: number,
+                            limit: number): Promise<object> {
     let baseAuctions = await this.baseQueryFindAll(cityId, userId);
 
     if (categoryId != "" && categoryId != undefined){
@@ -21,7 +26,10 @@ class AuctionRepository extends Repository<Auction> {
       baseAuctions = baseAuctions.andWhere(`LOWER(donation.title) LIKE LOWER(:title)`, { title: `%${title}%` });
     }
 
-    return await baseAuctions.getMany();
+    const totalAuctions = await baseAuctions.getCount();
+    const auctions = await baseAuctions.skip((limit * page) - limit).take(limit).getMany();
+
+    return { auctions: auctions, total: totalAuctions };
   }
 
   async baseQueryFindAll(cityId: string,userId: string): Promise<SelectQueryBuilder<Auction>> {

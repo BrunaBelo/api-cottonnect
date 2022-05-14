@@ -39,7 +39,6 @@ class AuctionController {
       relations: ['donationObject', 'donationObject.photos', 'donationObject.categories', 'biddings']
     });
 
-
     if(!auction){
       throw new AppError("Não foi possível encontrar a auction solicitada", 422);
     }
@@ -49,12 +48,17 @@ class AuctionController {
 
   async getAuctions(request: Request, response: Response): Promise<Response> {
     const auctionRepository = getCustomRepository(AuctionRepository);
-    const { cityId, categoryId, title } = request.query;
+    const { cityId, categoryId, title, page, limit} = request.query;
     const { id: userId } = request.user;
-    let auctions = [];
+    let auctions = {};
 
     try {
-      auctions = await auctionRepository.getAuctionsFromCity(cityId as string, categoryId as string, title as string, userId);
+      auctions = await auctionRepository.getAuctionsFromCity(cityId as string,
+                                                             categoryId as string,
+                                                             title as string,
+                                                             userId,
+                                                             parseInt(page as string),
+                                                             parseInt(limit as string));
     } catch (error) {
       throw new AppError(`Erro ao buscar doações ${error}`);
     }
@@ -64,7 +68,6 @@ class AuctionController {
 
   async getAuctionsDonated(request: Request, response: Response): Promise<Response> {
     const auctionRepository = getCustomRepository(AuctionRepository);
-    const { categoryIds, status } = request.query;
     const { id: userId} = request.user;
     let auctions = [];
 
@@ -79,7 +82,6 @@ class AuctionController {
 
   async getAuctionsWon(request: Request, response: Response): Promise<Response> {
     const auctionRepository = getCustomRepository(AuctionRepository);
-    const { categoryIds, status} = request.query;
     const { id: userId} = request.user;
     let auctions = [];
 
