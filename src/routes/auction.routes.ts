@@ -15,5 +15,6 @@ auctionRoutes.get("/won", auth, new AuctionController().getAuctionsWon);
 auctionRoutes.get("/:id", auth, new AuctionController().findAuction);
 auctionRoutes.get("/reject/:id", auth, new AuctionController().rejectAuction);
 auctionRoutes.get("/accept/:id", auth, new AuctionController().acceptAuction);
+auctionRoutes.get("/reactivate/:id", auth, new AuctionController().reactiveAuction);
 
 export { auctionRoutes };

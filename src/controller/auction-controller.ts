@@ -143,6 +143,26 @@ class AuctionController {
 
     return response.status(200).json(auction);
   }
+
+  async reactiveAuction(request: Request, response: Response): Promise<Response> {
+    const auctionRepository = getCustomRepository(AuctionRepository);
+    const { id: auctionId } = request.params;
+    let auction = {} as Auction;
+    let { closingDate } = request.query;
+
+    try {
+      auction = await auctionRepository.findOneOrFail({ where: { id: auctionId }, relations: ['donationObject', 'user']});
+
+      const newDate = new Date(closingDate as string);
+      newDate.setHours(0,0,0,0);
+
+      await auctionRepository.update(auction.id, { closingDate: newDate, status: "open" });
+    } catch (error) {
+      throw new AppError(`Erro ao reabrir leilão ${error}`);
+    }
+
+    return response.status(200).json(auction);
+  }
 }
 
 export { AuctionController };
