@@ -131,6 +131,7 @@ class UserController {
 
     try {
       user = await new UpdateUserService(userId, userNewData).run();
+      user.isAllowed = (user.phoneVerified && user.confirmedEmail) ? true : false;
     } catch (error) {
       throw new AppError(`Erro ao atualizar usuário: ${error.message}`);
     }
@@ -198,6 +199,24 @@ class UserController {
       await repository.update(user.id, { confirmedEmail: true });
     } catch (error) {
       throw new AppError(`Erro ao confirmar conta do usuário ${error}`);
+    }
+
+    return response.status(200).json(true);
+  }
+
+  async sendConfirmAccountMailer(request: Request, response: Response): Promise<Response> {
+    const repository = getCustomRepository(UserRepository);
+    const { id: userId } = request.query;
+
+    try {
+      const user = await repository.findOne({ where: { id: userId }});
+      new Mailer(user.email, "Confirmação da conta", "Verifique seu email", "confirmation-account", {
+        emailAddress: user.email,
+        userName: user.name,
+        confirmLink: `${process.env.APPLICATION_PATH}/confirmar-conta?userId=${user.id}`
+      }).sendEmail();
+    } catch (error) {
+      throw new AppError(`Erro ao enviar email de confirmação de conta do usuário ${error}`);
     }
 
     return response.status(200).json(true);

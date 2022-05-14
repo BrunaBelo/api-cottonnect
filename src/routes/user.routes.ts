@@ -6,6 +6,7 @@ const userRoutes = Router();
 
 userRoutes.post("/", new UserController().create);
 userRoutes.get("/confirm-account", new UserController().confirmAccount);
+userRoutes.get("/send-mailer-confirm-account", new UserController().sendConfirmAccountMailer);
 userRoutes.post("/login", new UserController().login);
 userRoutes.get("/validate-user", new UserController().validateUser);
 userRoutes.get("/confirm-phone-number", new UserController().confirmPhoneAccount);
