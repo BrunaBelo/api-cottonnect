@@ -1,6 +1,7 @@
 
 import twilio from "twilio";
 import { config } from 'dotenv'
+import { AppError } from "../../errors/app-error";
 
 config({
   path: '.env'
@@ -24,7 +25,7 @@ class SendCondeVerification {
                     .verifications
                     .create({ to: `+55${this.phoneNumber}`, channel: 'sms' });
       } catch (error) {
-        console.log(`Erro ao enviar sms de confirmação da conta ${error}`);
+        throw new AppError(`Erro ao enviar sms de confirmação da conta ${error}`);
       }
     }
   }

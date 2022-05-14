@@ -1,5 +1,6 @@
 
 import twilio from "twilio";
+import { AppError } from "../../errors/app-error";
 
 class VerificationPhone {
   constructor(private phoneNumber: string, private code: string){
@@ -19,8 +20,7 @@ class VerificationPhone {
                   .verificationChecks
                   .create({ to: `+55${this.phoneNumber}`, code: this.code });
     } catch (error) {
-      console.log(`Erro ao enviar verificar número de celular ${error}`);
-      return false;
+      throw new AppError(`Erro ao verificar número de celular ${error}`);
     }
 
     return true;
