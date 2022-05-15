@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.ts",
+    "start": "tsc && node build/src/index.js",
+    "build": "tsc",
+    "postinstall": "npm run build",
     "start-dev": "NODE_ENV=development ts-node-dev src/index.ts",
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js",
     "migration-test": "NODE_ENV=test ts-node-dev node_modules/typeorm/cli.js migration:run",
