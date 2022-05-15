@@ -2,7 +2,7 @@ import connection from "./database/connection";
 import { app } from "./server";
 import jobs from './jobs/index';
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || '8080';
 
 if (process.env.NODE_ENV === "development") {
     connection.create("db");
