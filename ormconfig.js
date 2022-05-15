@@ -10,11 +10,11 @@ module.exports = {
       "../model/*.*"
   ],
   "migrations": [
-        "../database/migrations/*.*"
+        "build/src/database/migrations/*.*"
   ],
   "cli": {
       "entitiesDir": "../model",
-      "migrationsDir": "../database/migrations"
+      "migrationsDir": "build/src/database/migrations"
   },
   "extra": {
     "ssl": {
