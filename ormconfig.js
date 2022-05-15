@@ -7,13 +7,13 @@ module.exports = {
   synchronize: false,
   logging: true,
   "entities": [
-      "src/model/*.*"
+      "../model/*.*"
   ],
   "migrations": [
         "database/migrations/*.*"
   ],
   "cli": {
-      "entitiesDir": "src/model",
+      "entitiesDir": "../model",
       "migrationsDir": "database/migrations"
   },
   "extra": {
