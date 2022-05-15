@@ -7,14 +7,14 @@ module.exports = {
   synchronize: false,
   logging: true,
   "entities": [
-      "../model/*.*"
+    "build/src/model/*.*"
   ],
   "migrations": [
-        "build/src/database/migrations/*.*"
+    "build/src/database/migrations/*.*"
   ],
   "cli": {
-      "entitiesDir": "../model",
-      "migrationsDir": "build/src/database/migrations"
+    "entitiesDir": "build/src/model",
+    "migrationsDir": "build/src/database/migrations"
   },
   "extra": {
     "ssl": {
