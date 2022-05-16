@@ -94,6 +94,20 @@ class AuctionController {
     return response.status(200).json(auctions);
   }
 
+  async getAuctionsParticipating(request: Request, response: Response): Promise<Response> {
+    const auctionRepository = getCustomRepository(AuctionRepository);
+    const { id: userId} = request.user;
+    let auctions = [];
+
+    try {
+      auctions = await auctionRepository.getAuctionnParticipating(userId);
+    } catch (error) {
+      throw new AppError(`Erro ao buscar doações que estou participando ${error}`);
+    }
+
+    return response.status(200).json(auctions);
+  }
+
   async rejectAuction(request: Request, response: Response): Promise<Response> {
     const auctionRepository = getCustomRepository(AuctionRepository);
     const biddingRepository = getCustomRepository(BiddingRepository);

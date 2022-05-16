@@ -73,6 +73,26 @@ class AuctionRepository extends Repository<Auction> {
 
     return auctions;
   }
- }
+
+  async getAuctionnParticipating(userId: string): Promise<Auction[]> {
+    const biddingRepository = getCustomRepository(BiddingRepository);
+
+    const biddings = await biddingRepository.find({
+      relations: ['auction', 'auction.donationObject', 'auction.user'],
+      where: {
+        userId: userId,
+        auction: {
+          status: "open"
+        }
+      },
+    });
+
+    const auctions = biddings.map(bidding => {
+      return bidding.auction;
+    });
+
+    return auctions;
+  }
+}
 
 export { AuctionRepository };

@@ -12,6 +12,7 @@ auctionRoutes.post("/", auth, upload.array('photos'), new AuctionController().cr
 auctionRoutes.get("/", auth, new AuctionController().getAuctions);
 auctionRoutes.get("/donated", auth, new AuctionController().getAuctionsDonated);
 auctionRoutes.get("/won", auth, new AuctionController().getAuctionsWon);
+auctionRoutes.get("/participating", auth, new AuctionController().getAuctionsParticipating);
 auctionRoutes.get("/:id", auth, new AuctionController().findAuction);
 auctionRoutes.get("/reject/:id", auth, new AuctionController().rejectAuction);
 auctionRoutes.get("/accept/:id", auth, new AuctionController().acceptAuction);
