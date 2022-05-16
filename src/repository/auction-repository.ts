@@ -39,8 +39,8 @@ class AuctionRepository extends Repository<Auction> {
                                 .leftJoinAndSelect("auction.donationObject", "donation")
                                 .leftJoinAndSelect("donation.photos", "photos")
                                 .leftJoinAndSelect("donation.categories", "categories")
-                                .where('auction.status = :status AND user.cityId = :cityId AND user.id != :userId',
-                                  { status: 'open', cityId: cityId, userId: userId })
+                                .where('auction.status = :status AND auction.closingDate >= :dateToday AND user.cityId = :cityId AND user.id != :userId',
+                                  { status: 'open', cityId: cityId, userId: userId, dateToday: new Date(new Date().setHours(0, 0, 0)) })
     return auctions;
   }
 

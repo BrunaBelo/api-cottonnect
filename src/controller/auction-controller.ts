@@ -154,7 +154,7 @@ class AuctionController {
       auction = await auctionRepository.findOneOrFail({ where: { id: auctionId }, relations: ['donationObject', 'user']});
 
       const newDate = new Date(closingDate as string);
-      newDate.setHours(0,0,0,0);
+      newDate.setHours(0, 0, 0, 0);
 
       await auctionRepository.update(auction.id, { closingDate: newDate, status: "open" });
     } catch (error) {

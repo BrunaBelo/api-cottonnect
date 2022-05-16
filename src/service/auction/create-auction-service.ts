@@ -14,7 +14,7 @@ class CreateAuctionService {
     const { repository, auction } = this;
 
     const closingDate = new Date(auction.closingDate);
-    closingDate.setHours(0,0,0,0);
+    closingDate.setHours(0, 0, 0, 0);
     auction.closingDate = closingDate;
 
     const newAuction = repository.createAndSave(auction);
