@@ -29,9 +29,17 @@ class UpdateUserService {
       throw new AppError(`O número de telefone ${user.phoneNumber} já está em uso`);
     }
 
-    const newuser = await repository.updateAndSave(userId, user);
+    if(user.email != originalUser.email){
+      user.confirmedEmail = false;
+    }
 
-    return newuser;
+    if(user.phoneNumber != originalUser.phoneNumber){
+      user.phoneVerified = false;
+    }
+
+    const newUser = await repository.updateAndSave(userId, user);
+
+    return newUser;
   }
 }
 
