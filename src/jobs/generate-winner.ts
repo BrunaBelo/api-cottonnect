@@ -1,6 +1,6 @@
 import { getCustomRepository } from "typeorm";
 import { AuctionRepository } from "../repository/auction-repository";
-import schedule from "node-schedule";
+import * as cron from 'node-cron'
 import GenerateWinnerService from "../service/auction/generate-winner-service";
 
 class GenerateWinner {
@@ -8,7 +8,9 @@ class GenerateWinner {
   }
 
   public async run() {
-    schedule.scheduleJob('59 59 23 * * *', async function () {
+    const job = cron.schedule("0 59 23 * * *", async function () {
+      console.log(new Date().toLocaleString())
+
       const repository = getCustomRepository(AuctionRepository);
       const dateToday = new Date().toISOString().split('T')[0];
 
@@ -19,6 +21,9 @@ class GenerateWinner {
         console.log(`Gerando o ganhador para o leilão ${auction.id}`);
         new GenerateWinnerService(auction).run();
       });
+    }, {
+      scheduled: true,
+      timezone: "America/Sao_Paulo"
     });
   }
 }
