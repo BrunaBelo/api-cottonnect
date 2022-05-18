@@ -1,8 +1,56 @@
 # api-cottonnect
-CottonNect é um projeto que esta sendo desenvolvido como trabalho de conclusão de curso (TCC).É uma aplicação web que posteriormente será convertida em formato PWA, que permite a doação de objetos entre usuários com a gratificação via moedas digitais, denomidas flocos de algodão, que simbolizão o ato de gratidão ao receber uma doação, de onde também deriva o nome da aplicação, em que é originado da junção das palavras Cotton (Algodão) e Connect (Conectar), trazendo o significado da aplicação ser uma comunidade de doações que uni os indivíduos e os conecta pelos flocos de algodão, pois é por meio deles que as doações são possíveis.
+CottonNect é um projeto desenvolvido como trabalho de conclusão de curso (TCC) .É uma aplicação web que posteriormente será convertida em formato PWA, que permite a doação de objetos entre usuários com a gratificação via moedas digitais, denominadas flocos de algodão, que simbolizam o ato de gratidão ao receber uma doação, de onde também deriva o nome da aplicação, em que é originado da junção das palavras Cotton (Algodão) e Connect (Conectar), trazendo o significado da aplicação ser uma comunidade de doações que une os indivíduos e os conecta pelos flocos de algodão, pois é por meio deles que as doações são possíveis.
 
-As doações são adquiridas por um formato de leilão as cegas, onde os usuários dão lances aos objetos e no final do leilão, o sistema irá definir o ganhador. A escolha do modelo de leilão se deu pela quantificação do valor que o objeto possui para o usuário que demostra interesse nele. Assim, segundo a análise do participante, ele irá definir o preço que julga mais justo para adquirir o produto e recompensar o doador sem a visualização dos lances dos adversários. Esta omissão evita influência na definição do valor do lance.
+As doações são adquiridas por um formato de leilão às cegas, onde os usuários dão lances aos objetos e no final do leilão, o sistema irá definir o ganhador. A escolha do modelo de leilão se deu pela quantificação do valor que o objeto possui para o usuário que demonstra interesse nele. Assim, segundo a análise do participante, ele irá definir o preço que julga mais justo para adquirir o produto e recompensar o doador sem a visualização dos lances dos adversários. Esta omissão evita influência na definição do valor do lance.
 
-O projeto tem como justificativa principal a crescente evidência do impacto causado ao meio ambiente, originados das práticas sociais exercidas, como o ato de consumir. Desta forma, a intenção é estimular nos indivíduos de diferentes comunidades uma relação mais ampla de troca de produtos, fomentando a concepção do consumo consciente a fim de contribuir com a redução da degradção gradual do meio ambiente.
+O projeto tem como justificativa principal a crescente evidência do impacto causado ao meio ambiente, originados das práticas sociais exercidas, como o ato de consumir. Desta forma, a intenção é estimular nos indivíduos de diferentes comunidades uma relação mais ampla de troca de produtos, fomentando a concepção do consumo consciente a fim de contribuir com a redução da degradação gradual do meio ambiente.
 
-Aplicação esta sendo desenvolvida utilizando a linguagem TypeScript com auxílío do Node.js, e o sistema gerenciador do banco de dados é o Postgresql.
+# Passos
+
+- [Preparando o seu sistema operacional](#preparando-o-seu-sistema-operacional)
+- [Configurando o seu repositório local](#configurando-o-seu-repositório-local)
+- [Explorando a plataforma](#explorando-a-plataforma)
+
+## Preparando o seu sistema operacional
+### Você precisára instalar as seguintes dependências: 
+### 1. Instalar o Node
+### 2. Instalar um gerenciador de pacotes Yarn.
+### 2. Docker e Docker Compose (https://docs.docker.com/get-docker/)
+
+## Configurando o seu repositório local
+### 1. Clonando o projeto
+```bash
+git clone git@github.com:BrunaBelo/api-cottonnect.git
+cd api-cottonnect
+```
+
+Crie o arquivo das variáveis:
+
+```bash
+cp .env.exemple .env
+cp .env.test.exemple .env.test
+```
+
+### 3. Instalando as dependências
+```bash
+yarn install
+```
+
+### 4. Start o docker para criar a database
+```bash
+docker-compose build
+docker-compose up
+```
+
+### 5. Preparando o banco de dados
+Configure as variaveis de ambiente no seu .env e .env-test com as credenciais do seu banco de dados
+
+Rode as Migrations:
+```bash
+yarn typeorm migration:run
+```
+
+Crie as Seeds:
+```bash
+yarn run-seeds
+```
