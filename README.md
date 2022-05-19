@@ -9,13 +9,14 @@ O projeto tem como justificativa principal a crescente evidência do impacto cau
 
 - [Preparando o seu sistema operacional](#preparando-o-seu-sistema-operacional)
 - [Configurando o seu repositório local](#configurando-o-seu-repositório-local)
-- [Explorando a plataforma](#explorando-a-plataforma)
+- [Preparando o banco de dados](#preparando-o-banco-de-dados)
+- [Usando a aplicação](#usando-a-aplicação)
 
 ## Preparando o seu sistema operacional
 ### Você precisára instalar as seguintes dependências: 
-### 1. Instalar o Node
-### 2. Instalar um gerenciador de pacotes Yarn.
-### 2. Docker e Docker Compose (https://docs.docker.com/get-docker/)
+#### 1. Instalar o Node (https://nodejs.org/en/download/)
+#### 2. Instalar o gerenciador de pacotes Yarn (https://classic.yarnpkg.com/en/docs/install#debian-stable)
+#### 3. Docker e Docker Compose (https://docs.docker.com/get-docker/)
 
 ## Configurando o seu repositório local
 ### 1. Clonando o projeto
@@ -30,19 +31,20 @@ Crie o arquivo das variáveis:
 cp .env.exemple .env
 cp .env.test.exemple .env.test
 ```
+E configure as variaveis de ambiente necessárias
 
-### 3. Instalando as dependências
+### Instalando as dependências
 ```bash
 yarn install
 ```
 
-### 4. Start o docker para criar a database
+### Start o docker para criar a database
 ```bash
 docker-compose build
 docker-compose up
 ```
 
-### 5. Preparando o banco de dados
+### 3. Preparando o banco de dados
 Configure as variaveis de ambiente no seu .env e .env-test com as credenciais do seu banco de dados
 
 Rode as Migrations:
@@ -53,4 +55,9 @@ yarn typeorm migration:run
 Crie as Seeds:
 ```bash
 yarn run-seeds
+```
+
+### 4. Usando a aplicação
+```bash
+  localhost:3333
 ```
